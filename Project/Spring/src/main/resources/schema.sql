@@ -1,0 +1,17 @@
+CREATE TABLE menuTYPE(
+  name VARCHAR(30) PRIMARY KEY
+)
+
+CREATE TABLE itemGroup(
+  name VARCHAR(30) PRIMARY KEY,
+  menuTYPE_name VARCHAR(30) NOT NULL,
+  FOREIGN KEY (menuTYPE_name) REFERENCES menuTYPE (name)
+)
+
+CREATE TABLE menuItem(
+  name VARCHAR(30) PRIMARY KEY,
+  itemDescription VARCHAR(100) NOT NULL
+  --THIS IS WHERE DIETARY FIELDS + CALORIES WOULD GO.
+  itemGroup_name VARCHAR(30) NOT NULL,
+  FOREIGN KEY(itemGroup_name) REFERENCES itemGroup (name)
+)
