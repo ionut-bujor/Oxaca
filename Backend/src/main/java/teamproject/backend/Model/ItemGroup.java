@@ -14,15 +14,17 @@ public class ItemGroup {
   private Long id;
 
   @ManyToOne
-  @JoinColumn(name = 'menu_type_id', nullable = false)
-  private MenuType menu_type_id;
+  @JoinColumn(name = "menu_type_id", nullable = false)
+  private MenuType menuType;
 
   @Column(nullable = false, unique = false, length = 30 )
   private String name;
+
+  //Default constructor so that JPA can map it .
   public ItemGroup(){
   }
 
-  //gettters and setters
+  //getters and setters
   public Long getId() {
     return id;
   }
@@ -31,12 +33,12 @@ public class ItemGroup {
     this.id = id;
   }
 
-  public MenuType getMenu_type_id() {
-    return menu_type_id;
+  public MenuType getMenuType() {
+    return menuType;
   }
 
-  public void setMenu_type_id(MenuType menu_type_id) {
-    this.menu_type_id = menu_type_id;
+  public void setMenu_type_id(MenuType menuType) {
+    this.menuType= menuType;
   }
 
   public String getName() {
