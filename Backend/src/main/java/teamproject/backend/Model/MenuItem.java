@@ -34,5 +34,65 @@ public class MenuItem {
   @JoinColumn(name = "item_group_id")
   private ItemGroup itemGroup;
 
+  //Default constructor for the JPA mapping.
+  public MenuItem(){
+  }
+
+  //getters and setters
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public int getQuantity() {
+    return quantity;
+  }
+
+  public float getPrice() {
+    return price;
+  }
+
+  public String getImageURL() {
+    return imageURL;
+  }
+
+  public ItemGroup getItemGroup() {
+    return itemGroup;
+  }
+
+  public void setItemGroup(ItemGroup itemGroup) {
+    this.itemGroup = itemGroup;
+  }
+
+  public void setImageURL(String imageURL) {
+    this.imageURL = imageURL;
+  }
+
+  public void setPrice(float price) {
+    this.price = price;
+  }
+
+  public void setQuantity(int quantity) {
+    this.quantity = quantity;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
 }
 
