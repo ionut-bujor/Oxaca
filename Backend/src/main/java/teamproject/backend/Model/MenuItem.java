@@ -59,7 +59,7 @@ public class MenuItem {
     return quantity;
   }
 
-  public float getPrice() {
+  public BigDecimal getPrice() {
     return price;
   }
 
@@ -79,7 +79,7 @@ public class MenuItem {
     this.imageURL = imageURL;
   }
 
-  public void setPrice(float price) {
+  public void setPrice(BigDecimal price) {
     this.price = price;
   }
 
