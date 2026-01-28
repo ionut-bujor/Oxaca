@@ -12,6 +12,8 @@ CREATE TABLE item_group(
     FOREIGN KEY (menu_type_id) REFERENCES menu_type(id)
 );
 
+CREATE TYPE dietary_tag AS ENUM ('Vegan', 'Gluten-Free', 'Spicy', 'Vegetarian');
+CREATE TYPE allergens AS ENUM ('Dairy', 'Nuts', 'Gluten', 'Fish', 'Shellfish', 'Soy','Sesame');
 -- the actual items (prawns, carbonara, etc.)
 CREATE TABLE menu_item (
     id SERIAL PRIMARY KEY,
@@ -21,6 +23,9 @@ CREATE TABLE menu_item (
     item_price NUMERIC(10,2) NOT NULL,
     item_picture_url TEXT NOT NULL,
     item_group_id INT NOT NULL,
+    calories INT,
+    tags dietery_tag[] DEFAULT '{}', -- by default this is empty unless specified when inputting the values.
+    allergens allergens[] DEFAULT '{}',
     FOREIGN KEY (item_group_id) REFERENCES item_group(id)
 );
 
