@@ -15,20 +15,31 @@ public class MenuItem {
   @GeneratedValue
   private Long id;
 
-  @Column(nullable = false, length = 30)
+  @Column(name = "name", nullable = false, length = 30)
   private String name;
 
-  @Column (nullable = false, length = 100)
+  @Column (name ="description",nullable = false, length = 100)
   private String description;
 
-  @Column (nullable = false)
+  @Column (name = "quantity", nullable = false)
   private int quantity;
 
-  @Column (nullable = false, precision =10, scale =2)
+  @Column (name = "price", nullable = false, precision =10, scale =2)
   private BigDecimal price;
 
-  @Column (nullable = false)
+  @Column (name = "image_url",nullable = false)
   private String imageURL;
+
+  @Column (name = "calories")
+  private int calories;
+
+  // this field will be stored as json ['nuts', 'shellfish'], whenever parsed use a objectMapper
+  @Column (name = "allergens",columnDefinition = "text")
+  private String allergens;
+
+  // this field will be stored as json ['vegan', 'vegetarian'], whenever parsed use a objectMapper
+  @Column (name = "tags", columnDefinition = "Text")
+  private String tags;
 
   @ManyToOne
   @JoinColumn(name = "item_group_id")
