@@ -1,4 +1,3 @@
-
 export enum Category {
   STARTERS = 'Starters',
   MAINS = 'Mains',
