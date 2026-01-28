@@ -21,6 +21,9 @@ CREATE TABLE menu_item (
     item_price NUMERIC(10,2) NOT NULL,
     item_picture_url TEXT NOT NULL,
     item_group_id INT NOT NULL,
+    calories INT,
+    tags TEXT[],
+    allergens TEXT[],
     FOREIGN KEY (item_group_id) REFERENCES item_group(id)
 );
 
