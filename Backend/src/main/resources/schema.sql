@@ -13,7 +13,7 @@ CREATE TABLE item_group(
 );
 
 CREATE TYPE dietary_tag AS ENUM ('Vegan', 'Gluten-Free', 'Spicy', 'Vegetarian');
-CREATE TYPE allergens AS ENUM ('Peanuts', 'Milk', 'Eggs', 'Fish', 'Shellfish')
+CREATE TYPE allergens AS ENUM ('Dairy', 'Nuts', 'Gluten', 'Fish', 'Shellfish', 'Soy','Sesame');
 -- the actual items (prawns, carbonara, etc.)
 CREATE TABLE menu_item (
     id SERIAL PRIMARY KEY,
