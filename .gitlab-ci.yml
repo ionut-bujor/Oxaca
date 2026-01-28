@@ -1,0 +1,21 @@
+image: eclipse-temurin:17
+
+stages:
+  - build
+  - test
+
+cache:
+  paths:
+    - .m2/repository
+
+build-backend:
+  stage: build
+  script:
+    - cd Backend
+    - mvn clean compile
+
+test-backend:
+  stage: test
+  script:
+    - cd Backend
+    - mvn test
