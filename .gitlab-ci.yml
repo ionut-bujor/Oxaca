@@ -3,19 +3,39 @@ image: eclipse-temurin:17
 stages:
   - build
   - test
+  - quality
 
 cache:
   paths:
     - .m2/repository
 
+variables:
+  MAVEN_CLI_OPTS: "-B -V -ntp"
+
+# Build the backend
 build-backend:
   stage: build
   script:
     - cd Backend
-    - mvn clean compile
+    - mvn $MAVEN_CLI_OPTS clean compile
+  artifacts:
+    paths:
+      - Backend/target
 
+# Run tests with coverage
 test-backend:
   stage: test
   script:
     - cd Backend
-    - mvn test
+    - mvn $MAVEN_CLI_OPTS test jacoco:report
+  artifacts:
+    paths:
+      - Backend/target/site/jacoco
+
+# Check code quality
+checkstyle-backend:
+  stage: quality
+  script:
+    - cd Backend
+    - mvn $MAVEN_CLI_OPTS checkstyle:check spotbugs:check
+  allow_failure: true
