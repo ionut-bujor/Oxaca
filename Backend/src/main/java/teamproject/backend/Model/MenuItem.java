@@ -21,22 +21,22 @@ public class MenuItem {
   @GeneratedValue
   private Long id;
 
-  @Column(name = "name", nullable = false, length = 30)
+  @Column(name = "item_name", nullable = false, length = 30)
   private String name;
 
-  @Column (name ="description",nullable = false, length = 100)
+  @Column (name ="item_description",nullable = false, length = 100)
   private String description;
 
-  @Column (name = "quantity", nullable = false)
+  @Column (name = "item_quantity", nullable = false)
   private int quantity;
 
-  @Column (name = "price", nullable = false, precision =10, scale =2)
+  @Column (name = "item_price", nullable = false, precision =10, scale =2)
   private BigDecimal price;
 
-  @Column (name = "image_url",nullable = false)
+  @Column (name = "item_image_url",nullable = false)
   private String imageURL;
 
-  @Column (name = "calories")
+  @Column (name = "item_calories")
   private int calories;
 
   //this means that this is stored in a different table to not break normalisation principles
