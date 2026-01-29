@@ -1,12 +1,18 @@
 package teamproject.backend.Model;
 
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class MenuItem {
@@ -33,13 +39,19 @@ public class MenuItem {
   @Column (name = "calories")
   private int calories;
 
-  // this field will be stored as json ['nuts', 'shellfish'], whenever parsed use a objectMapper
-  @Column (name = "allergens",columnDefinition = "text")
-  private String allergens;
+  //this means that this is stored in a different table to not break normalisation principles
+  // one-many relationship between the menu item and the allergies
+  @ElementCollection
+  @Enumerated(EnumType.STRING)
+  @CollectionTable(name = "menu_item_allergens", joinColumns = @JoinColumn(name = "menu_item_id"))
+  @Column(name="allergens")
+  private List<Allergens> allergens = new ArrayList<>();
 
-  // this field will be stored as json ['vegan', 'vegetarian'], whenever parsed use a objectMapper
-  @Column (name = "tags", columnDefinition = "Text")
-  private String tags;
+  @ElementCollection
+  @Enumerated(EnumType.STRING)
+  @CollectionTable(name = "menu_item_tags", joinColumns = @JoinColumn(name = "menu_item_id"))
+  @Column(name = "tag")
+  private List<DietaryTag> tags = new ArrayList<>();
 
   @ManyToOne
   @JoinColumn(name = "item_group_id")
@@ -114,19 +126,19 @@ public class MenuItem {
     this.calories = calories;
   }
 
-  public String getAllergens() {
+  public List<Allergens> getAllergens() {
     return allergens;
   }
 
-  public void setAllergens(String allergens) {
+  public void setAllergens(List<Allergens> allergens) {
     this.allergens = allergens;
   }
 
-  public String getTags() {
+  public List<DietaryTag> getTags() {
     return tags;
   }
 
-  public void setTags(String tags) {
+  public void setTags(List<DietaryTag> tags) {
     this.tags = tags;
   }
 }
