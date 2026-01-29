@@ -22,10 +22,11 @@ public class ServiceUser {
   public User authenticateUser(String email, String password) {
     User user = userRepository.findByEmail(email);
 
+    // If the user cannot be found or has given the wrong password then for now it will just return
+    // an unauthorised exception.
     if (user == null) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
-
     if (!passwordEncoder.matches(password, user.getPasswordHash())) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
