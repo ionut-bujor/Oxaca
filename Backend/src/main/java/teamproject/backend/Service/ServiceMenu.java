@@ -27,18 +27,21 @@ public class ServiceMenu {
 
    //function used to get all the menu items that are available (quantity >0)
    public List<MenuItemDTO> fetchAllAvailableItems() {
-
      List<MenuItem> allItems = menuItemRepo.findAll();
-     List<MenuItemDTO> availableItems = new ArrayList<>();
+     return parseForAvailable(allItems);
+   }
 
-     for (MenuItem item : allItems) {
-       if (item.getQuantity() > 0) {
+   //helper function to find all available items
+   public List<MenuItemDTO> parseForAvailable(List<MenuItem> allItems) {
+     List<MenuItemDTO> availableItems = new ArrayList<>();
+      for (MenuItem item : allItems) {
+        if (item.getQuantity() > 0) {
          availableItems.add(mapToDTO(item));
        }
      }
-
-     return availableItems;
+      return availableItems;
    }
+
 
   //this function is used to change the menuitems into the dto to match the format
 
@@ -52,6 +55,7 @@ public class ServiceMenu {
       dto.setKcal(menuItem.getCalories());
       dto.setAllergen_list(menuItem.getAllergens());
       dto.setDietary_flags(menuItem.getTags());
+      dto.setCat(menuItem.getItemGroup().getName());
 
       return dto;
   }
