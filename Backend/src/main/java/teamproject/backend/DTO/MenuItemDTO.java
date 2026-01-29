@@ -3,6 +3,8 @@ package teamproject.backend.DTO;
 
 import java.math.BigDecimal;
 import java.util.List;
+import teamproject.backend.Model.Allergens;
+import teamproject.backend.Model.DietaryTag;
 
 public class MenuItemDTO {
 
@@ -12,9 +14,9 @@ public class MenuItemDTO {
   private String desc;
   private String img;
   private String cat;
-  private List<String> dietary_flags;
+  private List<DietaryTag> dietary_flags;
   private int kcal;
-  private List<String> allergen_list;
+  private List<Allergens> allergen_list;
 
   //getters and setters
 
@@ -50,11 +52,11 @@ public class MenuItemDTO {
     return cat;
   }
 
-  public List<String> getDietary_flags() {
+  public List<DietaryTag> getDietary_flags() {
     return dietary_flags;
   }
 
-  public void setDietary_flags(List<String> dietary_flags) {
+  public void setDietary_flags(List<DietaryTag> dietary_flags) {
     this.dietary_flags = dietary_flags;
   }
 
@@ -82,11 +84,11 @@ public class MenuItemDTO {
     this.kcal = kcal;
   }
 
-  public List<String> getAllergen_list() {
+  public List<Allergens> getAllergen_list() {
     return allergen_list;
   }
 
-  public void setAllergen_list(List<String> allergen_list) {
+  public void setAllergen_list(List<Allergens> allergen_list) {
     this.allergen_list = allergen_list;
   }
 }

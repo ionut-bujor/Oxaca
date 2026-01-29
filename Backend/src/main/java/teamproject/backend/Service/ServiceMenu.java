@@ -3,6 +3,7 @@ package teamproject.backend.Service;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
+import teamproject.backend.DTO.MenuItemDTO;
 import teamproject.backend.Model.MenuItem;
 import teamproject.backend.Repository.ItemGroupRepository;
 import teamproject.backend.Repository.MenuItemRepository;
@@ -25,16 +26,34 @@ public class ServiceMenu {
    }
 
    //function used to get all the menu items that are available (quantity >0)
-    public List<MenuItem> fetchAllAvailableItems() {
-        List<MenuItem> allItems = menuItemRepo.findAll();
-        ArrayList<MenuItem> availableItems = new ArrayList<>();
-        for (MenuItem item: allItems) {
-            if (item.getQuantity() > 0) {
-                availableItems.add(item);
-          }
-        }
-        return availableItems;
+   public List<MenuItemDTO> fetchAllAvailableItems() {
 
-    }
+     List<MenuItem> allItems = menuItemRepo.findAll();
+     List<MenuItemDTO> availableItems = new ArrayList<>();
+
+     for (MenuItem item : allItems) {
+       if (item.getQuantity() > 0) {
+         availableItems.add(mapToDTO(item));
+       }
+     }
+
+     return availableItems;
+   }
+
+  //this function is used to change the menuitems into the dto to match the format
+
+  public MenuItemDTO mapToDTO(MenuItem menuItem) {
+      MenuItemDTO dto = new MenuItemDTO();
+      dto.setId(menuItem.getId());
+      dto.setTitle(menuItem.getName());
+      dto.setDesc(menuItem.getDescription());
+      dto.setPrice_usd(menuItem.getPrice());
+      dto.setImg(menuItem.getImageURL());
+      dto.setKcal(menuItem.getCalories());
+      dto.setAllergen_list(menuItem.getAllergens());
+      dto.setDietary_flags(menuItem.getTags());
+
+      return dto;
+  }
 }
 
