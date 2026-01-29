@@ -29,3 +29,21 @@ CREATE TABLE menu_item (
     FOREIGN KEY (item_group_id) REFERENCES item_group(id)
 );
 
+-- customer orders (one per order placed)
+CREATE TABLE customer_order (
+    id SERIAL PRIMARY KEY,
+    table_number INT,
+    status VARCHAR(30) NOT NULL DEFAULT 'PLACED',
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- items within an order
+CREATE TABLE customer_order_item (
+    id SERIAL PRIMARY KEY,
+    order_id INT NOT NULL,
+    menu_item_id INT NOT NULL,
+    quantity INT NOT NULL CHECK (quantity > 0),
+    FOREIGN KEY (order_id) REFERENCES customer_order(id) ON DELETE CASCADE,
+    FOREIGN KEY (menu_item_id) REFERENCES menu_item(id)
+);
+
