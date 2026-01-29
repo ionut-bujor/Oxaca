@@ -23,5 +23,18 @@ public class ServiceMenu {
     this.itemGroupRepo = itemGroupRepo;
     this.menuTypeRepo = menuTypeRepo;
    }
+
+   //function used to get all the menu items that are available (quantity >0)
+    public List<MenuItem> fetchAllAvailableItems() {
+        List<MenuItem> allItems = menuItemRepo.findAll();
+        ArrayList<MenuItem> availableItems = new ArrayList<>();
+        for (MenuItem item: allItems) {
+            if (item.getQuantity() > 0) {
+                availableItems.add(item);
+          }
+        }
+        return availableItems;
+
+    }
 }
 
