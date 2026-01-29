@@ -44,7 +44,6 @@ public class ServiceMenu {
 
 
   //this function is used to change the menuitems into the dto to match the format
-
   public MenuItemDTO mapToDTO(MenuItem menuItem) {
       MenuItemDTO dto = new MenuItemDTO();
       dto.setId(menuItem.getId());
