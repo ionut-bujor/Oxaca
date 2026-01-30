@@ -1,5 +1,5 @@
 
-import { suite, expect } from './Assertions';
+import { suite, expect } from './assertions';
 import { mapMenuItemDtoToDomain, type BackendMenuItem } from '../services/menuMapper';
 import { Category } from '../types';
 
