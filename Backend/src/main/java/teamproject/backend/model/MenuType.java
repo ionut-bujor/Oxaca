@@ -1,4 +1,4 @@
-package teamproject.backend.Model;
+package teamproject.backend.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,12 +11,11 @@ public class MenuType {
   @GeneratedValue
   private Long id;
 
-  @Column(nullable = false, unique = true, length =30)
+  @Column(nullable = false, unique = true, length = 30)
   private String name;
 
   // Default constructor (no args) so jpa can map it.
-  public MenuType() {
-  }
+  public MenuType() {}
 
   public Long getId() {
     return id;

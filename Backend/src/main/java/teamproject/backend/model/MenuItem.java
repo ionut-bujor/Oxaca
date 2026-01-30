@@ -1,4 +1,4 @@
-package teamproject.backend.Model;
+package teamproject.backend.model;
 
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
@@ -24,27 +24,27 @@ public class MenuItem {
   @Column(name = "item_name", nullable = false, length = 30)
   private String name;
 
-  @Column (name ="item_description",nullable = false, length = 100)
+  @Column(name = "item_description", nullable = false, length = 100)
   private String description;
 
-  @Column (name = "item_quantity", nullable = false)
+  @Column(name = "item_quantity", nullable = false)
   private int quantity;
 
-  @Column (name = "item_price", nullable = false, precision =10, scale =2)
+  @Column(name = "item_price", nullable = false, precision = 10, scale = 2)
   private BigDecimal price;
 
-  @Column (name = "item_image_url",nullable = false)
-  private String imageURL;
+  @Column(name = "item_image_url", nullable = false)
+  private String imageUrl;
 
-  @Column (name = "item_calories")
+  @Column(name = "item_calories")
   private int calories;
 
-  //this means that this is stored in a different table to not break normalisation principles
+  // this means that this is stored in a different table to not break normalisation principles
   // one-many relationship between the menu item and the allergies
   @ElementCollection
   @Enumerated(EnumType.STRING)
   @CollectionTable(name = "menu_item_allergens", joinColumns = @JoinColumn(name = "menu_item_id"))
-  @Column(name="allergens")
+  @Column(name = "allergens")
   private List<Allergens> allergens = new ArrayList<>();
 
   @ElementCollection
@@ -57,11 +57,10 @@ public class MenuItem {
   @JoinColumn(name = "item_group_id")
   private ItemGroup itemGroup;
 
-  //Default constructor for the JPA mapping.
-  public MenuItem(){
-  }
+  // Default constructor for the JPA mapping.
+  public MenuItem() {}
 
-  //getters and setters
+  // getters and setters
   public Long getId() {
     return id;
   }
@@ -86,8 +85,8 @@ public class MenuItem {
     return price;
   }
 
-  public String getImageURL() {
-    return imageURL;
+  public String getImageUrl() {
+    return imageUrl;
   }
 
   public ItemGroup getItemGroup() {
@@ -98,8 +97,8 @@ public class MenuItem {
     this.itemGroup = itemGroup;
   }
 
-  public void setImageURL(String imageURL) {
-    this.imageURL = imageURL;
+  public void setImageUrl(String imageUrl) {
+    this.imageUrl = imageUrl;
   }
 
   public void setPrice(BigDecimal price) {

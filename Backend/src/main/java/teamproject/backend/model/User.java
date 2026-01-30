@@ -1,4 +1,4 @@
-package teamproject.backend.Model;
+package teamproject.backend.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

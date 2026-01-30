@@ -1,13 +1,13 @@
-package teamproject.backend.Service;
+package teamproject.backend.service;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import jakarta.servlet.http.HttpSession;
-import teamproject.backend.Model.Role;
-import teamproject.backend.Model.User;
-import teamproject.backend.Repository.UserRepository;
+import teamproject.backend.model.Role;
+import teamproject.backend.model.User;
+import teamproject.backend.repository.UserRepository;
 
 @Service
 public class ServiceUser {

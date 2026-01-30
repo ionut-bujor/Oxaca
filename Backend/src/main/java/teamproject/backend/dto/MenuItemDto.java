@@ -1,12 +1,12 @@
-package teamproject.backend.DTO;
+package teamproject.backend.dto;
 
 
 import java.math.BigDecimal;
 import java.util.List;
-import teamproject.backend.Model.Allergens;
-import teamproject.backend.Model.DietaryTag;
+import teamproject.backend.model.Allergens;
+import teamproject.backend.model.DietaryTag;
 
-public class MenuItemDTO {
+public class MenuItemDto {
 
   private Long id;
   private String title;
@@ -18,7 +18,7 @@ public class MenuItemDTO {
   private int kcal;
   private List<Allergens> allergen_list;
 
-  //getters and setters
+  // getters and setters
 
   public String getTitle() {
     return title;
