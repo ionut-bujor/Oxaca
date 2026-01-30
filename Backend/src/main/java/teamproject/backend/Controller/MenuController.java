@@ -15,7 +15,7 @@ import teamproject.backend.Service.ServiceMenu;
 public class MenuController {
   private final ServiceMenu serviceMenu;
 
-  //constructing the service class (handles the logic behind data handling)
+  //injecting the service class (handles the logic behind data handling) within the menuController
   public MenuController(ServiceMenu serviceMenu) {
     this.serviceMenu = serviceMenu;
   }
