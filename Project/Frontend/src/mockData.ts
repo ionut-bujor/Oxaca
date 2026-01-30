@@ -1,5 +1,7 @@
 
-import { MenuItem, Category } from './types';
+import {Category } from './types';
+import type { MenuItem} from './types';
+
 
 /**
  * Seed data following the strict PRD schema.

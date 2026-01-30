@@ -1,10 +1,13 @@
-export enum Category {
-  STARTERS = 'Starters',
-  MAINS = 'Mains',
-  SIDES = 'Sides',
-  DRINKS = 'Drinks',
-  DESSERTS = 'Desserts'
-}
+
+export const Category = {
+  STARTERS: 'Starters',
+  MAINS: 'Mains',
+  SIDES: 'Sides',
+  DRINKS: 'Drinks',
+  DESSERTS: 'Desserts'
+} as const;
+
+export type Category = (typeof Category)[keyof typeof Category];
 
 export type Tag = 'Vegan' | 'Gluten-Free' | 'Spicy' | 'Vegetarian';
 
@@ -22,7 +25,8 @@ export type Allergen =
   | 'Fish';
 
 /**
- * Domain Model as defined in PRD Section 2.1
+ * Domain Model
+ * Includes 'group' to support SQL item_group_id hierarchy
  */
 export interface MenuItem {
   id: string;
@@ -31,6 +35,7 @@ export interface MenuItem {
   description: string;
   image: string;
   category: Category;
+  group?: string; // e.g., "Tacos", "Burritos"
   tags: Tag[];
   calories?: number;
   allergens?: Allergen[];
