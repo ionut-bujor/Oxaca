@@ -1,6 +1,5 @@
 package teamproject.backend.model;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -21,8 +20,9 @@ public class CustomerOrderItem {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(name = "menu_item_id")
-  private Long menuItemId;
+  @ManyToOne(fetch = FetchType.EAGER, optional = false)
+  @JoinColumn(name = "menu_item_id")
+  private MenuItem menuItem;
 
   private int quantity;
 
@@ -30,31 +30,59 @@ public class CustomerOrderItem {
   @JoinColumn(name = "order_id")
   private CustomerOrder order;
 
-  public Long getId() {
-    return id;
-  }
-
-  public Long getMenuItemId() {
-    return menuItemId;
-  }
-
-  public void setMenuItemId(Long menuItemId) {
-    this.menuItemId = menuItemId;
-  }
-
-  public int getQuantity() {
-    return quantity;
-  }
-
-  public void setQuantity(int quantity) {
+  /**
+   * Constructs the item the customer is ordering
+   * 
+   * @param order the order the orderItem is attached to.
+   * @param menuItem the item being ordered.
+   * @param quantity the amount of times an item is ordered.
+   */
+  public CustomerOrderItem(CustomerOrder order, MenuItem menuItem, int quantity){
+    this.order = order;
+    this.menuItem = menuItem;
     this.quantity = quantity;
   }
 
-  public CustomerOrder getOrder() {
-    return order;
+  /**
+   * Constructor for JPA sake.
+   */
+  protected CustomerOrderItem() {
+    //JPA only.
   }
 
-  public void setOrder(CustomerOrder order) {
-    this.order = order;
-  }
+    
+
+    public void setID(Long id) {
+      this.id = id;
+    }
+
+    public Long getId() {
+      return id;
+    }
+
+    public void setMenuItem(MenuItem menuItem) {
+      this.menuItem = menuItem;
+    }
+
+    public MenuItem getMenuItem() {
+      return menuItem;
+    }
+
+    public void setQuantity(int quantity) {
+      this.quantity = quantity;
+    }
+
+    public int getQuantity() {
+      return quantity;
+    }
+
+    public void setOrder(CustomerOrder order) {
+      this.order = order;
+    }
+
+    public CustomerOrder getOrder() {
+      return order;
+    }
+
+
 }
