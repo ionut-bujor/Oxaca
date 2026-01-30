@@ -1,13 +1,64 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>frontend</title>
-  </head>
-  <body>
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Oaxaca | Mexican Heritage Menu</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#006341", // Mexican Green
+                        accent: "#C8102E",  // Mexican Red
+                        "background-light": "#FDFCFB",
+                        "cream": "#FAF9F6",
+                    },
+                    fontFamily: {
+                        display: ["Playfair Display", "serif"],
+                        body: ["Inter", "sans-serif"],
+                    },
+                },
+            },
+        };
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .serif-text { font-family: 'Playfair Display', serif; }
+            .body-text { font-family: 'Inter', sans-serif; }
+            .hero-pattern {
+                background-image: radial-gradient(circle at 2px 2px, rgba(0, 99, 65, 0.05) 1px, transparent 0);
+                background-size: 24px 24px;
+            }
+            .reveal-hidden {
+                opacity: 0;
+                transform: translateY(30px);
+                transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+            }
+            .reveal-visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@19.0.0",
+    "react-dom": "https://esm.sh/react-dom@19.0.0",
+    "react-dom/client": "https://esm.sh/react-dom@19.0.0/client",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "react/": "https://esm.sh/react@^19.2.4/"
+  }
+}
+</script>
+</head>
+<body class="bg-background-light text-slate-800 body-text overflow-x-hidden">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-  </body>
+
+</body>
 </html>
