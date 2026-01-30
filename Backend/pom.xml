@@ -76,6 +76,14 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>4.9.6.0</version>
+        <configuration>
+          <threshold>High</threshold>
+        </configuration>
+      </plugin>
 		</plugins>
 	</build>
 
