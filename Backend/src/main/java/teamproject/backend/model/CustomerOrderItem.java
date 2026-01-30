@@ -31,13 +31,13 @@ public class CustomerOrderItem {
   private CustomerOrder order;
 
   /**
-   * Constructs the item the customer is ordering
-   * 
+   * Constructs the item the customer is ordering.
+   *
    * @param order the order the orderItem is attached to.
    * @param menuItem the item being ordered.
    * @param quantity the amount of times an item is ordered.
    */
-  public CustomerOrderItem(CustomerOrder order, MenuItem menuItem, int quantity){
+  public CustomerOrderItem(CustomerOrder order, MenuItem menuItem, int quantity) {
     this.order = order;
     this.menuItem = menuItem;
     this.quantity = quantity;
@@ -49,40 +49,39 @@ public class CustomerOrderItem {
   protected CustomerOrderItem() {
     //JPA only.
   }
-
     
 
-    public void setID(Long id) {
-      this.id = id;
-    }
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-    public Long getId() {
-      return id;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public void setMenuItem(MenuItem menuItem) {
-      this.menuItem = menuItem;
-    }
+  public void setMenuItem(MenuItem menuItem) {
+    this.menuItem = menuItem;
+  }
 
-    public MenuItem getMenuItem() {
-      return menuItem;
-    }
+  public MenuItem getMenuItem() {
+    return menuItem;
+  }
 
-    public void setQuantity(int quantity) {
-      this.quantity = quantity;
-    }
+  public void setQuantity(int quantity) {
+    this.quantity = quantity;
+  }
 
-    public int getQuantity() {
-      return quantity;
-    }
+  public int getQuantity() {
+    return quantity;
+  }
 
-    public void setOrder(CustomerOrder order) {
-      this.order = order;
-    }
+  public void setOrder(CustomerOrder order) {
+    this.order = order;
+  }
 
-    public CustomerOrder getOrder() {
-      return order;
-    }
+  public CustomerOrder getOrder() {
+    return order;
+  }
 
 
 }
