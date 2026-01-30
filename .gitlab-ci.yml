@@ -1,0 +1,48 @@
+image: eclipse-temurin:17
+
+stages:
+  - build
+  - test
+  - jacoco
+  - checkstyle
+  - spotbugs
+
+cache:
+  paths:
+    - .m2/repository
+
+build:
+  stage: build
+  script:
+    - cd Backend
+    - mvn clean compile
+
+test:
+  stage: test
+  script:
+    - cd Backend
+    - mvn test
+
+jacoco:
+  stage: jacoco
+  script:
+    - cd Backend
+    - mvn verify
+  artifacts:
+    paths:
+      - Backend/target/site/jacoco
+    expire_in: 1 week
+
+checkstyle:
+  stage: checkstyle
+  script:
+    - cd Backend
+    - mvn checkstyle:check
+  allow_failure: true
+
+spotbugs:
+  stage: spotbugs
+  script:
+    - cd Backend
+    - mvn spotbugs:check
+  allow_failure: true
