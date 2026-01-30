@@ -9,16 +9,31 @@ import teamproject.backend.model.Role;
 import teamproject.backend.model.User;
 import teamproject.backend.repository.UserRepository;
 
+/**
+ * Contains business logic for the UserController.
+ */
 @Service
 public class ServiceUser {
   private final UserRepository userRepository;
   private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+  /**
+   * Constructor for a ServiceUser object which initialises the user repository.
+   *
+   * @param userRepository - The user repository to initialise.
+   */
   public ServiceUser(UserRepository userRepository) {
     this.userRepository = userRepository;
   }
 
-  // Authenticates a user, will be used in the login end-point.
+  /**
+   * Authenticates a user by checking the repository for the credentials provided.
+   *
+   * @param email - The email the user is logging in with.
+   * @param password - The password the user is logging in with.
+   *
+   * @return - The authenticated user.
+   */
   public User authenticateUser(String email, String password) {
     User user = userRepository.findByEmail(email);
 
@@ -34,13 +49,23 @@ public class ServiceUser {
     return user;
   }
 
-  // Stores in a session the users ID (to check identity) and role (to check permissions).
+  /**
+   * Stores a User's ID and role in the current session (once they have been authenticated).
+   *
+   * @param session - The session provided by Spring.
+   * @param user - The user whose attributes will be assigned to the session.
+   */
   public void storeSession(HttpSession session, User user) {
     session.setAttribute("USER_ID", user.getId());
     session.setAttribute("ROLE", user.getRole());
   }
 
-  // Helper method - checks if the user is logged in.
+  /**
+   * Helper method to check whether a user is logged in.
+   *
+   * @param session - The session provided by Spring.
+   * @return - A boolean representing whether the user is logged in.
+   */
   public boolean isLoggedIn(HttpSession session) {
     if (session == null || (session.getAttribute("USER_ID") == null)) {
       return false;
@@ -49,7 +74,12 @@ public class ServiceUser {
     return true;
   }
 
-  // Checks if the user is logged in and has the specified role.
+  /**
+   * Helper method to permit access to certain endpoint's by setting a required role.
+   *
+   * @param session - The session provided by Spring.
+   * @param role - The role required to grant permission.
+   */
   public void requireRole(HttpSession session, Role role) {
     if (!isLoggedIn(session)) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);

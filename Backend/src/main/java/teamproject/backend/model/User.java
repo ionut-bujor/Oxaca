@@ -7,6 +7,9 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 
+/**
+ * Represents a User of the Restaurant Management System.
+ */
 @Entity
 public class User {
 
@@ -24,7 +27,9 @@ public class User {
   @Column(name = "role", nullable = false)
   private Role role;
 
-  // Default constructor for JPA mapping
+  /**
+   * Default constructor for JPA mapping.
+   */
   public User() {}
 
 
