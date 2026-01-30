@@ -38,16 +38,18 @@ public class ServiceMenuTest {
   void setUp() {
     MockitoAnnotations.openMocks(this);
   }
+
   @Test
-  void testFetchAvailableItems(){
+  void testFetchAvailableItems() {
     ItemGroup mainsGroup = new ItemGroup();
     mainsGroup.setName("starter");
     MenuItem availableItem = new MenuItem();
     availableItem.setId(1L);
     availableItem.setName("Caesar Salad");
-    availableItem.setDescription("A salad consisting of iceberg lettuce, caesar dressing and crutouns.");
+    availableItem
+        .setDescription("A salad consisting of iceberg lettuce, caesar dressing and crutouns.");
     availableItem.setPrice(new BigDecimal("10.99"));
-    availableItem.setImageURL("randomUrllink"); // test this with actual URL once we have one.
+    availableItem.setImageUrl("randomUrllink"); // test this with actual URL once we have one.
     availableItem.setQuantity(5);
     availableItem.setCalories(450);
     availableItem.setTags(Arrays.asList(DietaryTag.GLUTEN_FREE));
@@ -59,14 +61,16 @@ public class ServiceMenuTest {
     unavailableItem.setName("Unavailable item");
     unavailableItem.setQuantity(0);
 
-    //mocking what would happen during production, this returns the 2 items that ive defined above
+    // mocking what would happen during production, this returns the 2 items that ive defined above
     when(menuItemRepo.findAll()).thenReturn(Arrays.asList(availableItem, unavailableItem));
     List<MenuItemDto> allAvailableItems = serviceMenu.fetchAllAvailableItems();
 
-    assertEquals(1,allAvailableItems.size(), "Only the items with quantity greater than 0 should be returned");
+    assertEquals(1, allAvailableItems.size(),
+        "Only the items with quantity greater than 0 should be returned");
     MenuItemDto receivedDTO = allAvailableItems.get(0);
-    assertEquals(receivedDTO.getId(), availableItem.getId(), "The received and mocked items do not match");
-    //dont need to check any other attributes as id is unique across all
+    assertEquals(receivedDTO.getId(), availableItem.getId(),
+        "The received and mocked items do not match");
+    // dont need to check any other attributes as id is unique across all
   }
 
 }
