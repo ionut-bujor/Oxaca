@@ -1,4 +1,4 @@
-package teamproject.backend.orders;
+package teamproject.backend.model;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -12,7 +12,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Represents an order made by a customer.
+ */
 @Entity
 @Table(name = "customer_order")
 public class CustomerOrder {
@@ -64,11 +66,21 @@ public class CustomerOrder {
     return items;
   }
 
+  /**
+   * Adds an item to the list of items ordered by a customer.
+   *
+   * @param item - The item to add to the list.
+   */
   public void addItem(CustomerOrderItem item) {
     items.add(item);
     item.setOrder(this);
   }
 
+  /**
+   * Removes an item from the list of items ordered by a customer.
+   *
+   * @param item - The item to remove from the list.
+   */
   public void removeItem(CustomerOrderItem item) {
     items.remove(item);
     item.setOrder(null);

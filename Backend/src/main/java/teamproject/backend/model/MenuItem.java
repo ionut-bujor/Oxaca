@@ -14,6 +14,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a single item on the menu.
+ */
 @Entity
 public class MenuItem {
 
@@ -57,7 +60,9 @@ public class MenuItem {
   @JoinColumn(name = "item_group_id")
   private ItemGroup itemGroup;
 
-  // Default constructor for the JPA mapping.
+  /**
+   * Default constructor so that JPA can map it.
+   */
   public MenuItem() {}
 
   // getters and setters

@@ -5,6 +5,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 
+/**
+ * Represents a type of menu.
+ */
 @Entity
 public class MenuType {
   @Id
@@ -14,7 +17,9 @@ public class MenuType {
   @Column(nullable = false, unique = true, length = 30)
   private String name;
 
-  // Default constructor (no args) so jpa can map it.
+  /**
+   * Default constructor so that JPA can map it.
+   */
   public MenuType() {}
 
   public Long getId() {

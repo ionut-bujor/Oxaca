@@ -1,4 +1,4 @@
-package teamproject.backend.orders;
+package teamproject.backend.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,6 +10,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+/**
+ * Represents an item in an order made by a customer.
+ */
 @Entity
 @Table(name = "customer_order_item")
 public class CustomerOrderItem {

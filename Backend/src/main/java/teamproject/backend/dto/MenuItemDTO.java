@@ -6,7 +6,10 @@ import java.util.List;
 import teamproject.backend.model.Allergens;
 import teamproject.backend.model.DietaryTag;
 
-public class MenuItemDto {
+/**
+ * Data Transfer Object representing a menu item.
+ */
+public class MenuItemDTO {
 
   private Long id;
   private String title;

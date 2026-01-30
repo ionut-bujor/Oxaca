@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import teamproject.backend.dto.MenuItemDto;
+import teamproject.backend.dto.MenuItemDTO;
 import teamproject.backend.model.Allergens;
 import teamproject.backend.model.DietaryTag;
 import teamproject.backend.model.ItemGroup;
@@ -21,6 +21,9 @@ import teamproject.backend.repository.MenuItemRepository;
 import teamproject.backend.repository.MenuTypeRepository;
 import teamproject.backend.service.ServiceMenu;
 
+/**
+ * Tests for ServiceMenu logic.
+ */
 public class ServiceMenuTest {
   @Mock
   private MenuItemRepository menuItemRepo;
@@ -63,12 +66,12 @@ public class ServiceMenuTest {
 
     // mocking what would happen during production, this returns the 2 items that ive defined above
     when(menuItemRepo.findAll()).thenReturn(Arrays.asList(availableItem, unavailableItem));
-    List<MenuItemDto> allAvailableItems = serviceMenu.fetchAllAvailableItems();
+    List<MenuItemDTO> allAvailableItems = serviceMenu.fetchAllAvailableItems();
 
     assertEquals(1, allAvailableItems.size(),
         "Only the items with quantity greater than 0 should be returned");
-    MenuItemDto receivedDTO = allAvailableItems.get(0);
-    assertEquals(receivedDTO.getId(), availableItem.getId(),
+    MenuItemDTO receivedDto = allAvailableItems.get(0);
+    assertEquals(receivedDto.getId(), availableItem.getId(),
         "The received and mocked items do not match");
     // dont need to check any other attributes as id is unique across all
   }

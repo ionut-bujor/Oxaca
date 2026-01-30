@@ -7,6 +7,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
+/**
+ * Represents a group of items on the menu.
+ */
 @Entity
 public class ItemGroup {
   @Id
@@ -20,7 +23,9 @@ public class ItemGroup {
   @Column(nullable = false, unique = false, length = 30)
   private String name;
 
-  // Default constructor so that JPA can map it.
+  /**
+   * Default constructor so that JPA can map it.
+   */
   public ItemGroup() {}
 
   // getters and setters
@@ -36,7 +41,7 @@ public class ItemGroup {
     return menuType;
   }
 
-  public void setMenu_type_id(MenuType menuType) {
+  public void setMenuType(MenuType menuType) {
     this.menuType = menuType;
   }
 
