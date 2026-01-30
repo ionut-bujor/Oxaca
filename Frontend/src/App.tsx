@@ -10,7 +10,6 @@ import Hero from './components/Hero';
 import Footer from './components/Footer';
 import MenuItemCard from './components/MenuItemCard';
 import CartSidebar from './components/CartSideBar';
-import TestDashboard from './components/TestDashboard';
 
 const App: React.FC = () => {
   const cartService = useCart();
@@ -142,7 +141,6 @@ const App: React.FC = () => {
         onRemove={cartService.removeFromCart}
         onUpdateQuantity={cartService.updateQuantity}
       />
-      <TestDashboard />
     </div>
   );
 };
