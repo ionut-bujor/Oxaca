@@ -1,5 +1,10 @@
 package teamproject.backend.model;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,9 +13,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Represents an order made by a customer.
@@ -24,7 +26,7 @@ public class CustomerOrder {
   private Long id;
 
   @Column(name = "table_number")
-  private Integer tableNumber;
+  private int tableNumber;
 
   private String status = "PLACED";
 
@@ -32,8 +34,76 @@ public class CustomerOrder {
   private LocalDateTime createdAt = LocalDateTime.now();
 
   @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<CustomerOrderItem> items = new ArrayList<>();
+  private List<CustomerOrderItem> items;
 
+  /**
+   * Constructs an order
+   * 
+   * @param id This is the order id.
+   * @param tableNumber This is the tableNumber the order comes from.
+   */
+  public CustomerOrder(Long id, int tableNumber){
+    this.id = id;
+    this.tableNumber = tableNumber;
+    this.items = new ArrayList<>();
+  }
+
+  /** 
+   * Constructor for JPA sake.
+  */
+  protected CustomerOrder(){
+    //JPA only.
+  }
+
+  /**
+   * Adds a CustomerOrderItem to the list of customer order items.
+   * 
+   * @param item The item being added.
+   * @param quantity The amount of times the item is added.
+   */
+  public void addItem(CustomerOrderItem item, int quantity) {
+    items.add(item);
+    item.setOrder(this);
+    item.setQuantity(quantity + item.getQuantity());
+  }
+
+  /**
+   * Removes a CustomerOrderItem from the list of customer order items.
+   * 
+   * @param item The item being removed.
+   */
+  public void removeItem(CustomerOrderItem item) {
+    items.remove(item);
+    item.setOrder(null);
+  }
+
+  /**
+   * Increases the quantity of a provided CustomerOrderItem.
+   * @param item The item that is having its quantity increased.
+   * @param quantity The amount the quantity is changing to.
+   */
+  public void increase(CustomerOrderItem item, int quantity) {
+    item.setQuantity(quantity);
+  }
+
+  /**
+   * Decreases the quantity of a provided CustomerOrderItem.
+   * @param item The item being decreased.
+   * @param quantity The amount the quantity is changing to.
+   */
+  public void decrease(CustomerOrderItem item, int quantity) {
+    item.setQuantity(quantity);
+  }
+
+  //price function
+  public BigDecimal price(List<CustomerOrderItem> items){
+    BigDecimal total = new BigDecimal(0);
+    for(CustomerOrderItem item : items) {
+      total.add(item.price());
+    }
+    return total;
+  }
+  
   public Long getId() {
     return id;
   }
@@ -66,23 +136,5 @@ public class CustomerOrder {
     return items;
   }
 
-  /**
-   * Adds an item to the list of items ordered by a customer.
-   *
-   * @param item - The item to add to the list.
-   */
-  public void addItem(CustomerOrderItem item) {
-    items.add(item);
-    item.setOrder(this);
-  }
-
-  /**
-   * Removes an item from the list of items ordered by a customer.
-   *
-   * @param item - The item to remove from the list.
-   */
-  public void removeItem(CustomerOrderItem item) {
-    items.remove(item);
-    item.setOrder(null);
-  }
+  
 }

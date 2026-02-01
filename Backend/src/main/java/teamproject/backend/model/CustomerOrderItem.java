@@ -1,5 +1,7 @@
 package teamproject.backend.model;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -48,6 +50,14 @@ public class CustomerOrderItem {
    */
   protected CustomerOrderItem() {
     //JPA only.
+  }
+
+  /**
+   * This returns the price of each CustomerOrderItem.
+   * @return The price of each item.
+   */
+  public BigDecimal price() {
+    return menuItem.getPrice().multiply(BigDecimal.valueOf(quantity));
   }
     
 
