@@ -1,10 +1,5 @@
 package teamproject.backend.model;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,6 +8,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents an order made by a customer.
@@ -37,12 +36,12 @@ public class CustomerOrder {
   private List<CustomerOrderItem> items;
 
   /**
-   * Constructs an order
-   * 
+   * Constructs an order.
+   *
    * @param id This is the order id.
    * @param tableNumber This is the tableNumber the order comes from.
    */
-  public CustomerOrder(Long id, int tableNumber){
+  public CustomerOrder(Long id, int tableNumber) {
     this.id = id;
     this.tableNumber = tableNumber;
     this.items = new ArrayList<>();
@@ -51,13 +50,13 @@ public class CustomerOrder {
   /** 
    * Constructor for JPA sake.
   */
-  protected CustomerOrder(){
+  protected CustomerOrder() {
     //JPA only.
   }
 
   /**
    * Adds a CustomerOrderItem to the list of customer order items.
-   * 
+   *
    * @param item The item being added.
    * @param quantity The amount of times the item is added.
    */
@@ -69,7 +68,7 @@ public class CustomerOrder {
 
   /**
    * Removes a CustomerOrderItem from the list of customer order items.
-   * 
+   *
    * @param item The item being removed.
    */
   public void removeItem(CustomerOrderItem item) {
@@ -79,6 +78,7 @@ public class CustomerOrder {
 
   /**
    * Increases the quantity of a provided CustomerOrderItem.
+   *
    * @param item The item that is having its quantity increased.
    * @param quantity The amount the quantity is changing to.
    */
@@ -88,6 +88,7 @@ public class CustomerOrder {
 
   /**
    * Decreases the quantity of a provided CustomerOrderItem.
+   *
    * @param item The item being decreased.
    * @param quantity The amount the quantity is changing to.
    */
@@ -95,10 +96,15 @@ public class CustomerOrder {
     item.setQuantity(quantity);
   }
 
-  //price function
-  public BigDecimal price(List<CustomerOrderItem> items){
+  /**
+   * Calculates the entire price of the order.
+   *
+   * @param items The list of items involved in the order.
+   * @return The total price. 
+   */
+  public BigDecimal price(List<CustomerOrderItem> items) {
     BigDecimal total = new BigDecimal(0);
-    for(CustomerOrderItem item : items) {
+    for (CustomerOrderItem item : items) {
       total.add(item.price());
     }
     return total;
