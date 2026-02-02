@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import teamproject.backend.DTO.MenuItemDTO;
-import teamproject.backend.Service.ServiceMenu;
+import teamproject.backend.dto.MenuItemDTO;
+import teamproject.backend.service.ServiceMenu;
 
 /**
  * Controller used to send data to the specified endpoint relating to menu items.
