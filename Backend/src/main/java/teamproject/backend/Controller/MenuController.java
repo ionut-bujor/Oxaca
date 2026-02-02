@@ -10,17 +10,26 @@ import org.springframework.web.bind.annotation.RestController;
 import teamproject.backend.DTO.MenuItemDTO;
 import teamproject.backend.Service.ServiceMenu;
 
+/**
+ * Controller used to send data to the specified endpoint relating to menu items.
+ */
 @RestController
 @RequestMapping("/api/v1/menu")
 public class MenuController {
   private final ServiceMenu serviceMenu;
 
-  //injecting the service class (handles the logic behind data handling) within the menuController
+  /**
+   * Constructor used to inject the service class within the MenuController.
+   * @param serviceMenu instance of the service class which handles logic.
+   */
   public MenuController(ServiceMenu serviceMenu) {
     this.serviceMenu = serviceMenu;
   }
 
-  //sends the data in json format to specified endpoint
+  /**
+   * Function used to send all available items to the endpoint.
+   * @return json file which includes all menu items.
+   */
   @GetMapping
   public ResponseEntity<List<MenuItemDTO>> displayMenu() {
     List<MenuItemDTO> menuItems = serviceMenu.fetchAllAvailableItems();
