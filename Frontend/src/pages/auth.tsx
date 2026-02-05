@@ -1,4 +1,6 @@
-export function authenticate() {
+import React from "react";
+
+const Auth: React.FC = () => {
 	//unsure how to add a style to this specifically - all i know is this is how im suppoesd to layout my work for using a router to page in react?
 	return (
 		<div>
@@ -8,3 +10,5 @@ export function authenticate() {
 		</div>
 	)
 }
+
+export default Auth;
