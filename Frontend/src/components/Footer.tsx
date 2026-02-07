@@ -21,15 +21,15 @@ const Footer: React.FC = () => {
           <ul className="space-y-4 text-sm">
             <li className="flex items-center space-x-3">
               <span className="material-symbols-outlined text-primary text-lg">location_on</span>
-              <span>123 Heritage Way, Oaxaca City</span>
+              <span>Royal Holloway, Egham Hill, Egham TW20 0EX</span>
             </li>
             <li className="flex items-center space-x-3">
               <span className="material-symbols-outlined text-primary text-lg">mail</span>
-              <span>reservations@oaxacamex.com</span>
+              <span>EPMS-school@royalholloway.ac.uk</span>
             </li>
             <li className="flex items-center space-x-3">
               <span className="material-symbols-outlined text-primary text-lg">call</span>
-              <span>+52 951 123 4567</span>
+              <span>+44 1784 434455</span>
             </li>
           </ul>
         </div>
