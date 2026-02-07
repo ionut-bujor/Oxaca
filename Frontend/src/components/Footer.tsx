@@ -11,7 +11,12 @@ const Footer: React.FC = () => {
             A tribute to the culinary traditions of Mexico. Experience the heritage, taste the culture in every hand-crafted dish.
           </p>
           <div className="flex space-x-4">
-            <button className="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center hover:bg-primary transition-all text-slate-400 hover:text-white border border-slate-100">
+            <button className="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center hover:bg-primary transition-all text-slate-400 hover:text-white border border-slate-100"
+              onClick={()=>{
+                  navigator.clipboard.writeText("https://www.royalholloway.ac.uk/");
+                  window.open("https://www.royalholloway.ac.uk/");
+                }}>
+
               <span className="material-symbols-outlined">share</span>
             </button>
           </div>
