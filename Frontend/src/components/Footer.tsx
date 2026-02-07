@@ -59,6 +59,7 @@ const Footer: React.FC = () => {
       <div className="max-w-7xl mx-auto px-6 mt-16 pt-8 border-t border-slate-100 text-[10px] uppercase tracking-widest flex flex-col md:flex-row justify-between items-center gap-4">
         <span>© 2024 Oaxaca Mexican Heritage. Refined Gastronomy.</span>
         <div className="space-x-8">
+          <a className="hover:text-primary transition-colors" href="portal">Staff Portal</a>
           <a className="hover:text-primary transition-colors" href="#">Privacy Policy</a>
           <a className="hover:text-primary transition-colors" href="#">Terms of Service</a>
         </div>
