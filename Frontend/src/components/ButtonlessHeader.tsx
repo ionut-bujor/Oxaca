@@ -11,7 +11,9 @@ const ButtonlessHeader: React.FC = () => {
 		  </div>
 		</div>
 		<div className="absolute left-1/2 -translate-x-1/2 text-center cursor-pointer">
-		  <h1 className="serif-text text-4xl font-black tracking-widest uppercase text-primary">Oaxaca</h1>
+		  <h1 className="serif-text text-4xl font-black tracking-widest uppercase text-primary">
+			<a href="/">Oaxaca</a>
+		  </h1>
 		</div>
 	  </div>
 	</header>
