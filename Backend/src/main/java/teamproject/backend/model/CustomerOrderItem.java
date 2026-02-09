@@ -47,16 +47,20 @@ public class CustomerOrderItem {
   /**
    * Constructor for JPA sake.
    */
-  protected CustomerOrderItem() {
+  public CustomerOrderItem() {
     //JPA only.
   }
 
+  public BigDecimal unitPrice() {
+    return menuItem.getPrice();
+  }
+  
   /**
    * This returns the price of each CustomerOrderItem.
    *
-   * @return The price of each item.
+   * @return The price of a group of items.
    */
-  public BigDecimal price() {
+  public BigDecimal linePrice() {
     return menuItem.getPrice().multiply(BigDecimal.valueOf(quantity));
   }
     

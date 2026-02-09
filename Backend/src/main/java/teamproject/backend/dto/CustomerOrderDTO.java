@@ -1,5 +1,6 @@
 package teamproject.backend.dto;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -12,6 +13,7 @@ public class CustomerOrderDTO {
   private String status;
   private LocalDateTime createdAt;
   private List<CustomerOrderItemDTO> items;
+  private BigDecimal totalPrice;
 
   public Long getId() {
     return id;
@@ -51,5 +53,13 @@ public class CustomerOrderDTO {
 
   public void setItems(List<CustomerOrderItemDTO> items) {
     this.items = items;
+  }
+
+  public BigDecimal getTotalPrice() {
+    return totalPrice;
+  }
+
+  public void setTotalPrice(BigDecimal totalPrice) {
+    this.totalPrice = totalPrice;
   }
 }

@@ -50,7 +50,7 @@ public class CustomerOrder {
   /** 
    * Constructor for JPA sake.
   */
-  protected CustomerOrder() {
+  public CustomerOrder() {
     //JPA only.
   }
 
@@ -102,10 +102,10 @@ public class CustomerOrder {
    * @param items The list of items involved in the order.
    * @return The total price. 
    */
-  public BigDecimal price(List<CustomerOrderItem> items) {
+  public BigDecimal totalPrice(List<CustomerOrderItem> items) {
     BigDecimal total = new BigDecimal(0);
     for (CustomerOrderItem item : items) {
-      total.add(item.price());
+      total.add(item.linePrice());
     }
     return total;
   }
