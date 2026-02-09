@@ -1,5 +1,7 @@
 import { suite, expect } from '../assertions';
-import { Category, Tag } from '../../types';
+import { Category } from '../../types';
+import type {Tag } from '../../types';
+
 
 suite.describe('useMenu Hook Tests', () => {
   
