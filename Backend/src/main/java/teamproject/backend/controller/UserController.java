@@ -3,10 +3,12 @@ package teamproject.backend.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import teamproject.backend.dto.UserDTO;
 import teamproject.backend.model.User;
 import teamproject.backend.service.ServiceUser;
 
@@ -61,6 +63,18 @@ public class UserController {
     if (session != null) {
       session.invalidate();
     }
+  }
+
+  @GetMapping("/getCurrentUser")
+  public UserDTO getCurrentUser(HttpSession session) {
+    User user = serviceUser.getCurrentUser(session);
+
+    UserDTO userDto = new UserDTO();
+    userDto.setId(user.getId());
+    userDto.setEmail(user.getEmail());
+    userDto.setRole(user.getRole());
+
+    return userDto;
   }
 
 }
