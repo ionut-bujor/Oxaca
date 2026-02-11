@@ -65,6 +65,12 @@ public class UserController {
     }
   }
 
+  /**
+   * API endpoint for getCurrentUser, finds the currently logged in user and returns it as a DTO.
+   *
+   * @param session - The session provided by Spring.
+   * @return - The current user in DTO format.
+   */
   @GetMapping("/getCurrentUser")
   public UserDTO getCurrentUser(HttpSession session) {
     User user = serviceUser.getCurrentUser(session);
