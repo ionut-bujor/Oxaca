@@ -91,6 +91,13 @@ public class ServiceUser {
     }
   }
 
+  /**
+   * Finds the current user by getting the current ID stored in the session and searching the
+   * repository for it.
+   *
+   * @param session - The session provided by Spring.
+   * @return - The User object of the user that is currently logged in.
+   */
   public User getCurrentUser(HttpSession session) {
     if (!isLoggedIn(session)) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
