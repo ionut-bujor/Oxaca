@@ -1,3 +1,12 @@
+DROP TABLE IF EXISTS customer_order_item;
+DROP TABLE IF EXISTS customer_order;
+DROP TABLE IF EXISTS menu_item;
+DROP TABLE IF EXISTS item_group;
+DROP TABLE IF EXISTS menu_type;
+
+DROP TYPE IF EXISTS allergens;
+DROP TYPE IF EXISTS dietary_tag;
+
 -- determines which menu is being shown (main, drinks, desserts, starters)
 CREATE TABLE menu_type (
     id SERIAL PRIMARY KEY,
