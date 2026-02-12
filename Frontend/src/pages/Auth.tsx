@@ -1,6 +1,5 @@
 import React from "react";
 import ButtonlessHeader from "../components/ButtonlessHeader";
-import Login from "../components/Login";
 
 const auth: React.FC = () => {
 	return (
