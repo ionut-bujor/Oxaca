@@ -43,9 +43,9 @@ suite.describe('Menu Mapper Robustness', () => {
     expect(result.group).toBe('Tacos Portfolio');
   });
 });
-// ✅ ADD THIS CODE TO ACTUALLY RUN THE TESTS
+// ADD THIS CODE TO ACTUALLY RUN THE TESTS
 (async () => {
-  console.log('🧪 Running Menu Mapper Tests...\n');
+  console.log('Running Menu Mapper Tests...\n');
   
   const results = await suite.run();
   
@@ -53,25 +53,25 @@ suite.describe('Menu Mapper Robustness', () => {
   let passedTests = 0;
 
   results.forEach(suiteResult => {
-    console.log(`📦 ${suiteResult.name}`);
+    console.log(`${suiteResult.name}`);
     suiteResult.results.forEach(test => {
       totalTests++;
       if (test.passed) {
         passedTests++;
-        console.log(`  ✅ ${test.name}`);
+        console.log(`  ${test.name}`);
       } else {
-        console.log(`  ❌ ${test.name}`);
+        console.log(`  ${test.name}`);
         console.log(`     Error: ${test.error}`);
       }
     });
     console.log('');
   });
 
-  console.log(`📊 Results: ${passedTests}/${totalTests} tests passed\n`);
+  console.log(`Results: ${passedTests}/${totalTests} tests passed\n`);
   
   if (passedTests === totalTests) {
-    console.log('🎉 All tests passed!');
+    console.log('All tests passed!');
   } else {
-    console.log(`⚠️  ${totalTests - passedTests} test(s) failed`);
+    console.log(`${totalTests - passedTests} test(s) failed`);
   }
 })();

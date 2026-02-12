@@ -95,19 +95,19 @@ suite.describe('Menu Service Tests', () => {
 });
 
 (async () => {
-  console.log('🧪 Running Menu Service Tests...\n');
+  console.log('Running Menu Service Tests...\n');
   const results = await suite.run();
   
   let totalTests = 0;
   let passedTests = 0;
 
   results.forEach(suiteResult => {
-    console.log(`📦 ${suiteResult.name}`);
+    console.log(`${suiteResult.name}`);
     suiteResult.results.forEach(test => {
       totalTests++;
       if (test.passed) {
         passedTests++;
-        console.log(`  ✅ ${test.name}`);
+        console.log(`  ${test.name}`);
       } else {
         console.log(`  ❌ ${test.name}`);
         console.log(`     Error: ${test.error}`);
@@ -115,5 +115,5 @@ suite.describe('Menu Service Tests', () => {
     });
   });
 
-  console.log(`\n📊 ${passedTests}/${totalTests} tests passed\n`);
+  console.log(`\n${passedTests}/${totalTests} tests passed\n`);
 })();
