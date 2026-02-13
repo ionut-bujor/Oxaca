@@ -7,11 +7,23 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "npm run test:all",
+    "test:all": "npm run test:hooks && npm run test:services && npm run test:components && npm run test:integration",
+    "test:hooks": "tsx src/Tests/hooks/useCart.test.ts && tsx src/Tests/hooks/useMenu.test.ts",
+    "test:services": "tsx src/Tests/services/menuService.test.ts && tsx src/Tests/services/apiClient.test.ts && tsx src/Tests/menuMapper.tests.ts",
+    "test:components": "tsx src/Tests/components/MenuItemCard.test.ts && tsx src/Tests/components/CartSidebar.test.ts",
+    "test:integration": "tsx src/Tests/integration/menuFlow.test.ts",
+    "test:cart": "tsx src/Tests/hooks/useCart.test.ts",
+    "test:menu": "tsx src/Tests/hooks/useMenu.test.ts",
+    "test:mapper": "tsx src/Tests/menuMapper.tests.ts",
+    "test:api": "tsx src/Tests/services/apiClient.test.ts"
   },
   "dependencies": {
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "react-router": "^7.13.0",
+    "react-router-dom": "^7.13.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
@@ -24,11 +36,9 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
+    "tsx": "^4.21.0",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.4",
-    "vite": "npm:rolldown-vite@7.2.5"
-  },
-  "overrides": {
-    "vite": "npm:rolldown-vite@7.2.5"
+    "vite": "npm:rolldown-vite@^7.2.5"
   }
 }

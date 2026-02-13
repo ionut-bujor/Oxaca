@@ -11,7 +11,12 @@ const Footer: React.FC = () => {
             A tribute to the culinary traditions of Mexico. Experience the heritage, taste the culture in every hand-crafted dish.
           </p>
           <div className="flex space-x-4">
-            <button className="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center hover:bg-primary transition-all text-slate-400 hover:text-white border border-slate-100">
+            <button className="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center hover:bg-primary transition-all text-slate-400 hover:text-white border border-slate-100"
+              onClick={()=>{
+                  navigator.clipboard.writeText("https://www.royalholloway.ac.uk/");
+                  window.open("https://www.royalholloway.ac.uk/");
+                }}>
+
               <span className="material-symbols-outlined">share</span>
             </button>
           </div>
@@ -21,15 +26,15 @@ const Footer: React.FC = () => {
           <ul className="space-y-4 text-sm">
             <li className="flex items-center space-x-3">
               <span className="material-symbols-outlined text-primary text-lg">location_on</span>
-              <span>123 Heritage Way, Oaxaca City</span>
+              <span>Royal Holloway, Egham Hill, Egham TW20 0EX</span>
             </li>
             <li className="flex items-center space-x-3">
               <span className="material-symbols-outlined text-primary text-lg">mail</span>
-              <span>reservations@oaxacamex.com</span>
+              <span>EPMS-school@royalholloway.ac.uk</span>
             </li>
             <li className="flex items-center space-x-3">
               <span className="material-symbols-outlined text-primary text-lg">call</span>
-              <span>+52 951 123 4567</span>
+              <span>+44 1784 434455</span>
             </li>
           </ul>
         </div>
@@ -54,6 +59,7 @@ const Footer: React.FC = () => {
       <div className="max-w-7xl mx-auto px-6 mt-16 pt-8 border-t border-slate-100 text-[10px] uppercase tracking-widest flex flex-col md:flex-row justify-between items-center gap-4">
         <span>© 2024 Oaxaca Mexican Heritage. Refined Gastronomy.</span>
         <div className="space-x-8">
+          <a className="hover:text-primary transition-colors" href="portal">Staff Portal</a>
           <a className="hover:text-primary transition-colors" href="#">Privacy Policy</a>
           <a className="hover:text-primary transition-colors" href="#">Terms of Service</a>
         </div>

@@ -1,6 +1,5 @@
 package teamproject.backend.model;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -9,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.math.BigDecimal;
 
 /**
  * Represents an item in an order made by a customer.
@@ -21,8 +21,9 @@ public class CustomerOrderItem {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(name = "menu_item_id")
-  private Long menuItemId;
+  @ManyToOne(fetch = FetchType.EAGER, optional = false)
+  @JoinColumn(name = "menu_item_id")
+  private MenuItem menuItem;
 
   private int quantity;
 
@@ -30,31 +31,71 @@ public class CustomerOrderItem {
   @JoinColumn(name = "order_id")
   private CustomerOrder order;
 
+  /**
+   * Constructs the item the customer is ordering.
+   *
+   * @param order the order the orderItem is attached to.
+   * @param menuItem the item being ordered.
+   * @param quantity the amount of times an item is ordered.
+   */
+  public CustomerOrderItem(CustomerOrder order, MenuItem menuItem, int quantity) {
+    this.order = order;
+    this.menuItem = menuItem;
+    this.quantity = quantity;
+  }
+
+  /**
+   * Constructor for JPA sake.
+   */
+  public CustomerOrderItem() {
+    //JPA only.
+  }
+
+  public BigDecimal unitPrice() {
+    return menuItem.getPrice();
+  }
+  
+  /**
+   * This returns the price of each CustomerOrderItem.
+   *
+   * @return The price of a group of items.
+   */
+  public BigDecimal linePrice() {
+    return menuItem.getPrice().multiply(BigDecimal.valueOf(quantity));
+  }
+    
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
   public Long getId() {
     return id;
   }
 
-  public Long getMenuItemId() {
-    return menuItemId;
+  public void setMenuItem(MenuItem menuItem) {
+    this.menuItem = menuItem;
   }
 
-  public void setMenuItemId(Long menuItemId) {
-    this.menuItemId = menuItemId;
-  }
-
-  public int getQuantity() {
-    return quantity;
+  public MenuItem getMenuItem() {
+    return menuItem;
   }
 
   public void setQuantity(int quantity) {
     this.quantity = quantity;
   }
 
-  public CustomerOrder getOrder() {
-    return order;
+  public int getQuantity() {
+    return quantity;
   }
 
   public void setOrder(CustomerOrder order) {
     this.order = order;
   }
+
+  public CustomerOrder getOrder() {
+    return order;
+  }
+
+
 }

@@ -1,3 +1,12 @@
+DROP TABLE IF EXISTS customer_order_item;
+DROP TABLE IF EXISTS customer_order;
+DROP TABLE IF EXISTS menu_item;
+DROP TABLE IF EXISTS item_group;
+DROP TABLE IF EXISTS menu_type;
+
+DROP TYPE IF EXISTS allergens;
+DROP TYPE IF EXISTS dietary_tag;
+
 -- determines which menu is being shown (main, drinks, desserts, starters)
 CREATE TABLE menu_type (
     id SERIAL PRIMARY KEY,
@@ -34,10 +43,10 @@ CREATE TABLE menu_item (
     item_description VARCHAR(100) NOT NULL,
     item_quantity int NOT NULL,
     item_price NUMERIC(10,2) NOT NULL,
-    item_picture_url TEXT NOT NULL,
+    item_image_url TEXT NOT NULL,
     item_group_id INT NOT NULL,
     calories INT,
-    tags dietery_tag[] DEFAULT '{}', -- by default this is empty unless specified when inputting the values.
+    tags dietary_tag[] DEFAULT '{}', -- by default this is empty unless specified when inputting the values.
     allergens allergens[] DEFAULT '{}',
     FOREIGN KEY (item_group_id) REFERENCES item_group(id)
 );
