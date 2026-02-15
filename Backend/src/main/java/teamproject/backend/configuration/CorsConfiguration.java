@@ -12,7 +12,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class CorsConfiguration {
 
   /**
-   * This function allows requests from the origin ( frontend port 5173)
+   * This function allows requests from the origin ( frontend port 5173).
+   *
    * @return customised MVC object with config specified.
    */
   @Bean
