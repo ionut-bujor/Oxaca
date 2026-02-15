@@ -23,6 +23,19 @@ CREATE TABLE item_group(
 
 CREATE TYPE dietary_tag AS ENUM ('Vegan', 'Gluten-Free', 'Spicy', 'Vegetarian');
 CREATE TYPE allergens AS ENUM ('Dairy', 'Nuts', 'Gluten', 'Fish', 'Shellfish', 'Soy','Sesame');
+
+
+-- User roles enum
+CREATE TYPE user_role AS ENUM ('CUSTOMER', 'WAITER', 'KITCHEN_STAFF');
+
+-- Users table
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    role user_role NOT NULL
+);
+
 -- the actual items (prawns, carbonara, etc.)
 CREATE TABLE menu_item (
     id SERIAL PRIMARY KEY,
