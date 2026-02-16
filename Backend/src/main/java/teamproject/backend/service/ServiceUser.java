@@ -60,6 +60,7 @@ public class ServiceUser {
     session.setAttribute("ROLE", user.getRole());
   }
 
+
   /**
    * Helper method to check whether a user is logged in.
    *
@@ -88,5 +89,22 @@ public class ServiceUser {
     if (session.getAttribute("ROLE") != role) {
       throw new ResponseStatusException(HttpStatus.FORBIDDEN);
     }
+  }
+
+  /**
+   * Finds the current user by getting the current ID stored in the session and searching the
+   * repository for it.
+   *
+   * @param session - The session provided by Spring.
+   * @return - The User object of the user that is currently logged in.
+   */
+  public User getCurrentUser(HttpSession session) {
+    if (!isLoggedIn(session)) {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+    }
+
+    Long userId = (Long) session.getAttribute("USER_ID");
+
+    return userRepository.findById(userId).orElseThrow();
   }
 }
