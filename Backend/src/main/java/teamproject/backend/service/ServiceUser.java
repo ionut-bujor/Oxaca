@@ -1,16 +1,19 @@
 package teamproject.backend.service;
 
 import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import teamproject.backend.dto.UserDTO;
 import teamproject.backend.model.Role;
 import teamproject.backend.model.User;
 import teamproject.backend.repository.UserRepository;
 
 /**
- * Contains business logic for the UserController.
+ * Contains business logic for the UserController and AuthController.
  */
 @Service
 public class ServiceUser {
@@ -106,5 +109,35 @@ public class ServiceUser {
     Long userId = (Long) session.getAttribute("USER_ID");
 
     return userRepository.findById(userId).orElseThrow();
+  }
+
+  /**
+   * Gets all users in the DB and returns them in DTO format.
+   *
+   * @return - A list of all users in DTO format.
+   */
+  public List<UserDTO> getAllUsers() {
+    List<User> allUsers = userRepository.findAll();
+    List<UserDTO> allUsersDto = new ArrayList<>();
+
+    for (User user : allUsers) {
+      allUsersDto.add(mapToDto(user));
+    }
+
+    return allUsersDto;
+  }
+
+  /**
+   * Maps from a User entity to a DTO formatted for the frontend.
+   *
+   * @return - The User DTO.
+   */
+  public UserDTO mapToDto(User user) {
+    UserDTO dto = new UserDTO();
+    dto.setId(user.getId());
+    dto.setEmail(user.getEmail());
+    dto.setRole(user.getRole());
+
+    return dto;
   }
 }
