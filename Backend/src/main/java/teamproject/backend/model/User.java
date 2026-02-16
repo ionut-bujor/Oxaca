@@ -6,11 +6,13 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 /**
  * Represents a User of the Restaurant Management System.
  */
 @Entity
+@Table(name = "users")
 public class User {
 
   @Id

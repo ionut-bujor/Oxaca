@@ -39,7 +39,7 @@ public class MenuItem {
   @Column(name = "item_image_url", nullable = false)
   private String imageUrl;
 
-  @Column(name = "item_calories")
+  @Column(name = "calories")
   private int calories;
 
   // this means that this is stored in a different table to not break normalisation principles
