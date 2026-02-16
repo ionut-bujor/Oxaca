@@ -25,7 +25,7 @@ const auth: React.FC = () => {
 						const headers: Headers = new Headers();
 						headers.set("Content-Type", "text/plain")
 
-						const request: RequestInfo = new Request("/api/v1/user/login", {
+						const request: RequestInfo = new Request("/api/v1/auth/login", {
 							method: "POST",
 							headers: headers,
 
