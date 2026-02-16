@@ -29,6 +29,8 @@ public class SecurityConfiguration {
         .formLogin(form -> form.disable())
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/api/v1/menu/**").permitAll()
+            .requestMatchers("/api/v1/users/**").permitAll()
+            .requestMatchers("/api/v1/auth/**").permitAll()
             //add all other endpoints here so
             .anyRequest().authenticated()
         );
