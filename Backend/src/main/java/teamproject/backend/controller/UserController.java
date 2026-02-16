@@ -16,7 +16,7 @@ import teamproject.backend.service.ServiceUser;
  * Controller used to send data to the specified endpoint relating to users.
  */
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/users")
 public class UserController {
   private final ServiceUser serviceUser;
 
