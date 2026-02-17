@@ -2,6 +2,7 @@ package teamproject.backend.controller;
 
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,7 +53,7 @@ public class UserController {
    * @return - HTTP OK if user is successfully added, else 400 BAD_REQUEST if an error occured.
    */
   @PostMapping("/addUser")
-  public ResponseEntity<User> addUser(@RequestParam String email, @RequestParam String password,
+  public ResponseEntity<Void> addUser(@RequestParam String email, @RequestParam String password,
       HttpSession session) {
     User user = new User();
     user.setEmail(email);
@@ -60,6 +61,6 @@ public class UserController {
 
     serviceUser.addUser(user, session);
 
-    return ResponseEntity.ok().build();
+    return ResponseEntity.status(HttpStatus.CREATED).build(); // HTTP 200 - user creation success
   }
 }
