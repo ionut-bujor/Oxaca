@@ -94,3 +94,11 @@ CREATE TABLE users (
                        role role NOT NULL
 );
 
+-- Alert table
+CREATE TABLE alert (
+                      id SERIAL PRIMARY KEY,
+                      table_number INT NOT NULL,
+                      message VARCHAR(255),
+                      status alert_status NOT NULL DEFAULT 'ACTIVE',
+                      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
