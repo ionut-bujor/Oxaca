@@ -50,7 +50,7 @@ public class UserController {
    * @param email - The email of the new user.
    * @param password - The password of the new user.
    * @param session - The session provided by Spring.
-   * @return - HTTP OK if user is successfully added, else 400 BAD_REQUEST if an error occured.
+   * @return - HTTP CREATED if user is successfully added, else 400 BAD_REQUEST if an error occured.
    */
   @PostMapping("/addUser")
   public ResponseEntity<Void> addUser(@RequestParam String email, @RequestParam String password,
@@ -61,6 +61,25 @@ public class UserController {
 
     serviceUser.addUser(user, session);
 
-    return ResponseEntity.status(HttpStatus.CREATED).build(); // HTTP 200 - user creation success
+    return ResponseEntity.status(HttpStatus.CREATED).build(); // HTTP 201 - user creation success
+  }
+
+  /**
+   * API endpoint for deleting a user from the DB.
+   *
+   * @param email - The email of the user you want to delete.
+   * @param password - The password of the user you want to delete.
+   * @param session - The session provided by Spring.
+   * @return - HTTP ACCEPTED if the user is successfully deleted, else 400 BAD_REQUEST if an error
+   *         occured.
+   */
+  @PostMapping("/removeUser")
+  public ResponseEntity<Void> removeUser(@RequestParam String email, @RequestParam String password,
+      HttpSession session) {
+
+    serviceUser.removeUser(email, password, session);
+
+    return ResponseEntity.status(HttpStatus.ACCEPTED).build(); // HTTP 202 - user deletion success
+
   }
 }
