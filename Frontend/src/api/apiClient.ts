@@ -4,25 +4,26 @@
  * Structured to be easily swapped with Fetch or Axios.
  */
 class ApiClient {
-  private baseUrl: string = '/api';
+  private baseUrl: string = '';
 
   /**
    * Standardized GET request.
    * Teammates can modify the 'fetch' block once the endpoint is ready.
    */
+  
   async get<T>(path: string, options: { mockData?: T } = {}): Promise<T> {
     console.debug(`[API] Requesting: ${path}`);
 
-    // Simulation of network latency
-    await new Promise(resolve => setTimeout(resolve, 600));
-
-    // INTEGRATION POINT:
-    // const response = await fetch(`${this.baseUrl}${path}`);
-    // if (!response.ok) throw new Error("Backend unavailable");
-    // return response.json();
-
-    if (options.mockData) return options.mockData;
-    throw new Error(`Endpoint ${path} not implemented.`);
+    try {
+      const response = await fetch(`${this.baseUrl}${path}`);
+      if (!response.ok) throw new Error("Backend unavailable");
+      return response.json();
+    } catch (error) {
+      console.error(`[API] Error fetching ${path}:`, error);
+      // Fallback to mock data if available
+      if (options.mockData) return options.mockData;
+      throw error;
+    }
   }
 
   async post<T>(path: string, body: any): Promise<T> {
