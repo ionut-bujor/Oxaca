@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import teamproject.backend.dto.UserDTO;
+import teamproject.backend.model.Role;
 import teamproject.backend.model.User;
 import teamproject.backend.service.ServiceUser;
 
@@ -65,7 +66,7 @@ public class UserController {
   }
 
   /**
-   * API endpoint for deleting a user from the DB.
+   * API endpoint for deleting a user from the DB as an admin.
    *
    * @param email - The email of the user you want to delete.
    * @param password - The password of the user you want to delete.
@@ -73,9 +74,11 @@ public class UserController {
    * @return - HTTP ACCEPTED if the user is successfully deleted, else 400 BAD_REQUEST if an error
    *         occured.
    */
-  @PostMapping("/removeUser")
+  @PostMapping("/adminRemoveUser")
   public ResponseEntity<Void> removeUser(@RequestParam String email, @RequestParam String password,
       HttpSession session) {
+
+    serviceUser.requireRole(session, Role.ADMIN);
 
     User user = new User();
     user.setEmail(email);
