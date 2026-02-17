@@ -140,4 +140,19 @@ public class ServiceUser {
 
     return dto;
   }
+
+  /**
+   * Adds a user to the database from parameters passed on from the frontend.
+   *
+   * @param user - The user object created from given attributes.
+   * @param session - The session provided by Spring.
+   */
+  public void addUser(User user, HttpSession session) {
+    if (user != null && isLoggedIn(session)) {
+      userRepository.save(user);
+    } else {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+    }
+
+  }
 }
