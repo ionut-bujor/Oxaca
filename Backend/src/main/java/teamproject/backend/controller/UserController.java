@@ -1,5 +1,6 @@
 package teamproject.backend.controller;
 
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -8,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import jakarta.servlet.http.HttpSession;
 import teamproject.backend.dto.UserDTO;
 import teamproject.backend.model.User;
 import teamproject.backend.service.ServiceUser;
