@@ -77,7 +77,11 @@ public class UserController {
   public ResponseEntity<Void> removeUser(@RequestParam String email, @RequestParam String password,
       HttpSession session) {
 
-    serviceUser.removeUser(email, password, session);
+    User user = new User();
+    user.setEmail(email);
+    user.setPasswordHash(passwordEncoder.encode(password));
+
+    serviceUser.removeUser(user, session);
 
     return ResponseEntity.status(HttpStatus.ACCEPTED).build(); // HTTP 202 - user deletion success
 

@@ -153,6 +153,21 @@ public class ServiceUser {
     } else {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
     }
+  }
 
+  /**
+   * Deletes a user from the database - first checking if the details provided match.
+   *
+   * @param user - The user object that is to be deleted.
+   * @param session - The session provided by Spring.
+   */
+  public void removeUser(User user, HttpSession session) {
+    User userToDelete = userRepository.findByEmail(user.getEmail());
+
+    if (isLoggedIn(session) && userToDelete.getPasswordHash().equals(user.getPasswordHash())) {
+      userRepository.delete(user);
+    } else {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+    }
   }
 }
