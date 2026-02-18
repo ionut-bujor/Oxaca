@@ -5,12 +5,12 @@ import java.math.BigDecimal;
 import java.util.List;
 import teamproject.backend.model.Allergens;
 import teamproject.backend.model.DietaryTag;
+import jakarta.validation.constraints.NotBlank;
 
 /**
  * Data Transfer Object representing a menu item.
  */
 public class MenuItemDTO {
-
   private Long id;
   private String title;
   private BigDecimal price_usd;

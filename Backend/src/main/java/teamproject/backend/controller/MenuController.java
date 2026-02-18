@@ -3,6 +3,8 @@ package teamproject.backend.controller;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import teamproject.backend.dto.MenuItemDTO;
@@ -25,7 +27,6 @@ public class MenuController {
   public MenuController(ServiceMenu serviceMenu) {
     this.serviceMenu = serviceMenu;
   }
-
   /**
    * Function used to send all available items to the endpoint.
    *
@@ -36,5 +37,19 @@ public class MenuController {
   public ResponseEntity<List<MenuItemDTO>> displayMenu() {
     List<MenuItemDTO> menuItems = serviceMenu.fetchAllAvailableItems();
     return ResponseEntity.ok(menuItems);
+  }
+
+  /**
+   * This function is used to add a MenuItem to the database.
+   *
+   * @param menuDto json file containing the information about the menu item converted to DTO
+   *
+   * @return status code if the menu item was stored succesfully or not
+   */
+  @PostMapping
+  public ResponseEntity<MenuItemDTO> addMenuItem(@Valid @RequestBody MenuItemDTO menuDto){
+
+
+
   }
 }

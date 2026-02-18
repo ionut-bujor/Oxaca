@@ -2,6 +2,7 @@ package teamproject.backend.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import org.springframework.stereotype.Service;
 import teamproject.backend.dto.MenuItemDTO;
 import teamproject.backend.model.MenuItem;
@@ -78,5 +79,11 @@ public class ServiceMenu {
 
     return dto;
   }
+
+  public MenuItem createMenuItemInstance(Map<String, String>) {
+
+  }
+
+
 }
 
