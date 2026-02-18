@@ -4,6 +4,8 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import teamproject.backend.dto.CustomerOrderDTO;
@@ -49,4 +51,19 @@ public class OrderController {
     List<CustomerOrderDTO> orders = orderService.getAllOrders();
     return ResponseEntity.ok(orders);
   }
+
+  /**
+   * This allows customers to create an order.
+   *
+   * @param request This is used to get the customer's table number and id.
+   * @return This returns the created order.
+   */
+  @PostMapping("/orders")
+  public ResponseEntity<CustomerOrderDTO> createOrder(
+      @RequestBody CustomerOrderDTO request) {
+    CustomerOrderDTO createdOrder = orderService.createOrder(request.getId(),
+        request.getTableNumber());
+    return ResponseEntity.ok(createdOrder);  
+  }
+  
 }
