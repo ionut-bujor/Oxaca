@@ -84,6 +84,13 @@ public class ServiceMenu {
     return dto;
   }
 
+  /**
+   * This maps a dto into a menu item based on the values given by waiter.
+   *
+   * @param dto the dto objects made by jpa based on json values
+   * @return status code if the menu item has been successfully stored or not
+   */
+
   public ResponseEntity<MenuItem>  mapToItem(MenuItemDTO dto) {
     MenuItem menuItem = new MenuItem();
     menuItem.setName(dto.getTitle());
@@ -93,18 +100,25 @@ public class ServiceMenu {
     menuItem.setCalories(dto.getKcal());
     menuItem.setAllergens(dto.getAllergen_list());
     menuItem.setTags(dto.getDietary_flags());
+    menuItem.setQuantity(10);
     ItemGroup group = validateDto(dto);
     if (group != null) {
       menuItem.setItemGroup(group);
-    }
-    else {
+    } else {
       //category doesnt exist in the repository, ideally frontend should ask for new category
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid category");
     }
 
     return ResponseEntity.ok(menuItemRepo.save(menuItem));
-
   }
+
+  /**
+   * This checks if the category of the item exists.
+   *
+   * @param menuItemDto the dto which includes the data sent from the frontend.
+   *
+   * @return the itemGroup instance that the menu item belongs to.
+   */
 
   public ItemGroup validateDto(MenuItemDTO menuItemDto) {
     String category = menuItemDto.getCat();
