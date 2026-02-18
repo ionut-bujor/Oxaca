@@ -57,7 +57,6 @@ public class UserController {
   @PostMapping("/addUser")
   public ResponseEntity<Void> addUser(@RequestParam String firstName, @RequestParam String lastName,
       @RequestParam String email, @RequestParam String password) {
-    System.out.println("ADD USER HIT: " + firstName + " " + lastName + " " + email);
     User user = new User();
     user.setFirstName(firstName);
     user.setlastName(lastName);
