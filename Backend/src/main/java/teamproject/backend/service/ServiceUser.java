@@ -149,7 +149,7 @@ public class ServiceUser {
    * @param user - The user object created from given attributes.
    * @param session - The session provided by Spring.
    */
-  public void addUser(User user, HttpSession session) {
+  public void addUser(User user) {
     if (user != null) {
       userRepository.save(user);
     } else {
@@ -161,16 +161,11 @@ public class ServiceUser {
    * Deletes a user from the database - first checking if the details provided match.
    *
    * @param email - The email of the user to be deleted.
-   * @param session - The session provided by Spring.
    */
-  public void removeUser(String email, HttpSession session) {
+  public void removeUser(String email) {
     User userToDelete = userRepository.findByEmail(email);
 
-    if (isLoggedIn(session) && (session.getAttribute("ROLE")).equals(Role.ADMIN)) {
-      userRepository.delete(userToDelete);
-    } else {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-    }
+    userRepository.delete(userToDelete);
   }
 
 }

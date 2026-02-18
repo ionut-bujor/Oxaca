@@ -57,14 +57,45 @@ public class UserController {
    */
   @PostMapping("/addUser")
   public ResponseEntity<Void> addUser(@RequestParam String firstName, @RequestParam String lastName,
-      @RequestParam String email, @RequestParam String password, HttpSession session) {
+      @RequestParam String email, @RequestParam String password) {
+    System.out.println("ADD USER HIT: " + firstName + " " + lastName + " " + email);
     User user = new User();
     user.setFirstName(firstName);
     user.setlastName(lastName);
     user.setEmail(email);
     user.setPasswordHash(passwordEncoder.encode(password));
+    user.setRole(Role.CUSTOMER);
 
-    serviceUser.addUser(user, session);
+    serviceUser.addUser(user);
+
+    return ResponseEntity.status(HttpStatus.CREATED).build(); // HTTP 201 - user creation success
+  }
+
+  /**
+   * API endpoint for adding a new user into the DB.
+   *
+   * @param firstName - The users first name.
+   * @param lastName - The users last name.
+   * @param email - The email of the new user.
+   * @param password - The password of the new user.
+   * @param role - The role of the new user.
+   * @param session - The session provided by Spring.
+   * @return - HTTP CREATED if user is successfully added, else 400 BAD_REQUEST if an error occured.
+   */
+  @PostMapping("/adminAddUser")
+  public ResponseEntity<Void> adminAddUser(@RequestParam String firstName,
+      @RequestParam String lastName, @RequestParam String email, @RequestParam String password,
+      @RequestParam String role, HttpSession session) {
+    serviceUser.requireRole(session, Role.ADMIN);
+
+    User user = new User();
+    user.setFirstName(firstName);
+    user.setlastName(lastName);
+    user.setEmail(email);
+    user.setPasswordHash(passwordEncoder.encode(password));
+    user.setRole(Role.valueOf(role));
+
+    serviceUser.addUser(user);
 
     return ResponseEntity.status(HttpStatus.CREATED).build(); // HTTP 201 - user creation success
   }
@@ -81,7 +112,7 @@ public class UserController {
   public ResponseEntity<Void> removeUser(@RequestParam String email, HttpSession session) {
     serviceUser.requireRole(session, Role.ADMIN);
 
-    serviceUser.removeUser(email, session);
+    serviceUser.removeUser(email);
 
     return ResponseEntity.status(HttpStatus.ACCEPTED).build(); // HTTP 202 - user deletion success
 
