@@ -160,7 +160,7 @@ public class ServiceUser {
   /**
    * Deletes a user from the database - first checking if the details provided match.
    *
-   * @param user - The user object that is to be deleted.
+   * @param email - The email of the user to be deleted.
    * @param session - The session provided by Spring.
    */
   public void removeUser(String email, HttpSession session) {

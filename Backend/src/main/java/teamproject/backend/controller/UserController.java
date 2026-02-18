@@ -48,6 +48,8 @@ public class UserController {
   /**
    * API endpoint for adding a new user into the DB.
    *
+   * @param firstName - The users first name.
+   * @param lastName - The users last name.
    * @param email - The email of the new user.
    * @param password - The password of the new user.
    * @param session - The session provided by Spring.
@@ -71,7 +73,6 @@ public class UserController {
    * API endpoint for deleting a user from the DB as an admin.
    *
    * @param email - The email of the user you want to delete.
-   * @param password - The password of the user you want to delete.
    * @param session - The session provided by Spring.
    * @return - HTTP ACCEPTED if the user is successfully deleted, else 400 BAD_REQUEST if an error
    *         occured.
