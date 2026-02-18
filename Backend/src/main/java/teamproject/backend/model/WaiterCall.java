@@ -1,13 +1,17 @@
 package teamproject.backend.model;
 
-import java.time.LocalDateTime;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 
+/**
+ * Represents a customer request for a waiter at a specific table.
+ */
 @Entity
 @Table(name = "waiter_call")
 public class WaiterCall {
@@ -31,6 +35,16 @@ public class WaiterCall {
   @Column(name = "resolved_at")
   private LocalDateTime resolvedAt;
 
+  @PrePersist
+  private void prePersist() {
+    if (status == null) {
+      status = "OPEN";
+    }
+    if (createdAt == null) {
+      createdAt = LocalDateTime.now();
+    }
+  }
+
   public WaiterCall() {}
 
   public WaiterCall(int tableNumber, String note) {
@@ -39,8 +53,8 @@ public class WaiterCall {
   }
 
   public void resolve() {
-    this.status = "RESOLVED";
-    this.resolvedAt = LocalDateTime.now();
+    status = "RESOLVED";
+    resolvedAt = LocalDateTime.now();
   }
 
   public Long getId() {
