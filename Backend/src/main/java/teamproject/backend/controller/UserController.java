@@ -52,7 +52,6 @@ public class UserController {
    * @param lastName - The users last name.
    * @param email - The email of the new user.
    * @param password - The password of the new user.
-   * @param session - The session provided by Spring.
    * @return - HTTP CREATED if user is successfully added, else 400 BAD_REQUEST if an error occured.
    */
   @PostMapping("/addUser")
