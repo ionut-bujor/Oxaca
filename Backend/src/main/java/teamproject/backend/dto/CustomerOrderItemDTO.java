@@ -11,6 +11,7 @@ public class CustomerOrderItemDTO {
   private int quantity;
   private BigDecimal unitPrice;
   private BigDecimal linePrice;
+  private Integer tableNumber;
 
   public Long getId() {
     return id;
@@ -50,5 +51,13 @@ public class CustomerOrderItemDTO {
 
   public void setLinePrice(BigDecimal linePrice) {
     this.linePrice = linePrice;
+  }
+
+  public Integer getTableNumber() {
+    return tableNumber;
+  }
+
+  public void setTableNumber(Integer tableNumber) {
+    this.tableNumber = tableNumber;
   }
 }
