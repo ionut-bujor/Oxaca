@@ -1,5 +1,6 @@
 package teamproject.backend.controller;
 
+import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import teamproject.backend.dto.MenuItemDTO;
+import teamproject.backend.model.MenuItem;
 import teamproject.backend.service.ServiceMenu;
 
 /**
@@ -47,9 +49,7 @@ public class MenuController {
    * @return status code if the menu item was stored succesfully or not
    */
   @PostMapping
-  public ResponseEntity<MenuItemDTO> addMenuItem(@Valid @RequestBody MenuItemDTO menuDto){
-
-
-
+  public ResponseEntity<MenuItem> addMenuItem(@Valid @RequestBody MenuItemDTO menuDto){
+      return serviceMenu.mapToItem(menuDto);
   }
 }

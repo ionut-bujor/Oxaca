@@ -3,8 +3,12 @@ package teamproject.backend.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import teamproject.backend.dto.MenuItemDTO;
+import teamproject.backend.model.ItemGroup;
 import teamproject.backend.model.MenuItem;
 import teamproject.backend.repository.ItemGroupRepository;
 import teamproject.backend.repository.MenuItemRepository;
@@ -22,9 +26,9 @@ public class ServiceMenu {
   /**
    * Constructor for a ServiceMenu object which initialises the menu repositories.
    *
-   * @param menuItemRepo - The menu item repository to initialise.
+   * @param menuItemRepo  - The menu item repository to initialise.
    * @param itemGroupRepo - The item group repository to initialise.
-   * @param menuTypeRepo - The menu type repository to initialise.
+   * @param menuTypeRepo  - The menu type repository to initialise.
    */
   public ServiceMenu(MenuItemRepository menuItemRepo, ItemGroupRepository itemGroupRepo,
       MenuTypeRepository menuTypeRepo) {
@@ -80,10 +84,40 @@ public class ServiceMenu {
     return dto;
   }
 
-  public MenuItem createMenuItemInstance(Map<String, String>) {
+  public ResponseEntity<MenuItem>  mapToItem(MenuItemDTO dto) {
+    MenuItem menuItem = new MenuItem();
+    menuItem.setName(dto.getTitle());
+    menuItem.setDescription(dto.getDesc());
+    menuItem.setPrice(dto.getPrice_usd());
+    menuItem.setImageUrl(dto.getImg());
+    menuItem.setCalories(dto.getKcal());
+    menuItem.setAllergens(dto.getAllergen_list());
+    menuItem.setTags(dto.getDietary_flags());
+    ItemGroup group = validateDto(dto);
+    if (group != null) {
+      menuItem.setItemGroup(group);
+    }
+    else {
+      //category doesnt exist in the repository, ideally frontend should ask for new category
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid category");
+    }
+
+    return ResponseEntity.ok(menuItemRepo.save(menuItem));
 
   }
 
+  public ItemGroup validateDto(MenuItemDTO menuItemDto) {
+    String category = menuItemDto.getCat();
+    // if category exists ... valid in that case add it to the DTO because its a string in the DTO
+    for (ItemGroup itemGroup : itemGroupRepo.findAll()) {
+      if (itemGroup.getName().equals(category)) {
+        return itemGroup;
+      }
+    }
+    return null;
 
+
+
+  }
 }
 

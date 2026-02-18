@@ -1,6 +1,8 @@
 package teamproject.backend.dto;
 
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 import java.util.List;
 import teamproject.backend.model.Allergens;
@@ -12,17 +14,23 @@ import jakarta.validation.constraints.NotBlank;
  */
 public class MenuItemDTO {
   private Long id;
+  @NotBlank(message= "Title cannot be null")
   private String title;
+  @PositiveOrZero(message = "Price can't be negative")
+  @NotNull(message = "Price can't be blank")
   private BigDecimal price_usd;
+  @NotBlank(message = "Description can't be blank")
   private String desc;
+  @NotBlank(message = "Image url can't be blank")
   private String img;
+  @NotBlank(message = "Category can't be blank")
   private String cat;
   private List<DietaryTag> dietary_flags;
+  @PositiveOrZero (message = "Calories can't be negative")
   private int kcal;
   private List<Allergens> allergen_list;
 
   // getters and setters
-
   public String getTitle() {
     return title;
   }
