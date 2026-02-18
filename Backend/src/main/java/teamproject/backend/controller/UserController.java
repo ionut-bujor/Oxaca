@@ -71,7 +71,7 @@ public class UserController {
   }
 
   /**
-   * API endpoint for adding a new user into the DB.
+   * API endpoint for adding a new user into the DB as an admin user.
    *
    * @param firstName - The users first name.
    * @param lastName - The users last name.
