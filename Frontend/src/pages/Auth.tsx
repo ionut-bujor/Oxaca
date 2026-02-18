@@ -11,9 +11,7 @@ const auth: React.FC = () => {
 			<ButtonlessHeader />
 
 			<div className="flex items-center justify-center min-h-screen">
-				<div id="loginScreen" className="group flex flex-col gap-y-5 bg-white p-5 rounded-2xl border border-slate-100 shadow-2xl" style={{
-					display: "none"
-				}}>
+				<div id="loginScreen" className="group flex flex-col gap-y-5 bg-white p-5 rounded-2xl border border-slate-100 shadow-2xl hidden">
 					<input type="text" id = "userField" placeholder="Username" className="group flex flex-col gap-y-5 bg-white p-5 rounded-2xl border border-slate-100 shadow-2xl"
 						value={email}
 						onChange={(element) => setEmail(element.target.value)}/>
@@ -70,7 +68,7 @@ const auth: React.FC = () => {
 							}
 
 							loginOptions.style.display = "none";
-							loginScreen.style.display = "block"
+							loginScreen.classList.toggle("hidden");
 						}}>
 						Login as staff
 					</button>
