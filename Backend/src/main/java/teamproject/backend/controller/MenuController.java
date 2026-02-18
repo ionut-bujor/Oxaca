@@ -48,7 +48,7 @@ public class MenuController {
    *
    * @return status code if the menu item was stored succesfully or not
    */
-  @PostMapping
+  @PostMapping("/addItem")
   public ResponseEntity<MenuItem> addMenuItem(@Valid @RequestBody MenuItemDTO menuDto){
       return serviceMenu.mapToItem(menuDto);
   }
