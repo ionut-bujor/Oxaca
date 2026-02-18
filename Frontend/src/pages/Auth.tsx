@@ -4,6 +4,7 @@ import ButtonlessHeader from "../components/ButtonlessHeader";
 const auth: React.FC = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [error, setError] = useState("");
 
 	return (
 		<main>
@@ -20,8 +21,11 @@ const auth: React.FC = () => {
 						value={password}
 						onChange={(element) => setPassword(element.target.value)}/>
 
+					{error && <p className="text-red-500">{error}</p>}
+
 					<button className="w-full bg-primary text-white px-8 py-4 rounded-xl font-bold uppercase tracking-widest hover:bg-darkGreen transition-all shadow-xl shadow-primary/20 active:scale-95"
 					onClick={async () => {
+						setError("");
 						try {
 							const request: Request = new Request("http://localhost:8080/api/v1/auth/login", {
 								method: "POST",
@@ -34,14 +38,16 @@ const auth: React.FC = () => {
 									password
 								})
 							})
-							
+
 							const response = await fetch(request);
 
 							if (response.ok) {
 								window.location.href = "/";
+							} else {
+								setError("Invalid email or password")
 							}
 						} catch (err) {
-						
+							setError("Server Error")
 						}
 					}}>
 					Login
