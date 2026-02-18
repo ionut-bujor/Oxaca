@@ -150,7 +150,7 @@ public class ServiceUser {
    * @param session - The session provided by Spring.
    */
   public void addUser(User user, HttpSession session) {
-    if (user != null && isLoggedIn(session)) {
+    if (user != null) {
       userRepository.save(user);
     } else {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
