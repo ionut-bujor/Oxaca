@@ -74,11 +74,7 @@ public class AuthController {
   @GetMapping("/getCurrentUser")
   public UserDTO getCurrentUser(HttpSession session) {
     User user = serviceUser.getCurrentUser(session);
-
-    UserDTO userDto = new UserDTO();
-    userDto.setId(user.getId());
-    userDto.setEmail(user.getEmail());
-    userDto.setRole(user.getRole());
+    UserDTO userDto = serviceUser.mapToDto(user);
 
     return userDto;
   }

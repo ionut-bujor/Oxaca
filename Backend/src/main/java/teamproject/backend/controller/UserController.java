@@ -54,9 +54,11 @@ public class UserController {
    * @return - HTTP CREATED if user is successfully added, else 400 BAD_REQUEST if an error occured.
    */
   @PostMapping("/addUser")
-  public ResponseEntity<Void> addUser(@RequestParam String email, @RequestParam String password,
-      HttpSession session) {
+  public ResponseEntity<Void> addUser(@RequestParam String firstName, @RequestParam String lastName,
+      @RequestParam String email, @RequestParam String password, HttpSession session) {
     User user = new User();
+    user.setFirstName(firstName);
+    user.setlastName(lastName);
     user.setEmail(email);
     user.setPasswordHash(passwordEncoder.encode(password));
 

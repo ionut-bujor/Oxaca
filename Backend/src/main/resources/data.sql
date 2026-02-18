@@ -67,5 +67,7 @@ INSERT INTO users (email, password_hash, role)
 VALUES (
            'admin@oaxaca.com',
            '$2a$10$mYY0PtF7uw3Fb5pv5WB5ou6e8wsY.ZAOoRcGPivLINUJ92C5pzLd2',
-           'ADMIN'
+           'ADMIN',
+           'John',
+           'Smith'
        );

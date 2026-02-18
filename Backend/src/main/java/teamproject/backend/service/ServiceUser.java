@@ -137,6 +137,8 @@ public class ServiceUser {
     dto.setId(user.getId());
     dto.setEmail(user.getEmail());
     dto.setRole(user.getRole());
+    dto.setFirstName(user.getFirstName());
+    dto.setlastName(user.getlastName());
 
     return dto;
   }
@@ -170,4 +172,5 @@ public class ServiceUser {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
     }
   }
+
 }
