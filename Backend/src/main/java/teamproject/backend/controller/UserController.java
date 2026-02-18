@@ -75,16 +75,10 @@ public class UserController {
    *         occured.
    */
   @PostMapping("/adminRemoveUser")
-  public ResponseEntity<Void> removeUser(@RequestParam String email, @RequestParam String password,
-      HttpSession session) {
-
+  public ResponseEntity<Void> removeUser(@RequestParam String email, HttpSession session) {
     serviceUser.requireRole(session, Role.ADMIN);
 
-    User user = new User();
-    user.setEmail(email);
-    user.setPasswordHash(passwordEncoder.encode(password));
-
-    serviceUser.removeUser(user, session);
+    serviceUser.removeUser(email, session);
 
     return ResponseEntity.status(HttpStatus.ACCEPTED).build(); // HTTP 202 - user deletion success
 

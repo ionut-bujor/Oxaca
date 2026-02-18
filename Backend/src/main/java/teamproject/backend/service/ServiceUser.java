@@ -161,11 +161,11 @@ public class ServiceUser {
    * @param user - The user object that is to be deleted.
    * @param session - The session provided by Spring.
    */
-  public void removeUser(User user, HttpSession session) {
-    User userToDelete = userRepository.findByEmail(user.getEmail());
+  public void removeUser(String email, HttpSession session) {
+    User userToDelete = userRepository.findByEmail(email);
 
-    if (isLoggedIn(session) && userToDelete.getPasswordHash().equals(user.getPasswordHash())) {
-      userRepository.delete(user);
+    if (isLoggedIn(session) && (session.getAttribute("ROLE")).equals(Role.ADMIN)) {
+      userRepository.delete(userToDelete);
     } else {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
     }
