@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import teamproject.backend.dto.CustomerOrderDTO;
+import teamproject.backend.dto.CustomerOrderItemDTO;
 import teamproject.backend.service.OrderService;
 
 /**
@@ -65,5 +66,21 @@ public class OrderController {
         request.getTableNumber());
     return ResponseEntity.ok(createdOrder);  
   }
+
+  /**
+   * This endpoint allows customers to add items to their order.
+   *
+   * @param orderId The id associated with the order.
+   * @param itemDto The itemDTO that controls the item being added.
+   * @return The order gets returned with updated quantities.
+   */
+  @PostMapping("/orders/{orderId}/items")
+  public ResponseEntity<CustomerOrderDTO> addItemsToOrder(
+      @PathVariable Long orderId, @RequestBody CustomerOrderItemDTO itemDto) {
+    CustomerOrderDTO updatedOrder = orderService.addItemToOrder(orderId, 
+        itemDto.getMenuItemid(), itemDto.getQuantity());
+    return ResponseEntity.ok(updatedOrder);  
+  }
+  
   
 }
