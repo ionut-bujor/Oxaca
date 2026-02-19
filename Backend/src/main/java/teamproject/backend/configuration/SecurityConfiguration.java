@@ -31,7 +31,8 @@ public class SecurityConfiguration {
             .requestMatchers("/api/v1/menu/**").permitAll()
             .requestMatchers("/api/v1/users/**").permitAll()
             .requestMatchers("/api/v1/auth/**").permitAll()
-            //add all other endpoints here so
+            .requestMatchers("/api/v1/orders/**").permitAll()
+
             .anyRequest().authenticated()
         );
     return http.build();
