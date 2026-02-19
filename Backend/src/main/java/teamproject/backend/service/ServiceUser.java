@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import teamproject.backend.dto.UserDTO;
 import teamproject.backend.model.Role;
@@ -16,6 +17,7 @@ import teamproject.backend.repository.UserRepository;
  * Contains business logic for the UserController and AuthController.
  */
 @Service
+@Transactional
 public class ServiceUser {
   private final UserRepository userRepository;
   private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
