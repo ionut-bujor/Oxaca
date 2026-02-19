@@ -86,14 +86,33 @@ public class OrderService {
    */
   @Transactional
   public CustomerOrderDTO addItemToOrder(Long orderId, Long menuItemid, int quantity) {
-    CustomerOrder order = orderRepository.findById(orderId)
-        .orElseThrow(() -> new IllegalArgumentException("Order not found: " + orderId));
-      
-    MenuItem menuItem = menuItemRepository.findById(menuItemid)
-        .orElseThrow(() -> new IllegalArgumentException("Menu Item not found: " + menuItemid));
+    CustomerOrder order = getValidCustomerOrder(orderId);   
+    MenuItem menuItem = getValidMenuItem(menuItemid);
 
     CustomerOrderItem orderItem = new CustomerOrderItem(order, menuItem, quantity);
     order.addItem(orderItem, quantity);
     return orderMapper.toDto(order);
+  }
+
+  /**
+   * This handles the validation logic for Customer Orders.
+   *
+   * @param orderid The id of the customer's order.
+   * @return This returns whether the Order is valid.
+   */
+  private CustomerOrder getValidCustomerOrder(Long orderid) {
+    return orderRepository.findById(orderid).orElseThrow(() -> 
+        new IllegalArgumentException("Order not found: " + orderid));
+  }
+
+  /**
+   * This handles the validation logic for each Menu Item.
+   *
+   * @param menuItemid The id of the menu item.
+   * @return This returns whether the Menu Item is valid.
+   */
+  private MenuItem getValidMenuItem(Long menuItemid) {
+    return menuItemRepository.findById(menuItemid).orElseThrow(() ->
+        new IllegalArgumentException("MenuItem order found: " + menuItemid));
   }
 }
