@@ -1,14 +1,19 @@
 package teamproject.backend.security;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import teamproject.backend.model.Role;
 
+/**
+ * A HandlerInterceptor which is used for checking the role permissions before a controller's
+ * endpoint is executed - enforces that users must be of a specific role to call endpoint
+ * successfully.
+ */
 @Component
 public class RoleInterceptor implements HandlerInterceptor {
 

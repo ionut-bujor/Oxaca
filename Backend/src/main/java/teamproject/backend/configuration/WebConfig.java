@@ -5,6 +5,9 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import teamproject.backend.security.RoleInterceptor;
 
+/**
+ * Configuration class that registers interceptors for Spring-boot to use.
+ */
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
