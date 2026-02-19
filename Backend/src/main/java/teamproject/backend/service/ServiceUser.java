@@ -137,7 +137,34 @@ public class ServiceUser {
     dto.setId(user.getId());
     dto.setEmail(user.getEmail());
     dto.setRole(user.getRole());
+    dto.setFirstName(user.getFirstName());
+    dto.setlastName(user.getlastName());
 
     return dto;
   }
+
+  /**
+   * Adds a user to the database from parameters passed on from the frontend.
+   *
+   * @param user - The user object created from given attributes.
+   */
+  public void addUser(User user) {
+    if (user != null) {
+      userRepository.save(user);
+    } else {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  /**
+   * Deletes a user from the database - first checking if the details provided match.
+   *
+   * @param email - The email of the user to be deleted.
+   */
+  public void removeUser(String email) {
+    User userToDelete = userRepository.findByEmail(email);
+
+    userRepository.delete(userToDelete);
+  }
+
 }

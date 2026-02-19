@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -16,7 +17,7 @@ import jakarta.persistence.Table;
 public class User {
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @Column(name = "email", nullable = false, unique = true)
@@ -28,6 +29,12 @@ public class User {
   @Enumerated(EnumType.STRING)
   @Column(name = "role", nullable = false)
   private Role role;
+
+  @Column(name = "first_name", nullable = false)
+  private String firstName;
+
+  @Column(name = "last_name", nullable = false)
+  private String lastName;
 
   /**
    * Default constructor for JPA mapping.
@@ -52,6 +59,14 @@ public class User {
     return this.role;
   }
 
+  public String getFirstName() {
+    return this.firstName;
+  }
+
+  public String getlastName() {
+    return this.lastName;
+  }
+
   public void setId(Long id) {
     this.id = id;
   }
@@ -66,5 +81,13 @@ public class User {
 
   public void setRole(Role role) {
     this.role = role;
+  }
+
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
+
+  public void setlastName(String lastName) {
+    this.lastName = lastName;
   }
 }
