@@ -1,5 +1,7 @@
 package teamproject.backend.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import teamproject.backend.dto.MenuItemDTO;
 import teamproject.backend.model.MenuItem;
+import teamproject.backend.model.Role;
 import teamproject.backend.service.ServiceMenu;
+import teamproject.backend.service.ServiceUser;
 
 /**
  * Controller used to send data to the specified endpoint relating to menu items.
@@ -19,6 +23,7 @@ import teamproject.backend.service.ServiceMenu;
 @RequestMapping("/api/v1/menu")
 public class MenuController {
   private final ServiceMenu serviceMenu;
+  private final ServiceUser serviceUser;
 
   /**
    * Constructor used to inject the service class within the MenuController.
@@ -26,7 +31,8 @@ public class MenuController {
    * @param serviceMenu instance of the service class which handles logic.
    *
    */
-  public MenuController(ServiceMenu serviceMenu) {
+  public MenuController(ServiceMenu serviceMenu, ServiceUser serviceUser) {
+    this.serviceUser = serviceUser;
     this.serviceMenu = serviceMenu;
   }
   /**
@@ -51,7 +57,9 @@ public class MenuController {
    */
 
   @PostMapping("/addItem")
-  public ResponseEntity<MenuItem> addMenuItem(@Valid @RequestBody MenuItemDTO menuDto) {
+  public ResponseEntity<MenuItem> addMenuItem(@Valid @RequestBody MenuItemDTO menuDto, HttpServletRequest request) {
+    HttpSession session = request.getSession(true);
+    serviceUser.requireRole(session, Role.WAITER);
     return serviceMenu.mapToItem(menuDto);
   }
 }

@@ -37,7 +37,7 @@ public class MenuItem {
   @Column(name = "item_price", nullable = false, precision = 10, scale = 2)
   private BigDecimal price;
 
-  @Column(name = "item_image_url", nullable = false)
+  @Column(name = "item_image_url", nullable = false, length = 1000)
   private String imageUrl;
 
   @Column(name = "calories")
