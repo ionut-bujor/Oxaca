@@ -18,7 +18,6 @@ DROP TYPE IF EXISTS role CASCADE;
 -- enums
 CREATE TYPE dietary_tag AS ENUM ('VEGAN', 'GLUTEN_FREE', 'SPICY', 'VEGETARIAN');
 CREATE TYPE allergens AS ENUM ('DAIRY', 'NUTS', 'GLUTEN', 'FISH', 'SHELLFISH', 'SOY','SESAME');
-CREATE TYPE role AS ENUM ('CUSTOMER', 'WAITER', 'KITCHEN');
 CREATE TYPE alert_status AS ENUM ('ACTIVE', 'RESOLVED');
 
 -- type of menu
@@ -91,7 +90,9 @@ CREATE TABLE users (
                        id SERIAL PRIMARY KEY,
                        email VARCHAR(255) NOT NULL UNIQUE,
                        password_hash VARCHAR(255) NOT NULL,
-                       role role NOT NULL
+                       role VARCHAR(255) NOT NULL,
+                       first_name VARCHAR(255) NOT NULL,
+                       last_name VARCHAR(255) NOT NULL
 );
 
 -- Alert table
