@@ -17,17 +17,16 @@ public class RoleInterceptor implements HandlerInterceptor {
       throws Exception {
 
     if (!(handler instanceof HandlerMethod method)) {
-      return true;
+      return true; // if not used in a controller method
     }
 
     RequireRole requireRole = method.getMethodAnnotation(RequireRole.class);
 
     if (requireRole == null) {
-      return true; // no role required
+      return true; // no role restriction
     }
 
     HttpSession session = request.getSession(false);
-
     if (session == null || session.getAttribute("USER_ID") == null) {
       response.sendError(HttpStatus.UNAUTHORIZED.value());
       return false;
@@ -35,7 +34,16 @@ public class RoleInterceptor implements HandlerInterceptor {
 
     Role userRole = (Role) session.getAttribute("ROLE");
 
-    if (userRole != requireRole.value()) {
+    // check if the user's role is in the list of allowed roles
+    boolean allowed = false;
+    for (Role role : requireRole.value()) {
+      if (role == userRole) {
+        allowed = true;
+        break;
+      }
+    }
+
+    if (!allowed) {
       response.sendError(HttpStatus.FORBIDDEN.value());
       return false;
     }
@@ -43,4 +51,5 @@ public class RoleInterceptor implements HandlerInterceptor {
     return true;
   }
 }
+
 

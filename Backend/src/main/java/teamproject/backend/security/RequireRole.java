@@ -9,5 +9,5 @@ import teamproject.backend.model.Role;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RequireRole {
-  Role value();
+  Role[] value();
 }
