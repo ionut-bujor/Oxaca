@@ -30,10 +30,10 @@ public class User {
   @Column(name = "role", nullable = false)
   private Role role;
 
-  @Column(name = "first_name", nullable = true)
+  @Column(name = "first_name", nullable = false)
   private String firstName;
 
-  @Column(name = "last_name", nullable = true)
+  @Column(name = "last_name", nullable = false)
   private String lastName;
 
   /**
