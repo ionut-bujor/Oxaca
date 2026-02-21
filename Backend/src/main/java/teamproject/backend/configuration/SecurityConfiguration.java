@@ -35,6 +35,11 @@ public class SecurityConfiguration {
     return http.build();
   }
 
+  /**
+   * Bean for injecting the password encoder.
+   *
+   * @return - a BCryptPasswordEncoder that can be used for validating/creating password hashes.
+   */
   @Bean
   public BCryptPasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
