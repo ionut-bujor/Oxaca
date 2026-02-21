@@ -23,6 +23,7 @@ public class OrderMapper {
     dto.setId(menuItem.getId());
     dto.setTitle(menuItem.getName());
     dto.setDesc(menuItem.getDescription());
+    dto.setQuantity(menuItem.getQuantity());
     dto.setPrice_usd(menuItem.getPrice());
     dto.setImg(menuItem.getImageUrl());
     dto.setKcal(menuItem.getCalories());

@@ -1,16 +1,17 @@
 package teamproject.backend;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
-
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
+
 import teamproject.backend.dto.MenuItemDTO;
 import teamproject.backend.model.Allergens;
 import teamproject.backend.model.DietaryTag;
@@ -19,6 +20,7 @@ import teamproject.backend.model.MenuItem;
 import teamproject.backend.repository.ItemGroupRepository;
 import teamproject.backend.repository.MenuItemRepository;
 import teamproject.backend.repository.MenuTypeRepository;
+import teamproject.backend.service.OrderMapper;
 import teamproject.backend.service.ServiceMenu;
 
 /**
@@ -33,6 +35,9 @@ public class ServiceMenuTest {
 
   @Mock
   private MenuTypeRepository menuTypeRepo;
+
+  @Mock
+  private OrderMapper orderMapper;
 
   @InjectMocks
   private ServiceMenu serviceMenu;
@@ -66,6 +71,11 @@ public class ServiceMenuTest {
 
     // mocking what would happen during production, this returns the 2 items that ive defined above
     when(menuItemRepo.findAll()).thenReturn(Arrays.asList(availableItem, unavailableItem));
+    
+    MenuItemDTO dto = new MenuItemDTO();
+    dto.setId(1L);
+    when(orderMapper.itemToDto(availableItem)).thenReturn(dto); 
+
     List<MenuItemDTO> allAvailableItems = serviceMenu.fetchAllAvailableItems();
 
     assertEquals(1, allAvailableItems.size(),
