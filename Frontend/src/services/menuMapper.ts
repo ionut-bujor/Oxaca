@@ -3,20 +3,19 @@ import  { Category } from '../types';
 import type { MenuItem, Allergen, Tag } from '../types';
 
 /**
- * Updated to match the SQL Schema:
- * item_name, item_description, item_price, item_picture_url, etc.
+ * Updated to match the actual backend MenuItemDTO:
+ * title, price_usd, desc, img, cat, dietary_flags, allergen_list, kcal
  */
 export interface BackendMenuItem {
-  id: string | number;
-  item_name: string;
-  item_price: number;
-  item_description: string;
-  item_picture_url: string;
-  menu_type_name?: string; // Derived from the JOIN with menu_type
-  item_group_name?: string; // Derived from the JOIN with item_group
-  calories?: number;
-  tags?: string[];
-  allergens?: string[];
+  id: number;
+  title: string;
+  price_usd: number;
+  desc: string;
+  img: string;
+  cat: string;
+  kcal?: number;
+  dietary_flags?: string[];
+  allergen_list?: string[];
 }
 
 /**
@@ -25,15 +24,15 @@ export interface BackendMenuItem {
 export const mapMenuItemDtoToDomain = (dto: BackendMenuItem): MenuItem => {
   return {
     id: String(dto.id),
-    name: dto.item_name || 'Unknown Dish',
-    price: Number(dto.item_price) || 0,
-    description: dto.item_description || '',
-    image: dto.item_picture_url || '',
-    category: mapCategory(dto.menu_type_name),
-    group: dto.item_group_name, // Mapping item_group_name to group
-    tags: (dto.tags || []) as Tag[],
-    calories: dto.calories,
-    allergens: mapAllergens(dto.allergens)
+    name: dto.title || 'Unknown Dish',
+    price: Number(dto.price_usd) || 0,
+    description: dto.desc || '',
+    image: dto.img || '',
+    category: mapCategory(dto.cat),
+    group: dto.cat,
+    tags: (dto.dietary_flags || []) as Tag[],
+    calories: dto.kcal,
+    allergens: mapAllergens(dto.allergen_list)
   };
 };
 
@@ -50,14 +49,13 @@ const mapAllergens = (list?: string[]): Allergen[] => {
     .map(a => allergenMap[a]);
 };
 
-const mapCategory = (catName?: string): Category => {
-  if (!catName) return Category.MAINS;
+const mapCategory = (groupName?: string): Category => {
+  if (!groupName) return Category.MAINS;
   const mapping: Record<string, Category> = {
-    'starters': Category.STARTERS,
-    'mains': Category.MAINS,
-    'sides': Category.SIDES,
-    'drinks': Category.DRINKS,
-    'desserts': Category.DESSERTS
+    'oaxacan specialties': Category.STARTERS,
+    'seafood starters': Category.STARTERS,
+    'classic mains': Category.MAINS,
+    'beverages': Category.DRINKS,
   };
-  return mapping[catName.trim().toLowerCase()] || Category.MAINS;
+  return mapping[groupName.trim().toLowerCase()] || Category.MAINS;
 };

@@ -53,14 +53,14 @@ CREATE TABLE menu_item (
 -- enums as tables
 CREATE TABLE menu_item_tags (
                                 menu_item_id INT NOT NULL,
-                                tag dietary_tag NOT NULL,
+                                tag varchar(255) NOT NULL,
                                 PRIMARY KEY (menu_item_id, tag),
                                 FOREIGN KEY (menu_item_id) REFERENCES menu_item(id) ON DELETE CASCADE
 );
 
 CREATE TABLE menu_item_allergens (
                                      menu_item_id INT NOT NULL,
-                                     allergens allergens NOT NULL,
+                                     allergens varchar(255) NOT NULL,
                                      PRIMARY KEY (menu_item_id, allergens),
                                      FOREIGN KEY (menu_item_id) REFERENCES menu_item(id) ON DELETE CASCADE
 );
