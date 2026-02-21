@@ -157,14 +157,29 @@ public class ServiceUser {
   }
 
   /**
-   * Deletes a user from the database - first checking if the details provided match.
+   * Deletes a user from the database - first checking if the email provided matches.
    *
    * @param email - The email of the user to be deleted.
    */
-  public void removeUser(String email) {
+  public void removeUserByEmail(String email) {
     User userToDelete = userRepository.findByEmail(email);
+    if (userToDelete == null) {
+      throw new IllegalArgumentException("Could not find user with provided email.");
+    }
 
     userRepository.delete(userToDelete);
+  }
+
+  /**
+   * Deletes a user from the database - first checking if the id provided matches.
+   *
+   * @param id - The id of the user who is to be deleted.
+   */
+  public void removeUserById(Long id) {
+    if (!userRepository.existsById(id)) {
+      throw new IllegalArgumentException("Could not find user with provided ID.");
+    }
+    userRepository.deleteById(id);
   }
 
 }
