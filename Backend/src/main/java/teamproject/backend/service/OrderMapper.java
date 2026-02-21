@@ -1,12 +1,11 @@
 package teamproject.backend.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 import teamproject.backend.dto.CustomerOrderDTO;
-import teamproject.backend.dto.CustomerOrderItemDTO;
+import teamproject.backend.dto.MenuItemDTO;
 import teamproject.backend.model.CustomerOrder;
-import teamproject.backend.model.CustomerOrderItem;
+import teamproject.backend.model.MenuItem;
 
 /**
  * This Class maps an order and a customerorderitem to their respective DTOs.
@@ -15,18 +14,22 @@ import teamproject.backend.model.CustomerOrderItem;
 public class OrderMapper {
 
   /**
-   * This converts each order item to a DTO.
+   * Maps from a MenuItem entity to a DTO formatted for the frontend.
    *
-   * @param item this is the chosen item.
-   * @return the item as a dto.
+   * @return - The MenuItem DTO.
    */
-  public CustomerOrderItemDTO toItemDto(CustomerOrderItem item) {
-    CustomerOrderItemDTO dto = new CustomerOrderItemDTO();
-    dto.setId(item.getId());
-    dto.setMenuItemid(item.getMenuItem().getId());
-    dto.setQuantity(item.getQuantity());
-    dto.setUnitPrice(item.unitPrice());
-    dto.setLinePrice(item.linePrice());
+  public MenuItemDTO itemToDto(MenuItem menuItem) {
+    MenuItemDTO dto = new MenuItemDTO();
+    dto.setId(menuItem.getId());
+    dto.setTitle(menuItem.getName());
+    dto.setDesc(menuItem.getDescription());
+    dto.setPrice_usd(menuItem.getPrice());
+    dto.setImg(menuItem.getImageUrl());
+    dto.setKcal(menuItem.getCalories());
+    dto.setAllergen_list(menuItem.getAllergens());
+    dto.setDietary_flags(menuItem.getTags());
+    dto.setCat(menuItem.getItemGroup().getName());
+
     return dto;
   }
 
@@ -36,16 +39,16 @@ public class OrderMapper {
    * @param order this is the chosen order.
    * @return the order as a dto.
    */
-  public CustomerOrderDTO toDto(CustomerOrder order) {
+  public CustomerOrderDTO orderToDto(CustomerOrder order) {
     CustomerOrderDTO dto = new CustomerOrderDTO();
     dto.setId(order.getId());
     dto.setTableNumber(order.getTableNumber());
     dto.setStatus(order.getStatus());
     dto.setCreatedAt(order.getCreatedAt());
 
-    List<CustomerOrderItemDTO> itemDtos = order.getItems().stream()
-        .map(this::toItemDto)
-        .collect(Collectors.toList());
+    List<MenuItemDTO> itemDtos = order.getItems().stream()
+        .map(this::itemToDto)
+        .toList();
     dto.setItems(itemDtos);
     dto.setTotalPrice(order.totalPrice(order.getItems()));
     return dto;

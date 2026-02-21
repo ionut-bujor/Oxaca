@@ -15,6 +15,7 @@ import teamproject.backend.repository.MenuTypeRepository;
 @Service
 public class ServiceMenu {
   private final MenuItemRepository menuItemRepo;
+  private final OrderMapper orderMapper;
   private final ItemGroupRepository itemGroupRepo;
   private final MenuTypeRepository menuTypeRepo;
 
@@ -26,10 +27,11 @@ public class ServiceMenu {
    * @param menuTypeRepo - The menu type repository to initialise.
    */
   public ServiceMenu(MenuItemRepository menuItemRepo, ItemGroupRepository itemGroupRepo,
-      MenuTypeRepository menuTypeRepo) {
+      MenuTypeRepository menuTypeRepo, OrderMapper orderMapper) {
     this.menuItemRepo = menuItemRepo;
     this.itemGroupRepo = itemGroupRepo;
     this.menuTypeRepo = menuTypeRepo;
+    this.orderMapper = orderMapper;
   }
 
   /**
@@ -52,31 +54,22 @@ public class ServiceMenu {
     List<MenuItemDTO> availableItems = new ArrayList<>();
     for (MenuItem item : allItems) {
       if (item.getQuantity() > 0) {
-        availableItems.add(mapToDto(item));
+        availableItems.add(orderMapper.itemToDto(item));
       }
     }
     return availableItems;
+  }  
+
+  public OrderMapper getOrderMapper() {
+    return orderMapper;
   }
 
+  public ItemGroupRepository getItemGroupRepo() {
+    return itemGroupRepo;
+  }
 
-  /**
-   * Maps from a MenuItem entity to a DTO formatted for the frontend.
-   *
-   * @return - The MenuItem DTO.
-   */
-  public MenuItemDTO mapToDto(MenuItem menuItem) {
-    MenuItemDTO dto = new MenuItemDTO();
-    dto.setId(menuItem.getId());
-    dto.setTitle(menuItem.getName());
-    dto.setDesc(menuItem.getDescription());
-    dto.setPrice_usd(menuItem.getPrice());
-    dto.setImg(menuItem.getImageUrl());
-    dto.setKcal(menuItem.getCalories());
-    dto.setAllergen_list(menuItem.getAllergens());
-    dto.setDietary_flags(menuItem.getTags());
-    dto.setCat(menuItem.getItemGroup().getName());
-
-    return dto;
+  public MenuTypeRepository getMenuTypeRepo() {
+    return menuTypeRepo;
   }
 }
 

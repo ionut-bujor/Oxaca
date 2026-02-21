@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import teamproject.backend.dto.CustomerOrderDTO;
-import teamproject.backend.dto.CustomerOrderItemDTO;
+import teamproject.backend.dto.MenuItemDTO;
 import teamproject.backend.service.OrderService;
 
 /**
@@ -76,9 +76,9 @@ public class OrderController {
    */
   @PostMapping("/orders/{orderId}/items")
   public ResponseEntity<CustomerOrderDTO> addItemsToOrder(
-      @PathVariable Long orderId, @RequestBody CustomerOrderItemDTO itemDto) {
+      @PathVariable Long orderId, @RequestBody MenuItemDTO itemDto) {
     CustomerOrderDTO updatedOrder = orderService.addItemToOrder(orderId, 
-        itemDto.getMenuItemid(), itemDto.getQuantity());
+        itemDto.getId(), itemDto.getQuantity());
     return ResponseEntity.ok(updatedOrder);  
   }
   

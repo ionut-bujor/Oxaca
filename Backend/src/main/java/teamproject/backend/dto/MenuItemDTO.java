@@ -15,6 +15,7 @@ public class MenuItemDTO {
   private String title;
   private BigDecimal price_usd;
   private String desc;
+  private int quantity;
   private String img;
   private String cat;
   private List<DietaryTag> dietary_flags;
@@ -93,5 +94,13 @@ public class MenuItemDTO {
 
   public void setAllergen_list(List<Allergens> allergen_list) {
     this.allergen_list = allergen_list;
+  }
+
+  public int getQuantity() {
+    return quantity;
+  }
+
+  public void setQuantity(int quantity) {
+    this.quantity = quantity;
   }
 }

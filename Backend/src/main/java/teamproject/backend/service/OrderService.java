@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import teamproject.backend.dto.CustomerOrderDTO;
 import teamproject.backend.model.CustomerOrder;
-import teamproject.backend.model.CustomerOrderItem;
 import teamproject.backend.model.MenuItem;
 import teamproject.backend.repository.CustomerOrderRepository;
 import teamproject.backend.repository.MenuItemRepository;
@@ -45,7 +44,7 @@ public class OrderService {
   @Transactional(readOnly = true)
   public List<CustomerOrderDTO> getAllOrders() {
     return orderRepository.findAll().stream()
-        .map(orderMapper::toDto)
+        .map(orderMapper::orderToDto)
         .collect(Collectors.toList());
   }
 
@@ -60,7 +59,7 @@ public class OrderService {
   public CustomerOrderDTO getOrderById(Long id) {
     CustomerOrder order = orderRepository.findById(id)
         .orElseThrow(() -> new IllegalArgumentException("Order not found: " + id));
-    return orderMapper.toDto(order);
+    return orderMapper.orderToDto(order);
   }
 
   /**
@@ -73,7 +72,7 @@ public class OrderService {
   public CustomerOrderDTO createOrder(Long id, int tableNumber) {
     CustomerOrder order = new CustomerOrder(id, tableNumber);
     CustomerOrder saved = orderRepository.save(order);
-    return orderMapper.toDto(saved);
+    return orderMapper.orderToDto(saved);
   }
 
   /**
@@ -89,9 +88,8 @@ public class OrderService {
     CustomerOrder order = getValidCustomerOrder(orderId);   
     MenuItem menuItem = getValidMenuItem(menuItemid);
 
-    CustomerOrderItem orderItem = new CustomerOrderItem(order, menuItem, quantity);
-    order.addItem(orderItem, quantity);
-    return orderMapper.toDto(order);
+    order.addItem(menuItem, quantity);
+    return orderMapper.orderToDto(order);
   }
 
   /**
