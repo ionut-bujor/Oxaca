@@ -18,15 +18,16 @@ import teamproject.backend.repository.UserRepository;
 @Service
 public class ServiceUser {
   private final UserRepository userRepository;
-  private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+  private final BCryptPasswordEncoder passwordEncoder;
 
   /**
    * Constructor for a ServiceUser object which initialises the user repository.
    *
    * @param userRepository - The user repository to initialise.
    */
-  public ServiceUser(UserRepository userRepository) {
+  public ServiceUser(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
     this.userRepository = userRepository;
+    this.passwordEncoder = passwordEncoder;
   }
 
   /**

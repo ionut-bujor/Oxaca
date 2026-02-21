@@ -24,15 +24,18 @@ import teamproject.backend.service.ServiceUser;
 @RequestMapping("/api/v1/users")
 public class UserController {
   private final ServiceUser serviceUser;
-  private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+  private final BCryptPasswordEncoder passwordEncoder;
 
   /**
    * Constructor used to inject the service class within the UserController.
    *
    * @param serviceUser - Instance of the service class which handles user logic.
+   * @param passwordEncoder - The BCrypt password encoder which handles encrypting and decrypting
+   *        passwords.
    */
-  public UserController(ServiceUser serviceUser) {
+  public UserController(ServiceUser serviceUser, BCryptPasswordEncoder passwordEncoder) {
     this.serviceUser = serviceUser;
+    this.passwordEncoder = passwordEncoder;
   }
 
   /**
