@@ -22,6 +22,7 @@ public class MenuItemDTO {
   @NotBlank(message = "Description can't be blank")
   private String desc;
   private int quantity;
+  @NotBlank(message = "Image url can't be blank")
   private String img;
   @NotBlank(message = "Category can't be blank")
   private String cat;
