@@ -22,19 +22,17 @@ public class SecurityConfiguration {
    */
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http.csrf(csrf -> csrf.disable())
-    .httpBasic(httpBasic -> httpBasic.disable())
-    .formLogin(form -> form.disable())
-    .authorizeHttpRequests(auth -> auth
-        .requestMatchers("/api/v1/menu/**").permitAll()
-        .requestMatchers("/api/v1/users/**").permitAll()
-        .requestMatchers("/api/v1/auth/**").permitAll()
-        .requestMatchers("/api/v1/menu/addItem").permitAll()
-        // add all other endpoints here
-        .anyRequest().authenticated()
+    http.csrf(csrf -> csrf.disable()).httpBasic(httpBasic -> httpBasic.disable())
+        .formLogin(form -> form.disable())
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers("/api/v1/menu/**").permitAll()
+            .requestMatchers("/api/v1/users/**").permitAll()
+            .requestMatchers("/api/v1/auth/**").permitAll()
+            .requestMatchers("/api/v1/menu/addItem").permitAll()
+            // add all other endpoints here so
+            .anyRequest().authenticated()
     );
-
-return http.build();
+    return http.build();
   }
 
   /**
