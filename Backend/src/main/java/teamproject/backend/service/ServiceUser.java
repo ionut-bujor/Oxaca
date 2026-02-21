@@ -1,16 +1,19 @@
 package teamproject.backend.service;
 
 import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import teamproject.backend.dto.UserDTO;
 import teamproject.backend.model.Role;
 import teamproject.backend.model.User;
 import teamproject.backend.repository.UserRepository;
 
 /**
- * Contains business logic for the UserController.
+ * Contains business logic for the UserController and AuthController.
  */
 @Service
 public class ServiceUser {
@@ -60,6 +63,7 @@ public class ServiceUser {
     session.setAttribute("ROLE", user.getRole());
   }
 
+
   /**
    * Helper method to check whether a user is logged in.
    *
@@ -89,4 +93,78 @@ public class ServiceUser {
       throw new ResponseStatusException(HttpStatus.FORBIDDEN);
     }
   }
+
+  /**
+   * Finds the current user by getting the current ID stored in the session and searching the
+   * repository for it.
+   *
+   * @param session - The session provided by Spring.
+   * @return - The User object of the user that is currently logged in.
+   */
+  public User getCurrentUser(HttpSession session) {
+    if (!isLoggedIn(session)) {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+    }
+
+    Long userId = (Long) session.getAttribute("USER_ID");
+
+    return userRepository.findById(userId).orElseThrow();
+  }
+
+  /**
+   * Gets all users in the DB and returns them in DTO format.
+   *
+   * @return - A list of all users in DTO format.
+   */
+  public List<UserDTO> getAllUsers() {
+    List<User> allUsers = userRepository.findAll();
+    List<UserDTO> allUsersDto = new ArrayList<>();
+
+    for (User user : allUsers) {
+      allUsersDto.add(mapToDto(user));
+    }
+
+    return allUsersDto;
+  }
+
+  /**
+   * Maps from a User entity to a DTO formatted for the frontend.
+   *
+   * @return - The User DTO.
+   */
+  public UserDTO mapToDto(User user) {
+    UserDTO dto = new UserDTO();
+    dto.setId(user.getId());
+    dto.setEmail(user.getEmail());
+    dto.setRole(user.getRole());
+    dto.setFirstName(user.getFirstName());
+    dto.setlastName(user.getlastName());
+
+    return dto;
+  }
+
+  /**
+   * Adds a user to the database from parameters passed on from the frontend.
+   *
+   * @param user - The user object created from given attributes.
+   */
+  public void addUser(User user) {
+    if (user != null) {
+      userRepository.save(user);
+    } else {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  /**
+   * Deletes a user from the database - first checking if the details provided match.
+   *
+   * @param email - The email of the user to be deleted.
+   */
+  public void removeUser(String email) {
+    User userToDelete = userRepository.findByEmail(email);
+
+    userRepository.delete(userToDelete);
+  }
+
 }
