@@ -15,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 import teamproject.backend.dto.UserDTO;
 import teamproject.backend.model.Role;
 import teamproject.backend.model.User;
+import teamproject.backend.security.RequireRole;
 import teamproject.backend.service.ServiceUser;
 
 /**
@@ -108,6 +109,7 @@ public class UserController {
    * @param request - The POST request from the frontend.
    * @return - HTTP CREATED if user is successfully added, else 400 BAD_REQUEST if an error occured.
    */
+  @RequireRole(Role.ADMIN)
   @PostMapping("/adminAddUser")
   public ResponseEntity<Void> adminAddUser(@RequestParam String firstName,
       @RequestParam String lastName, @RequestParam String email, @RequestParam String password,
@@ -135,6 +137,7 @@ public class UserController {
    * @return - HTTP ACCEPTED if the user is successfully deleted, else 400 BAD_REQUEST if an error
    *         occured.
    */
+  @RequireRole(Role.ADMIN)
   @PostMapping("/adminRemoveUser")
   public ResponseEntity<Void> adminRemoveUser(@RequestParam String email,
       HttpServletRequest request) {

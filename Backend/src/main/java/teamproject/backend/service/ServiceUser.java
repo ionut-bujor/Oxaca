@@ -6,9 +6,9 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import teamproject.backend.dto.UserDTO;
-import teamproject.backend.model.Role;
 import teamproject.backend.model.User;
 import teamproject.backend.repository.UserRepository;
 
@@ -16,6 +16,7 @@ import teamproject.backend.repository.UserRepository;
  * Contains business logic for the UserController and AuthController.
  */
 @Service
+@Transactional
 public class ServiceUser {
   private final UserRepository userRepository;
   private final BCryptPasswordEncoder passwordEncoder;
@@ -77,22 +78,6 @@ public class ServiceUser {
     }
 
     return true;
-  }
-
-  /**
-   * Helper method to permit access to certain endpoint's by setting a required role.
-   *
-   * @param session - The session provided by Spring.
-   * @param role - The role required to grant permission.
-   */
-  public void requireRole(HttpSession session, Role role) {
-    if (!isLoggedIn(session)) {
-      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
-    }
-
-    if (session.getAttribute("ROLE") != role) {
-      throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-    }
   }
 
   /**
