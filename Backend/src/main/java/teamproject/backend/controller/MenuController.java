@@ -55,8 +55,7 @@ public class MenuController {
    */
   @RequireRole({Role.ADMIN, Role.WAITER, Role.KITCHEN})
   @PostMapping("/addItem")
-  public ResponseEntity<MenuItem> addMenuItem(@Valid @RequestBody MenuItemDTO menuDto,
-      HttpServletRequest request) {
+  public ResponseEntity<MenuItem> addMenuItem(@Valid @RequestBody MenuItemDTO menuDto) {
     return serviceMenu.mapToItem(menuDto);
   }
 }
