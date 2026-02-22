@@ -5,7 +5,9 @@ import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -57,5 +59,12 @@ public class MenuController {
   @PostMapping("/item")
   public ResponseEntity<MenuItemDTO> addMenuItem(@Valid @RequestBody MenuItemDTO menuDto) {
     return ResponseEntity.ok(serviceMenu.addMenuItem(menuDto));
+  }
+
+  @RequireRole({Role.ADMIN, Role.WAITER, Role.KITCHEN})
+  @PutMapping("/item/{id}")
+  public ResponseEntity<MenuItemDTO> updateMenuItem(@PathVariable Long id
+      , @RequestBody MenuItemDTO menuDto) {
+    return ResponseEntity.ok(serviceMenu.updateItem(id, menuDto));
   }
 }

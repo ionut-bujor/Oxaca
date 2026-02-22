@@ -3,6 +3,7 @@ package teamproject.backend.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -143,5 +144,24 @@ public class ServiceMenu {
     return mapToDto(savedEntity);
   }
 
+  public MenuItemDTO updateItem(Long id, MenuItemDTO menuDto) {
+    // find which item the id related to
+    MenuItem menuItem = findItemById(id);
+    // find which fields are being changed via menuDto
+
+
+  }
+
+  public MenuItem findItemById(Long id) {
+    MenuItem menuItem = menuItemRepo.findById(id)
+        .orElseThrow(() -> new ResponseStatusException(
+            HttpStatus.NOT_FOUND, "I'd doesnt match any record. "
+        ));
+    return menuItem;
+  }
+
+  public void updateFields(MenuItemDTO menuDto) {
+    // function here to find which fields are null
+  }
 }
 
