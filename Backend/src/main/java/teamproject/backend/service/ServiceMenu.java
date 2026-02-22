@@ -91,7 +91,7 @@ public class ServiceMenu {
    * @return status code if the menu item has been successfully stored or not
    */
 
-  public ResponseEntity<MenuItem>  mapToItem(MenuItemDTO dto) {
+  public MenuItem mapToItem(MenuItemDTO dto) {
     MenuItem menuItem = new MenuItem();
     menuItem.setName(dto.getTitle());
     menuItem.setDescription(dto.getDesc());
@@ -105,13 +105,11 @@ public class ServiceMenu {
     if (group != null) {
       menuItem.setItemGroup(group);
     } else {
-      //category doesnt exist in the repository, ideally frontend should ask for new category
+      //category doesn't exist in the repository, ideally frontend should ask for new category
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid category");
     }
-
-    return ResponseEntity.ok(menuItemRepo.save(menuItem));
+    return menuItem;
   }
-
   /**
    * This checks if the category of the item exists.
    *
@@ -129,6 +127,20 @@ public class ServiceMenu {
       }
     }
     return null;
+  }
+
+  /**
+   * Function used to add a menuItem to database.
+   * It maps dto into an item to be able to store it
+   * Saves the entity into the repository
+   *
+   * @param menuItemDto The dto which is sent from the frontend.
+   * @return DTO which represents the entity stored in the database.
+   */
+  public MenuItemDTO addMenuItem(MenuItemDTO menuItemDto) {
+    MenuItem menuItem = mapToItem(menuItemDto);
+    MenuItem savedEntity = menuItemRepo.save(menuItem);
+    return mapToDto(savedEntity);
   }
 
 }
