@@ -35,6 +35,7 @@ public class MenuController {
     this.serviceUser = serviceUser;
     this.serviceMenu = serviceMenu;
   }
+
   /**
    * Function used to send all available items to the endpoint.
    *
@@ -57,10 +58,7 @@ public class MenuController {
    */
 
   @PostMapping("/addItem")
-  public ResponseEntity<MenuItem> addMenuItem(@Valid @RequestBody MenuItemDTO menuDto,
-      HttpServletRequest request) {
-    HttpSession session = request.getSession(true);
-    serviceUser.requireRole(session, Role.WAITER);
+  public ResponseEntity<MenuItem> addMenuItem(@Valid @RequestBody MenuItemDTO menuDto) {
     return serviceMenu.mapToItem(menuDto);
   }
 }

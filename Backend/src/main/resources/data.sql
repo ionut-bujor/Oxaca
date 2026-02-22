@@ -1,4 +1,4 @@
-INSERT INTO menu_type (name)
+/* INSERT INTO menu_type (name)
 VALUES
     ('Starters'),
     ('Mains'),
@@ -70,3 +70,4 @@ VALUES (
            'John',
            'Smith'
        );
+*/
