@@ -63,8 +63,8 @@ public class MenuController {
 
   @RequireRole({Role.ADMIN, Role.WAITER, Role.KITCHEN})
   @PutMapping("/item/{id}")
-  public ResponseEntity<MenuItemDTO> updateMenuItem(@PathVariable Long id
-      , @RequestBody MenuItemDTO menuDto) {
+  public ResponseEntity<MenuItemDTO> updateMenuItem(@PathVariable Long id,
+      @RequestBody MenuItemDTO menuDto) {
     return ResponseEntity.ok(serviceMenu.updateItem(id, menuDto));
   }
 }

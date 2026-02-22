@@ -55,6 +55,7 @@ public class ServiceMenu {
    * @param allItems - A list of all menu items.
    * @return - A list of all menu items that are currently available.
    */
+
   public List<MenuItemDTO> parseForAvailable(List<MenuItem> allItems) {
     List<MenuItemDTO> availableItems = new ArrayList<>();
     for (MenuItem item : allItems) {
@@ -65,12 +66,12 @@ public class ServiceMenu {
     return availableItems;
   }
 
-
   /**
    * Maps from a MenuItem entity to a DTO formatted for the frontend.
    *
    * @return - The MenuItem DTO.
    */
+
   public MenuItemDTO mapToDto(MenuItem menuItem) {
     MenuItemDTO dto = new MenuItemDTO();
     dto.setId(menuItem.getId());
@@ -145,15 +146,30 @@ public class ServiceMenu {
     return mapToDto(savedEntity);
   }
 
+  /**
+   * Function used to update an existing record of a menuItem.
+   *
+   * @param id id of the item being modified
+   * @param menuDto dto which has the fields that need to be changed.
+   * @return DTO of the item which is saved back in the repo
+   */
+
   public MenuItemDTO updateItem(Long id, MenuItemDTO menuDto) {
     // find which item the id related to
     MenuItem originalMenuItem = findItemById(id);
     // find which fields are being changed via menuDto
-    updateFields(originalMenuItem,menuDto); // passed by reference fields are changed.
+    updateFields(originalMenuItem, menuDto); // passed by reference fields are changed.
     MenuItem saved = menuItemRepo.save(originalMenuItem);
     return mapToDto(saved);
-
   }
+
+  /**
+   * Checks and finds the menuItem in the repo which corresponds to the id specified.
+   *
+   * @param id id of the menuItem being searched for
+   * @return the menu item
+   * @throws ResponseStatusException if the item doesnt exist.
+   */
 
   public MenuItem findItemById(Long id) {
     MenuItem menuItem = menuItemRepo.findById(id)
@@ -162,6 +178,13 @@ public class ServiceMenu {
         ));
     return menuItem;
   }
+
+  /**
+   * Updates the fields of a menuitem entity based on if they're not null.
+   *
+   * @param menuItem existing menuitem in repository which needs updating
+   * @param menuDto dto which contains the fields which need to be updated.
+   */
 
   public void updateFields(MenuItem menuItem, MenuItemDTO menuDto) {
     updateIfNotNull(menuDto.getTitle(), menuItem::setName);
@@ -177,8 +200,19 @@ public class ServiceMenu {
     }
   }
 
+  /** helper function (lambda) which is used to check if a value of an attribute is not null
+   * if it is then it calls the lambda function.
+   *
+   * @param newValue value which you are checking to match criteria
+   * @param setter function which is called if the criteria matches
+   * @param <T>  generic( works on every data type)
+   */
+
   private <T> void updateIfNotNull(T newValue, Consumer<T> setter) {
-    if (newValue != null) setter.accept(newValue);
+    if (newValue != null) {
+      setter.accept(newValue);
+    }
   }
+
 }
 
