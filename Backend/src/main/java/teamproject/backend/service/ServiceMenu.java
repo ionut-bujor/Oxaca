@@ -214,6 +214,15 @@ public class ServiceMenu {
     }
   }
 
+  /**
+   * Used to delete an item from the repo.
+   * Not actually deleting it as this will affect orders that contain the menuitem previously.
+   * Sets the quantity to 0 so that it doesn't get displayed and can't be updated only added.
+   *
+   * @param id of the menu item which is being deleted.
+   * @return the dto which contains the info about the item deleted.
+   */
+
   public MenuItemDTO deleteItem(Long id) {
     MenuItem menuItem = findItemById(id);
     menuItem.setQuantity(0); // this means it doesn't get displayed but stays in database

@@ -62,12 +62,27 @@ public class MenuController {
     return ResponseEntity.ok(serviceMenu.addMenuItem(menuDto));
   }
 
+  /**
+   * Endpoint used to update a menu item.
+   *
+   * @param id of the menu item being updated.
+   * @param menuDto contains the fields to be updated
+   * @return 200 if the item is updated, 404 if not found.
+   */
+
   @RequireRole({Role.ADMIN, Role.WAITER, Role.KITCHEN})
   @PutMapping("/item/{id}")
   public ResponseEntity<MenuItemDTO> updateMenuItem(@PathVariable Long id,
       @RequestBody MenuItemDTO menuDto) {
     return ResponseEntity.ok(serviceMenu.updateItem(id, menuDto));
   }
+
+  /**
+   * Endpoint used to delete a menuitem.
+   *
+   * @param id of the menu item being deleted
+   * @return 200 if the menuitem is deleted, 404 if not found.
+   */
 
   @RequireRole({Role.ADMIN, Role.WAITER, Role.KITCHEN})
   @DeleteMapping("/item/{id}")
