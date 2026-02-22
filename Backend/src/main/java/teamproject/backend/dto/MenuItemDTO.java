@@ -21,11 +21,8 @@ public class MenuItemDTO {
   private BigDecimal price_usd;
   @NotBlank(message = "Description can't be blank")
   private String desc;
-<<<<<<< HEAD
   private int quantity;
-=======
   @NotBlank(message = "Image url can't be blank")
->>>>>>> origin
   private String img;
   @NotBlank(message = "Category can't be blank")
   private String cat;
