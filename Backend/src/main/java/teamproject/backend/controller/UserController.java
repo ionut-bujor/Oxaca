@@ -115,7 +115,6 @@ public class UserController {
       @RequestParam String lastName, @RequestParam String email, @RequestParam String password,
       @RequestParam String role, HttpServletRequest request) {
     HttpSession session = request.getSession(false);
-    serviceUser.requireRole(session, Role.ADMIN);
 
     User user = new User();
     user.setFirstName(firstName);
@@ -142,7 +141,6 @@ public class UserController {
   public ResponseEntity<Void> adminRemoveUser(@RequestParam String email,
       HttpServletRequest request) {
     HttpSession session = request.getSession(false);
-    serviceUser.requireRole(session, Role.ADMIN);
 
     serviceUser.removeUserByEmail(email);
 
