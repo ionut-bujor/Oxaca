@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -146,22 +147,38 @@ public class ServiceMenu {
 
   public MenuItemDTO updateItem(Long id, MenuItemDTO menuDto) {
     // find which item the id related to
-    MenuItem menuItem = findItemById(id);
+    MenuItem originalMenuItem = findItemById(id);
     // find which fields are being changed via menuDto
-
+    updateFields(originalMenuItem,menuDto); // passed by reference fields are changed.
+    MenuItem saved = menuItemRepo.save(originalMenuItem);
+    return mapToDto(saved);
 
   }
 
   public MenuItem findItemById(Long id) {
     MenuItem menuItem = menuItemRepo.findById(id)
         .orElseThrow(() -> new ResponseStatusException(
-            HttpStatus.NOT_FOUND, "I'd doesnt match any record. "
+            HttpStatus.NOT_FOUND, "Id doesnt match any record. "
         ));
     return menuItem;
   }
 
-  public void updateFields(MenuItemDTO menuDto) {
-    // function here to find which fields are null
+  public void updateFields(MenuItem menuItem, MenuItemDTO menuDto) {
+    updateIfNotNull(menuDto.getTitle(), menuItem::setName);
+    updateIfNotNull(menuDto.getDesc(), menuItem::setDescription);
+    updateIfNotNull(menuDto.getPrice_usd(), menuItem::setPrice);
+    updateIfNotNull(menuDto.getImg(), menuItem::setImageUrl);
+    updateIfNotNull(menuDto.getKcal(), menuItem::setCalories);
+    updateIfNotNull(menuDto.getAllergen_list(), menuItem::setAllergens);
+    updateIfNotNull(menuDto.getDietary_flags(), menuItem::setTags);
+
+    if (menuDto.getCat() != null) {
+      menuItem.setItemGroup(validateDto(menuDto));
+    }
+  }
+
+  private <T> void updateIfNotNull(T newValue, Consumer<T> setter) {
+    if (newValue != null) setter.accept(newValue);
   }
 }
 
