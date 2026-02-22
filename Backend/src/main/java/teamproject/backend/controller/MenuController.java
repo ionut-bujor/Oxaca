@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -67,4 +68,11 @@ public class MenuController {
       @RequestBody MenuItemDTO menuDto) {
     return ResponseEntity.ok(serviceMenu.updateItem(id, menuDto));
   }
+
+  @RequireRole({Role.ADMIN, Role.WAITER, Role.KITCHEN})
+  @DeleteMapping("/item/{id}")
+  public ResponseEntity<MenuItemDTO> deleteMenuItem(@PathVariable Long id) {
+    return ResponseEntity.ok(serviceMenu.deleteItem(id));
+  }
+
 }

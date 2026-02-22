@@ -214,5 +214,12 @@ public class ServiceMenu {
     }
   }
 
+  public MenuItemDTO deleteItem(Long id) {
+    MenuItem menuItem = findItemById(id);
+    menuItem.setQuantity(0); // this means it doesn't get displayed but stays in database
+    MenuItem saved = menuItemRepo.save(menuItem);
+    return mapToDto(saved);
+  }
+
 }
 
