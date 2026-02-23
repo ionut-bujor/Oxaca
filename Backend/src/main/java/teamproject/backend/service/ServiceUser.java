@@ -168,4 +168,19 @@ public class ServiceUser {
     userRepository.deleteById(id);
   }
 
+  /**
+   * Deletes a user from the database by using the ID stored in the session of the currently
+   * logged-in user.
+   *
+   * @param session - The session of the currently logged-in user.
+   */
+  public void removeUser(HttpSession session) {
+    if (!isLoggedIn(session)) {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+    }
+
+    Long userId = (Long) session.getAttribute("userId");
+    removeUserById(userId);
+  }
+
 }

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 import teamproject.backend.dto.UserDTO;
 import teamproject.backend.model.Role;
 import teamproject.backend.model.User;
@@ -63,6 +62,7 @@ public class UserController {
   @PostMapping("/addUser")
   public ResponseEntity<Void> addUser(@RequestParam String firstName, @RequestParam String lastName,
       @RequestParam String email, @RequestParam String password) {
+
     User user = new User();
     user.setFirstName(firstName);
     user.setlastName(lastName);
@@ -85,14 +85,9 @@ public class UserController {
    */
   @PostMapping("/removeUser")
   public ResponseEntity<Void> removeUser(HttpServletRequest request) {
+
     HttpSession session = request.getSession(false);
-
-    if (!serviceUser.isLoggedIn(session)) {
-      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
-    }
-
-    Long userId = (Long) session.getAttribute("userId");
-    serviceUser.removeUserById(userId);
+    serviceUser.removeUser(session);
     session.invalidate();
 
     return ResponseEntity.status(HttpStatus.ACCEPTED).build();
@@ -114,7 +109,6 @@ public class UserController {
   public ResponseEntity<Void> adminAddUser(@RequestParam String firstName,
       @RequestParam String lastName, @RequestParam String email, @RequestParam String password,
       @RequestParam String role, HttpServletRequest request) {
-    HttpSession session = request.getSession(false);
 
     User user = new User();
     user.setFirstName(firstName);
@@ -140,7 +134,6 @@ public class UserController {
   @PostMapping("/adminRemoveUser")
   public ResponseEntity<Void> adminRemoveUser(@RequestParam String email,
       HttpServletRequest request) {
-    HttpSession session = request.getSession(false);
 
     serviceUser.removeUserByEmail(email);
 
