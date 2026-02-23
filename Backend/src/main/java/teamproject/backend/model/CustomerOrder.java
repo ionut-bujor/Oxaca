@@ -105,7 +105,7 @@ public class CustomerOrder {
   public BigDecimal totalPrice(List<CustomerOrderItem> items) {
     BigDecimal total = new BigDecimal(0);
     for (CustomerOrderItem item : items) {
-      total = total.add(item.linePrice());
+      total.add(item.linePrice());
     }
     return total;
   }

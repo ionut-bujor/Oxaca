@@ -74,14 +74,3 @@ CREATE TABLE IF NOT EXISTS users (
                        last_name VARCHAR(255) NOT NULL
 );
 
-
--- WAITER CALL
-CREATE TABLE waiter_call (
-                      id SERIAL PRIMARY KEY,
-                      table_number INT NOT NULL,
-                      status VARCHAR(20) NOT NULL DEFAULT 'OPEN',
-                      note TEXT,
-                      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                      resolved_at TIMESTAMP
-);
-
