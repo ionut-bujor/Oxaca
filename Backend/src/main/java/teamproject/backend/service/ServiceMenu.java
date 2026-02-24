@@ -2,11 +2,8 @@ package teamproject.backend.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.function.Consumer;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import teamproject.backend.dto.MenuItemDTO;
@@ -60,31 +57,18 @@ public class ServiceMenu {
     List<MenuItemDTO> availableItems = new ArrayList<>();
     for (MenuItem item : allItems) {
       if (item.getQuantity() > 0) {
-        availableItems.add(mapToDto(item));
+        availableItems.add(itemToDto(item));
       }
     }
     return availableItems;
+  }  
+
+  public ItemGroupRepository getItemGroupRepo() {
+    return itemGroupRepo;
   }
 
-  /**
-   * Maps from a MenuItem entity to a DTO formatted for the frontend.
-   *
-   * @return - The MenuItem DTO.
-   */
-
-  public MenuItemDTO mapToDto(MenuItem menuItem) {
-    MenuItemDTO dto = new MenuItemDTO();
-    dto.setId(menuItem.getId());
-    dto.setTitle(menuItem.getName());
-    dto.setDesc(menuItem.getDescription());
-    dto.setPrice_usd(menuItem.getPrice());
-    dto.setImg(menuItem.getImageUrl());
-    dto.setKcal(menuItem.getCalories());
-    dto.setAllergen_list(menuItem.getAllergens());
-    dto.setDietary_flags(menuItem.getTags());
-    dto.setCat(menuItem.getItemGroup().getName());
-
-    return dto;
+  public MenuTypeRepository getMenuTypeRepo() {
+    return menuTypeRepo;
   }
 
   /**
@@ -112,6 +96,27 @@ public class ServiceMenu {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid category");
     }
     return menuItem;
+  }
+
+  /**
+   * Maps from a MenuItem entity to a DTO formatted for the frontend.
+   *
+   * @return - The MenuItem DTO.
+   */
+  public MenuItemDTO itemToDto(MenuItem menuItem) {
+    MenuItemDTO dto = new MenuItemDTO();
+    dto.setId(menuItem.getId());
+    dto.setTitle(menuItem.getName());
+    dto.setDesc(menuItem.getDescription());
+    dto.setQuantity(menuItem.getQuantity());
+    dto.setPrice_usd(menuItem.getPrice());
+    dto.setImg(menuItem.getImageUrl());
+    dto.setKcal(menuItem.getCalories());
+    dto.setAllergen_list(menuItem.getAllergens());
+    dto.setDietary_flags(menuItem.getTags());
+    dto.setCat(menuItem.getItemGroup().getName());
+
+    return dto;
   }
   /**
    * This checks if the category of the item exists.
@@ -143,7 +148,7 @@ public class ServiceMenu {
   public MenuItemDTO addMenuItem(MenuItemDTO menuItemDto) {
     MenuItem menuItem = mapToItem(menuItemDto);
     MenuItem savedEntity = menuItemRepo.save(menuItem);
-    return mapToDto(savedEntity);
+    return itemToDto(savedEntity);
   }
 
   /**
@@ -160,7 +165,7 @@ public class ServiceMenu {
     // find which fields are being changed via menuDto
     updateFields(originalMenuItem, menuDto); // passed by reference fields are changed.
     MenuItem saved = menuItemRepo.save(originalMenuItem);
-    return mapToDto(saved);
+    return itemToDto(saved);
   }
 
   /**
@@ -227,7 +232,7 @@ public class ServiceMenu {
     MenuItem menuItem = findItemById(id);
     menuItem.setQuantity(0); // this means it doesn't get displayed but stays in database
     MenuItem saved = menuItemRepo.save(menuItem);
-    return mapToDto(saved);
+    return itemToDto(saved);
   }
 
 }
