@@ -1,11 +1,11 @@
 package teamproject.backend.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 import teamproject.backend.dto.CustomerOrderDTO;
 import teamproject.backend.dto.MenuItemDTO;
 import teamproject.backend.model.CustomerOrder;
-import teamproject.backend.model.MenuItem;
 
 /**
  * This Class maps an order and a customerorderitem to their respective DTOs.
@@ -13,25 +13,10 @@ import teamproject.backend.model.MenuItem;
 @Component
 public class OrderMapper {
 
-  /**
-   * Maps from a MenuItem entity to a DTO formatted for the frontend.
-   *
-   * @return - The MenuItem DTO.
-   */
-  public MenuItemDTO itemToDto(MenuItem menuItem) {
-    MenuItemDTO dto = new MenuItemDTO();
-    dto.setId(menuItem.getId());
-    dto.setTitle(menuItem.getName());
-    dto.setDesc(menuItem.getDescription());
-    dto.setQuantity(menuItem.getQuantity());
-    dto.setPrice_usd(menuItem.getPrice());
-    dto.setImg(menuItem.getImageUrl());
-    dto.setKcal(menuItem.getCalories());
-    dto.setAllergen_list(menuItem.getAllergens());
-    dto.setDietary_flags(menuItem.getTags());
-    dto.setCat(menuItem.getItemGroup().getName());
+  private final ServiceMenu serviceMenu;
 
-    return dto;
+  public OrderMapper(ServiceMenu serviceMenu) {
+    this.serviceMenu = serviceMenu;
   }
 
   /**
@@ -48,11 +33,15 @@ public class OrderMapper {
     dto.setCreatedAt(order.getCreatedAt());
 
     List<MenuItemDTO> itemDtos = order.getItems().stream()
-        .map(this::itemToDto)
-        .toList();
+        .map(menuItem -> serviceMenu.itemToDto(menuItem))
+        .collect(Collectors.toList());
     dto.setItems(itemDtos);
     dto.setTotalPrice(order.totalPrice(order.getItems()));
     return dto;
+  }
+
+  public ServiceMenu getServiceMenu() {
+    return serviceMenu;
   }
 }
 

@@ -2,7 +2,6 @@ package teamproject.backend.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,7 +19,6 @@ import teamproject.backend.repository.MenuTypeRepository;
 @Service
 public class ServiceMenu {
   private final MenuItemRepository menuItemRepo;
-  private final OrderMapper orderMapper;
   private final ItemGroupRepository itemGroupRepo;
   private final MenuTypeRepository menuTypeRepo;
 
@@ -32,11 +30,10 @@ public class ServiceMenu {
    * @param menuTypeRepo  - The menu type repository to initialise.
    */
   public ServiceMenu(MenuItemRepository menuItemRepo, ItemGroupRepository itemGroupRepo,
-      MenuTypeRepository menuTypeRepo, OrderMapper orderMapper) {
+      MenuTypeRepository menuTypeRepo) {
     this.menuItemRepo = menuItemRepo;
     this.itemGroupRepo = itemGroupRepo;
     this.menuTypeRepo = menuTypeRepo;
-    this.orderMapper = orderMapper;
   }
 
   /**
@@ -59,15 +56,11 @@ public class ServiceMenu {
     List<MenuItemDTO> availableItems = new ArrayList<>();
     for (MenuItem item : allItems) {
       if (item.getQuantity() > 0) {
-        availableItems.add(orderMapper.itemToDto(item));
+        availableItems.add(itemToDto(item));
       }
     }
     return availableItems;
   }  
-
-  public OrderMapper getOrderMapper() {
-    return orderMapper;
-  }
 
   public ItemGroupRepository getItemGroupRepo() {
     return itemGroupRepo;
@@ -103,6 +96,27 @@ public class ServiceMenu {
     }
 
     return ResponseEntity.ok(menuItemRepo.save(menuItem));
+  }
+
+  /**
+   * Maps from a MenuItem entity to a DTO formatted for the frontend.
+   *
+   * @return - The MenuItem DTO.
+   */
+  public MenuItemDTO itemToDto(MenuItem menuItem) {
+    MenuItemDTO dto = new MenuItemDTO();
+    dto.setId(menuItem.getId());
+    dto.setTitle(menuItem.getName());
+    dto.setDesc(menuItem.getDescription());
+    dto.setQuantity(menuItem.getQuantity());
+    dto.setPrice_usd(menuItem.getPrice());
+    dto.setImg(menuItem.getImageUrl());
+    dto.setKcal(menuItem.getCalories());
+    dto.setAllergen_list(menuItem.getAllergens());
+    dto.setDietary_flags(menuItem.getTags());
+    dto.setCat(menuItem.getItemGroup().getName());
+
+    return dto;
   }
 
   /**
