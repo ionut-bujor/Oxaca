@@ -61,10 +61,6 @@ public class MenuItem {
   @JoinColumn(name = "item_group_id")
   private ItemGroup itemGroup;
 
-  @ManyToOne
-  @JoinColumn(name = "customer_order_id")
-  private CustomerOrder order;
-
   /**
    * Default constructor so that JPA can map it.
    */
@@ -149,10 +145,6 @@ public class MenuItem {
 
   public void setTags(List<DietaryTag> tags) {
     this.tags = tags;
-  }
-
-  public CustomerOrder getCustomerOrder() {
-    return order;
   }
 }
 

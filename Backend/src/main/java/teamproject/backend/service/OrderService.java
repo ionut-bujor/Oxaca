@@ -6,9 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import teamproject.backend.dto.CustomerOrderDTO;
 import teamproject.backend.model.CustomerOrder;
-import teamproject.backend.model.MenuItem;
 import teamproject.backend.repository.CustomerOrderRepository;
-import teamproject.backend.repository.MenuItemRepository;
 
 /**
  * This class handles the service layer for orders.
@@ -18,7 +16,6 @@ import teamproject.backend.repository.MenuItemRepository;
 public class OrderService {
 
   private final CustomerOrderRepository orderRepository;
-  private final MenuItemRepository menuItemRepository;
   private final OrderMapper orderMapper;
 
   /**
@@ -28,11 +25,9 @@ public class OrderService {
   *
   * @param orderMapper uses the orderMapper class.
   */
-  public OrderService(CustomerOrderRepository orderRepository, OrderMapper orderMapper, 
-      MenuItemRepository menuItemRepository) {
+  public OrderService(CustomerOrderRepository orderRepository, OrderMapper orderMapper) {
     this.orderMapper = orderMapper;
     this.orderRepository = orderRepository;
-    this.menuItemRepository = menuItemRepository;
   }
 
 
@@ -44,7 +39,7 @@ public class OrderService {
   @Transactional(readOnly = true)
   public List<CustomerOrderDTO> getAllOrders() {
     return orderRepository.findAll().stream()
-        .map(orderMapper::orderToDto)
+        .map(orderMapper::toDto)
         .collect(Collectors.toList());
   }
 
@@ -59,7 +54,7 @@ public class OrderService {
   public CustomerOrderDTO getOrderById(Long id) {
     CustomerOrder order = orderRepository.findById(id)
         .orElseThrow(() -> new IllegalArgumentException("Order not found: " + id));
-    return orderMapper.orderToDto(order);
+    return orderMapper.toDto(order);
   }
 
   /**
@@ -69,48 +64,9 @@ public class OrderService {
   * @return This returns the order for the customer.
   */
   @Transactional
-  public CustomerOrderDTO createOrder(Long id, int tableNumber) {
-    CustomerOrder order = new CustomerOrder(id, tableNumber);
+  public CustomerOrderDTO createOrder(int tableNumber) {
+    CustomerOrder order = new CustomerOrder(null, tableNumber);
     CustomerOrder saved = orderRepository.save(order);
-    return orderMapper.orderToDto(saved);
-  }
-
-  /**
-   * This allows items to be added to a customer's order.
-   *
-   * @param orderId This is the id of the order.
-   * @param menuItemid This is the id of the menuitem.
-   * @param quantity This is the quantity of items being added.
-   * @return This returns the request in a DTO form.
-   */
-  @Transactional
-  public CustomerOrderDTO addItemToOrder(Long orderId, Long menuItemid, int quantity) {
-    CustomerOrder order = getValidCustomerOrder(orderId);   
-    MenuItem menuItem = getValidMenuItem(menuItemid);
-
-    order.addItem(menuItem, quantity);
-    return orderMapper.orderToDto(order);
-  }
-
-  /**
-   * This handles the validation logic for Customer Orders.
-   *
-   * @param orderid The id of the customer's order.
-   * @return This returns whether the Order is valid.
-   */
-  private CustomerOrder getValidCustomerOrder(Long orderid) {
-    return orderRepository.findById(orderid).orElseThrow(() -> 
-        new IllegalArgumentException("Order not found: " + orderid));
-  }
-
-  /**
-   * This handles the validation logic for each Menu Item.
-   *
-   * @param menuItemid The id of the menu item.
-   * @return This returns whether the Menu Item is valid.
-   */
-  private MenuItem getValidMenuItem(Long menuItemid) {
-    return menuItemRepository.findById(menuItemid).orElseThrow(() ->
-        new IllegalArgumentException("MenuItem order found: " + menuItemid));
+    return orderMapper.toDto(saved);
   }
 }
