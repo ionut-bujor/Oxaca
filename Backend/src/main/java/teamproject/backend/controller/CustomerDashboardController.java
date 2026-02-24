@@ -21,7 +21,7 @@ public class CustomerDashboardController {
 
   @GetMapping
   public ResponseEntity<List<CustomerOrderDTO>> displayCurrentOrders(HttpServletRequest request) {
-    HttpSession session = request.getSession(true);
+    HttpSession session = request.getSession(false);
     List<CustomerOrderDTO> currentOrders = customerDashboardService.getCurrentOrders(session);
     return ResponseEntity.ok(currentOrders);
   }
