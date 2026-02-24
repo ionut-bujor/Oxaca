@@ -1,6 +1,6 @@
 
 import React from "react";
-import DashboardHeader from "../components/CustomerDashboardHeader";
+import CustomerDashboardHeader from "../components/CustomerDashboardHeader";
 
 const CustomerDashboard: React.FC = () => {
     return (
@@ -13,4 +13,4 @@ const CustomerDashboard: React.FC = () => {
     )
 }
 
-export default CustomerDashboard
+export default CustomerDashboard;
