@@ -1,9 +1,13 @@
 
 import React from "react";
+import DashboardHeader from "../components/CustomerDashboardHeader";
 
 const CustomerDashboard: React.FC = () => {
     return (
         <main>
+            <CustomerDashboardHeader /> //pulls header component for this page
+
+            //future content here
 
         </main>
     )
