@@ -33,7 +33,7 @@ public class CustomerOrder {
   private LocalDateTime createdAt = LocalDateTime.now();
 
   @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<CustomerOrderItem> items;
+  private List<MenuItem> items;
 
   /**
    * Constructs an order.
@@ -60,9 +60,8 @@ public class CustomerOrder {
    * @param item The item being added.
    * @param quantity The amount of times the item is added.
    */
-  public void addItem(CustomerOrderItem item, int quantity) {
+  public void addItem(MenuItem item, int quantity) {
     items.add(item);
-    item.setOrder(this);
     item.setQuantity(quantity + item.getQuantity());
   }
 
@@ -71,9 +70,8 @@ public class CustomerOrder {
    *
    * @param item The item being removed.
    */
-  public void removeItem(CustomerOrderItem item) {
+  public void removeItem(MenuItem item) {
     items.remove(item);
-    item.setOrder(null);
   }
 
   /**
@@ -82,7 +80,7 @@ public class CustomerOrder {
    * @param item The item that is having its quantity increased.
    * @param quantity The amount the quantity is changing to.
    */
-  public void increase(CustomerOrderItem item, int quantity) {
+  public void increase(MenuItem item, int quantity) {
     item.setQuantity(quantity);
   }
 
@@ -92,7 +90,7 @@ public class CustomerOrder {
    * @param item The item being decreased.
    * @param quantity The amount the quantity is changing to.
    */
-  public void decrease(CustomerOrderItem item, int quantity) {
+  public void decrease(MenuItem item, int quantity) {
     item.setQuantity(quantity);
   }
 
@@ -102,10 +100,10 @@ public class CustomerOrder {
    * @param items The list of items involved in the order.
    * @return The total price.
    */
-  public BigDecimal totalPrice(List<CustomerOrderItem> items) {
+  public BigDecimal totalPrice(List<MenuItem> items) {
     BigDecimal total = new BigDecimal(0);
-    for (CustomerOrderItem item : items) {
-      total = total.add(item.linePrice());
+    for (MenuItem item : items) {
+      total.add(item.getPrice());
     }
     return total;
   }
@@ -138,7 +136,7 @@ public class CustomerOrder {
     this.createdAt = createdAt;
   }
 
-  public List<CustomerOrderItem> getItems() {
+  public List<MenuItem> getItems() {
     return items;
   }
 
