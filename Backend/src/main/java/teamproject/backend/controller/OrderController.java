@@ -4,19 +4,16 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import teamproject.backend.dto.CustomerOrderDTO;
-import teamproject.backend.dto.MenuItemDTO;
 import teamproject.backend.service.OrderService;
 
 /**
  * This class handles POST requests.
  */
 @RestController
-@RequestMapping("api/v1/orders")
+@RequestMapping("/v1")
 public class OrderController {
 
   private final OrderService orderService;
@@ -36,7 +33,7 @@ public class OrderController {
   * @param id this is the given id.
   * @return this returns the order in JSON.
   */
-  @GetMapping("/{id}")
+  @GetMapping("/orders/{id}")
   public ResponseEntity<CustomerOrderDTO> getOrder(@PathVariable Long id) {
     CustomerOrderDTO order = orderService.getOrderById(id);
     return ResponseEntity.ok(order);
@@ -47,40 +44,9 @@ public class OrderController {
   *
   * @return all orders.
   */
-  @GetMapping("/allOrders")
+  @GetMapping("/orders")
   public ResponseEntity<List<CustomerOrderDTO>> getAllOrders() {
     List<CustomerOrderDTO> orders = orderService.getAllOrders();
     return ResponseEntity.ok(orders);
   }
-
-  /**
-   * This allows customers to create an order.
-   *
-   * @param request This is used to get the customer's table number and id.
-   * @return This returns the created order.
-   */
-  @PostMapping("/{id}")
-  public ResponseEntity<CustomerOrderDTO> createOrder(
-      @RequestBody CustomerOrderDTO request) {
-    CustomerOrderDTO createdOrder = orderService.createOrder(request.getId(),
-        request.getTableNumber());
-    return ResponseEntity.ok(createdOrder);  
-  }
-
-  /**
-   * This endpoint allows customers to add items to their order.
-   *
-   * @param orderId The id associated with the order.
-   * @param itemDto The itemDTO that controls the item being added.
-   * @return The order gets returned with updated quantities.
-   */
-  @PostMapping("/{orderId}/items")
-  public ResponseEntity<CustomerOrderDTO> addItemsToOrder(
-      @PathVariable Long orderId, @RequestBody MenuItemDTO itemDto) {
-    CustomerOrderDTO updatedOrder = orderService.addItemToOrder(orderId, 
-        itemDto.getId(), itemDto.getQuantity());
-    return ResponseEntity.ok(updatedOrder);  
-  }
-  
-  
 }
