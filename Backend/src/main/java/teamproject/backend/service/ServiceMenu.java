@@ -2,10 +2,8 @@ package teamproject.backend.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Consumer;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import teamproject.backend.dto.MenuItemDTO;
@@ -150,7 +148,7 @@ public class ServiceMenu {
   public MenuItemDTO addMenuItem(MenuItemDTO menuItemDto) {
     MenuItem menuItem = mapToItem(menuItemDto);
     MenuItem savedEntity = menuItemRepo.save(menuItem);
-    return mapToDto(savedEntity);
+    return itemToDto(savedEntity);
   }
 
   /**
@@ -167,7 +165,7 @@ public class ServiceMenu {
     // find which fields are being changed via menuDto
     updateFields(originalMenuItem, menuDto); // passed by reference fields are changed.
     MenuItem saved = menuItemRepo.save(originalMenuItem);
-    return mapToDto(saved);
+    return itemToDto(saved);
   }
 
   /**
@@ -234,7 +232,7 @@ public class ServiceMenu {
     MenuItem menuItem = findItemById(id);
     menuItem.setQuantity(0); // this means it doesn't get displayed but stays in database
     MenuItem saved = menuItemRepo.save(menuItem);
-    return mapToDto(saved);
+    return itemToDto(saved);
   }
 
 }
