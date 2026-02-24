@@ -20,7 +20,6 @@ import teamproject.backend.model.MenuItem;
 import teamproject.backend.repository.ItemGroupRepository;
 import teamproject.backend.repository.MenuItemRepository;
 import teamproject.backend.repository.MenuTypeRepository;
-import teamproject.backend.service.OrderMapper;
 import teamproject.backend.service.ServiceMenu;
 
 /**
@@ -35,9 +34,6 @@ public class ServiceMenuTest {
 
   @Mock
   private MenuTypeRepository menuTypeRepo;
-
-  @Mock
-  private OrderMapper orderMapper;
 
   @InjectMocks
   private ServiceMenu serviceMenu;
@@ -74,7 +70,6 @@ public class ServiceMenuTest {
     
     MenuItemDTO dto = new MenuItemDTO();
     dto.setId(1L);
-    when(orderMapper.itemToDto(availableItem)).thenReturn(dto); 
 
     List<MenuItemDTO> allAvailableItems = serviceMenu.fetchAllAvailableItems();
 
