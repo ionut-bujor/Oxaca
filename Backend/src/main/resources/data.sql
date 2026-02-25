@@ -71,3 +71,10 @@ VALUES (
            'Smith'
        );
 */
+
+
+-- Customer orders for the admin
+--INSERT INTO customer_order (id, table_number, status, paid, created_at, user_id) VALUES
+--(1, 5, 'DELIVERED', false, NOW(), 1),
+--(2, 6, 'DELIVERED', true, NOW(), 1),
+--(3, 7, 'PREPARING', false, NOW(), 1);
