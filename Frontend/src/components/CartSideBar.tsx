@@ -1,6 +1,8 @@
 
 import React from 'react';
 import { type CartItem } from '../types';
+import { useNavigate } from "react-router-dom";
+
 
 interface CartSidebarProps {
   isOpen: boolean;
@@ -11,6 +13,7 @@ interface CartSidebarProps {
 }
 
 const CartSidebar: React.FC<CartSidebarProps> = ({ isOpen, onClose, items, onRemove, onUpdateQuantity }) => {
+  const navigate = useNavigate();  // 👈 ADD THIS LINE
   const total = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
   return (
@@ -85,9 +88,15 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isOpen, onClose, items, onRem
               <span className="uppercase text-xs font-bold tracking-[0.2em] text-slate-500">Order Total</span>
               <span className="serif-text text-3xl font-bold text-slate-900">£{total.toFixed(2)}</span>
             </div>
-            <button className="w-full bg-primary text-white py-4 rounded-xl font-bold uppercase tracking-widest hover:bg-accent transition-all shadow-xl shadow-primary/20 active:scale-95">
-              Proceed to Checkout
-            </button>
+            <button
+              onClick={() => {
+              onClose();          // close sidebar
+              navigate("/checkout"); // go to checkout page
+  }}
+  className="w-full bg-primary text-white py-4 rounded-xl font-bold uppercase tracking-widest hover:bg-accent transition-all shadow-xl shadow-primary/20 active:scale-95"
+>
+  Proceed to Checkout
+</button>
           </div>
         )}
       </aside>

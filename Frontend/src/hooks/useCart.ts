@@ -42,7 +42,9 @@ export const useCart = () => {
       return i;
     }));
   };
-
+  
+  
+  const clearCart = () => setCart([]);
   const closeCart = () => setIsCartOpen(false);
   const openCart = () => setIsCartOpen(true);
 
@@ -55,6 +57,7 @@ export const useCart = () => {
     closeCart,
     addToCart,
     removeFromCart,
-    updateQuantity
+    updateQuantity,
+    clearCart
   };
 };
