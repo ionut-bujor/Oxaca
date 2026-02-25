@@ -7,7 +7,6 @@ const Auth: React.FC = () => {
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState("");
 	const { fetchCurrentUser } = useAuth();
-
 	return (
 		<main>
 			<ButtonlessHeader />

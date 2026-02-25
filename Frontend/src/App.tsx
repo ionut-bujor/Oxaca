@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 import Menu from './pages/menu'
 import Auth from './pages/auth'
+import CustomerDasboard from './pages/CustomerDashboard'
 
 const App: React.FC = () => {
 
@@ -11,6 +12,7 @@ const App: React.FC = () => {
       <Routes>
         <Route path='/' element={<Menu />}/>
         <Route path='/portal' element={<Auth />}/>
+        <Route path='/dashboard' element={<CustomerDasboard />}/>
       </Routes>
     </Router>
     </>
