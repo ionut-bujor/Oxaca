@@ -45,21 +45,20 @@ public class CustomerDashboardService {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User ID not found");
     }
 
-    List<CustomerOrder> matchingOrders = customerOrderRepo.findByCustomerId(id);
+    List<CustomerOrder> matchingOrders = customerOrderRepo.findByUserId(id);
 
     return matchingOrders.stream()
-        .filter(order -> order.getStatus().equals( OrderStatus.DELIVERED))
+        .filter(order -> order.getStatus().equals(OrderStatus.DELIVERED))
         .filter(order -> !Boolean.TRUE.equals(order.isPaid()))
         .map(orderMapper::orderToDto)
         .toList();
-
+  }
 
     //filter orders here, not delivered and not paid.
     // status = !delivered, paid = false
     //return those orders.
   }
 
-}
 
 
 
