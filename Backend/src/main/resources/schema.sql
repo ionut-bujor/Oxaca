@@ -96,7 +96,7 @@ CREATE TABLE users (
 
 
 -- WAITER CALL
-CREATE TABLE waiter_call (
+CREATE TABLE IF NOT EXISTS waiter_call (
                       id SERIAL PRIMARY KEY,
                       table_number INT NOT NULL,
                       status VARCHAR(20) NOT NULL DEFAULT 'OPEN',
