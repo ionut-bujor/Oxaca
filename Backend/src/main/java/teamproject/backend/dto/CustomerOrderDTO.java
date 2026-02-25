@@ -12,7 +12,7 @@ public class CustomerOrderDTO {
   private int tableNumber;
   private String status;
   private LocalDateTime createdAt;
-  private List<MenuItemDTO> items;
+  private List<ItemDTOHelper> items;
   private BigDecimal totalPrice;
 
   public Long getId() {
@@ -47,11 +47,11 @@ public class CustomerOrderDTO {
     this.createdAt = createdAt;
   }
 
-  public List<MenuItemDTO> getItems() {
+  public List<ItemDTOHelper> getItems() {
     return items;
   }
 
-  public void setItems(List<MenuItemDTO> items) {
+  public void setItems(List<ItemDTOHelper> items) {
     this.items = items;
   }
 

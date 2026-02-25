@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 import teamproject.backend.dto.CustomerOrderDTO;
-import teamproject.backend.dto.MenuItemDTO;
+import teamproject.backend.dto.ItemDTOHelper;
 import teamproject.backend.model.CustomerOrder;
 
 /**
@@ -32,8 +32,8 @@ public class OrderMapper {
     dto.setStatus(order.getStatus());
     dto.setCreatedAt(order.getCreatedAt());
 
-    List<MenuItemDTO> itemDtos = order.getItems().stream()
-        .map(menuItem -> serviceMenu.itemToDto(menuItem))
+    List<ItemDTOHelper> itemDtos = order.getItems().stream()
+        .map(menuItem -> serviceMenu.dtoToHelper(serviceMenu.itemToDto(menuItem)))
         .collect(Collectors.toList());
     dto.setItems(itemDtos);
     dto.setTotalPrice(order.totalPrice(order.getItems()));

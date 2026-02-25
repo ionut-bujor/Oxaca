@@ -16,7 +16,7 @@ import teamproject.backend.service.OrderService;
  * This class handles POST requests.
  */
 @RestController
-@RequestMapping("api/v1/orders")
+@RequestMapping("/api/v1/orders")
 public class OrderController {
 
   private final OrderService orderService;
@@ -59,7 +59,7 @@ public class OrderController {
    * @param request This is used to get the customer's table number and id.
    * @return This returns the created order.
    */
-  @PostMapping("/{id}")
+  @PostMapping
   public ResponseEntity<CustomerOrderDTO> createOrder(
       @RequestBody CustomerOrderDTO request) {
     CustomerOrderDTO createdOrder = orderService.createOrder(request.getId(),
