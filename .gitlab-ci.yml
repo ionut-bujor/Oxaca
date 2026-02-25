@@ -6,6 +6,7 @@ stages:
   - jacoco
   - checkstyle
   - spotbugs
+  - frontend
 
 cache:
   paths:
