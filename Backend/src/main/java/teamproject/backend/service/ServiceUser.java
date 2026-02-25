@@ -19,15 +19,16 @@ import teamproject.backend.repository.UserRepository;
 @Transactional
 public class ServiceUser {
   private final UserRepository userRepository;
-  private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+  private final BCryptPasswordEncoder passwordEncoder;
 
   /**
    * Constructor for a ServiceUser object which initialises the user repository.
    *
    * @param userRepository - The user repository to initialise.
    */
-  public ServiceUser(UserRepository userRepository) {
+  public ServiceUser(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
     this.userRepository = userRepository;
+    this.passwordEncoder = passwordEncoder;
   }
 
   /**
@@ -142,14 +143,44 @@ public class ServiceUser {
   }
 
   /**
-   * Deletes a user from the database - first checking if the details provided match.
+   * Deletes a user from the database - first checking if the email provided matches.
    *
    * @param email - The email of the user to be deleted.
    */
-  public void removeUser(String email) {
+  public void removeUserByEmail(String email) {
     User userToDelete = userRepository.findByEmail(email);
+    if (userToDelete == null) {
+      throw new IllegalArgumentException("Could not find user with provided email.");
+    }
 
     userRepository.delete(userToDelete);
+  }
+
+  /**
+   * Deletes a user from the database - first checking if the id provided matches.
+   *
+   * @param id - The id of the user who is to be deleted.
+   */
+  public void removeUserById(Long id) {
+    if (!userRepository.existsById(id)) {
+      throw new IllegalArgumentException("Could not find user with provided ID.");
+    }
+    userRepository.deleteById(id);
+  }
+
+  /**
+   * Deletes a user from the database by using the ID stored in the session of the currently
+   * logged-in user.
+   *
+   * @param session - The session of the currently logged-in user.
+   */
+  public void removeUser(HttpSession session) {
+    if (!isLoggedIn(session)) {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+    }
+
+    Long userId = (Long) session.getAttribute("userId");
+    removeUserById(userId);
   }
 
 }
