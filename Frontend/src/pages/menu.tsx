@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useCart } from '../hooks/useCart';
+import { useCartStore } from '../context/CartContext';
 import { useMenu } from '../hooks/useMenu';
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
 import { type MenuItem } from '../types';
@@ -11,7 +11,7 @@ import MenuItemCard from '../components/MenuItemCard';
 import CartSidebar from '../components/CartSideBar';
 
 const Menu: React.FC = () => {
-  const cartService = useCart();
+  const cartService = useCartStore();
   const menuService = useMenu();
   const revealService = useIntersectionObserver();
 

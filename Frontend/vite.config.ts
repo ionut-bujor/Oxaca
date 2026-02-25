@@ -10,4 +10,12 @@ export default defineConfig({
       },
     }),
   ],
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://spring-backend:8080',
+        changeOrigin: true,
+      }
+    }
+  }
 })

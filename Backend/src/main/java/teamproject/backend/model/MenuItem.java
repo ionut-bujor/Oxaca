@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -21,7 +22,7 @@ import java.util.List;
 public class MenuItem {
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @Column(name = "item_name", nullable = false, length = 30)
@@ -36,7 +37,7 @@ public class MenuItem {
   @Column(name = "item_price", nullable = false, precision = 10, scale = 2)
   private BigDecimal price;
 
-  @Column(name = "item_image_url", nullable = false)
+  @Column(name = "item_image_url", nullable = false, length = 1000)
   private String imageUrl;
 
   @Column(name = "calories")
@@ -59,6 +60,10 @@ public class MenuItem {
   @ManyToOne
   @JoinColumn(name = "item_group_id")
   private ItemGroup itemGroup;
+
+  @ManyToOne
+  @JoinColumn(name = "customer_order_id")
+  private CustomerOrder order;
 
   /**
    * Default constructor so that JPA can map it.
@@ -144,6 +149,10 @@ public class MenuItem {
 
   public void setTags(List<DietaryTag> tags) {
     this.tags = tags;
+  }
+
+  public CustomerOrder getCustomerOrder() {
+    return order;
   }
 }
 

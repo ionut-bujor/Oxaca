@@ -13,7 +13,7 @@ export const menuService = {
   async fetchMenuItems(): Promise<MenuItem[]> {
     try {
       // Fetch raw data from backend (SQL-aligned structure)
-      const rawData = await apiClient.get<BackendMenuItem[]>('/v1/menu', { 
+      const rawData = await apiClient.get<BackendMenuItem[]>('/api/v1/menu', { 
         // Note: In a real app, MOCK_MENU_ITEMS would also be in the BackendMenuItem format
         // for testing, but here we'll assume the API returns the SQL structure.
         mockData: [] 

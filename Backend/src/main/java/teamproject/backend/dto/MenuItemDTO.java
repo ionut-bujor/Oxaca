@@ -1,28 +1,38 @@
 package teamproject.backend.dto;
 
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 import java.util.List;
 import teamproject.backend.model.Allergens;
 import teamproject.backend.model.DietaryTag;
+import jakarta.validation.constraints.NotBlank;
 
 /**
  * Data Transfer Object representing a menu item.
  */
 public class MenuItemDTO {
-
   private Long id;
+  @NotBlank(message= "Title cannot be null")
   private String title;
+  @PositiveOrZero(message = "Price can't be negative")
+  @NotNull(message = "Price can't be blank")
   private BigDecimal price_usd;
+  @NotBlank(message = "Description can't be blank")
   private String desc;
+  @PositiveOrZero(message = "Quantity can't be negative")
+  private int quantity;
+  @NotBlank(message = "Image url can't be blank")
   private String img;
+  @NotBlank(message = "Category can't be blank")
   private String cat;
   private List<DietaryTag> dietary_flags;
+  @PositiveOrZero (message = "Calories can't be negative")
   private int kcal;
   private List<Allergens> allergen_list;
 
   // getters and setters
-
   public String getTitle() {
     return title;
   }
@@ -93,5 +103,13 @@ public class MenuItemDTO {
 
   public void setAllergen_list(List<Allergens> allergen_list) {
     this.allergen_list = allergen_list;
+  }
+
+  public int getQuantity() {
+    return quantity;
+  }
+
+  public void setQuantity(int quantity) {
+    this.quantity = quantity;
   }
 }
