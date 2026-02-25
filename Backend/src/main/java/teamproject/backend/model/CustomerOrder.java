@@ -3,6 +3,8 @@ package teamproject.backend.model;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -27,13 +29,19 @@ public class CustomerOrder {
   @Column(name = "table_number")
   private int tableNumber;
 
-  private String status = "PLACED";
+  @Enumerated(EnumType.STRING)
+  @Column(name = "status", nullable = false)
+  private OrderStatus status;
+
+  @Column (name = "paid", nullable = false)
+  private boolean paid;
 
   @Column(name = "created_at")
   private LocalDateTime createdAt = LocalDateTime.now();
 
   @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<CustomerOrderItem> items;
+
 
   /**
    * Constructs an order.
@@ -122,11 +130,11 @@ public class CustomerOrder {
     this.tableNumber = tableNumber;
   }
 
-  public String getStatus() {
+  public OrderStatus getStatus() {
     return status;
   }
 
-  public void setStatus(String status) {
+  public void setStatus(OrderStatus status) {
     this.status = status;
   }
 
@@ -142,5 +150,15 @@ public class CustomerOrder {
     return items;
   }
 
-  
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public boolean isPaid() {
+    return paid;
+  }
+
+  public void setPaid(boolean paid) {
+    this.paid = paid;
+  }
 }
