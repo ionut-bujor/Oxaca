@@ -3,6 +3,7 @@ package teamproject.backend.dto;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import teamproject.backend.model.OrderStatus;
 
 /**
  * Data Transfer Object representing a customer's order.
@@ -10,7 +11,7 @@ import java.util.List;
 public class CustomerOrderDTO {
   private Long id;
   private int tableNumber;
-  private String status;
+  private OrderStatus status;
   private LocalDateTime createdAt;
   private List<ItemDTOHelper> items;
   private BigDecimal totalPrice;
@@ -31,11 +32,11 @@ public class CustomerOrderDTO {
     this.tableNumber = tableNumber;
   }
 
-  public String getStatus() {
+  public OrderStatus getStatus() {
     return status;
   }
 
-  public void setStatus(String status) {
+  public void setStatus(OrderStatus status) {
     this.status = status;
   }
 

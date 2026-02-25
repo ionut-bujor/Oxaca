@@ -50,7 +50,7 @@ public class CustomerDashboardService {
     return matchingOrders.stream()
         .filter(order -> order.getStatus().equals( OrderStatus.DELIVERED))
         .filter(order -> !Boolean.TRUE.equals(order.isPaid()))
-        .map(orderMapper::toDto)
+        .map(orderMapper::orderToDto)
         .toList();
 
 
