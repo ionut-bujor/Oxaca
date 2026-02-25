@@ -17,6 +17,9 @@ import teamproject.backend.repository.CustomerOrderRepository;
 import teamproject.backend.repository.ItemGroupRepository;
 import teamproject.backend.repository.MenuItemRepository;
 
+/**
+ * Service class used to handle business logic for customer dashboard.
+ */
 @Service
 public class CustomerDashboardService {
   private final MenuItemRepository menuItemRepo;
@@ -24,6 +27,14 @@ public class CustomerDashboardService {
   private final CustomerOrderRepository customerOrderRepo;
   private final OrderMapper orderMapper;
 
+  /**
+   * Constructor used to inject the repositories.
+   *
+   * @param menuItemRepo menu item repo
+   * @param itemGroupRepo item group repo
+   * @param customerOrderRepo customer order repo
+   * @param mapper order mapper used to convert order to dto
+   */
   public CustomerDashboardService(MenuItemRepository menuItemRepo,
       ItemGroupRepository itemGroupRepo, CustomerOrderRepository customerOrderRepo,
       OrderMapper mapper) {
@@ -33,8 +44,18 @@ public class CustomerDashboardService {
     this.orderMapper = mapper;
   }
 
+  /**
+   * Used to retrieve current orders (!paid and !delivered).
+   * It returns the ones related to the user that is logged in.
+   *
+   * @param session session used to determine user logged in
+   * @return all the orders related to the user
+   */
   public List<CustomerOrderDTO> getCurrentOrders(HttpSession session) {
 
+    //filter orders here, not delivered and not paid.
+    //status = !delivered, paid = false
+    //return those orders.
     if (session == null) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not logged in");
     }
@@ -54,10 +75,8 @@ public class CustomerDashboardService {
         .toList();
   }
 
-    //filter orders here, not delivered and not paid.
-    // status = !delivered, paid = false
-    //return those orders.
-  }
+
+}
 
 
 
