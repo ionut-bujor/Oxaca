@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
-import Menu from './pages/Menu'
-import Auth from './pages/Auth'
+import Menu from './pages/menu'
+import Auth from './pages/auth'
 
 const App: React.FC = () => {
 
