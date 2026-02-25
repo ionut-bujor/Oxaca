@@ -35,7 +35,7 @@ const Header: React.FC<HeaderProps> = ({ cartCount, onCartClick }) => {
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
 
         {/* left section of the header */}
-        <div className="w-40 hidden lg:block">
+        <div className="w-40 hidden lg:block flex-shrink-0">
           <div className="flex items-center space-x-2 text-primary font-bold text-xs uppercase tracking-tighter">
             <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
             <span>
@@ -47,14 +47,14 @@ const Header: React.FC<HeaderProps> = ({ cartCount, onCartClick }) => {
 
         {/* centre logo of the header */}
         <div
-          className="absolute left-1/2 -translate-x-1/2 text-center cursor-pointer"
+          className="flex-1 text-center cursor-pointer"
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         >
           <h1 className="serif-text text-4xl font-black tracking-widest uppercase text-primary">
             Oaxaca
           </h1>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-shrink-0">
           {/* Auth controls */}
           {isAuthenticated ? (
             <>
