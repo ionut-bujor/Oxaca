@@ -29,7 +29,7 @@ public class SecurityConfiguration {
             .requestMatchers("/api/v1/users/**").permitAll()
             .requestMatchers("/api/v1/auth/**").permitAll()
             .requestMatchers("/api/v1/menu/addItem").permitAll()
-            .requestMatchers("/api/v1/**").permitAll()
+            .requestMatchers("/**").permitAll()
             // add all other endpoints here so
             .anyRequest().authenticated()
     );
