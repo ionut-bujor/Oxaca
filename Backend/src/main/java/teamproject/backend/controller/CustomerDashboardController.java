@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import teamproject.backend.dto.CustomerOrderDTO;
+import teamproject.backend.model.Role;
+import teamproject.backend.security.RequireRole;
 import teamproject.backend.service.CustomerDashboardService;
 
 @RestController
@@ -20,6 +22,7 @@ public class CustomerDashboardController {
   }
 
   @GetMapping
+  @RequireRole({Role.ADMIN, Role.WAITER, Role.CUSTOMER, Role.KITCHEN})
   public ResponseEntity<List<CustomerOrderDTO>> displayCurrentOrders(HttpServletRequest request) {
     HttpSession session = request.getSession(false);
     List<CustomerOrderDTO> currentOrders = customerDashboardService.getCurrentOrders(session);
