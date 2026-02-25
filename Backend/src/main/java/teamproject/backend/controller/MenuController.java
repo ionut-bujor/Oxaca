@@ -4,8 +4,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -54,8 +57,37 @@ public class MenuController {
    * @return status code if the menu item was stored succesfully or not
    */
   @RequireRole({Role.ADMIN, Role.WAITER, Role.KITCHEN})
-  @PostMapping("/addItem")
-  public ResponseEntity<MenuItem> addMenuItem(@Valid @RequestBody MenuItemDTO menuDto) {
-    return serviceMenu.mapToItem(menuDto);
+  @PostMapping("/item")
+  public ResponseEntity<MenuItemDTO> addMenuItem(@Valid @RequestBody MenuItemDTO menuDto) {
+    return ResponseEntity.ok(serviceMenu.addMenuItem(menuDto));
   }
+
+  /**
+   * Endpoint used to update a menu item.
+   *
+   * @param id of the menu item being updated.
+   * @param menuDto contains the fields to be updated
+   * @return 200 if the item is updated, 404 if not found.
+   */
+
+  @RequireRole({Role.ADMIN, Role.WAITER, Role.KITCHEN})
+  @PutMapping("/item/{id}")
+  public ResponseEntity<MenuItemDTO> updateMenuItem(@PathVariable Long id,
+      @RequestBody MenuItemDTO menuDto) {
+    return ResponseEntity.ok(serviceMenu.updateItem(id, menuDto));
+  }
+
+  /**
+   * Endpoint used to delete a menuitem.
+   *
+   * @param id of the menu item being deleted
+   * @return 200 if the menuitem is deleted, 404 if not found.
+   */
+
+  @RequireRole({Role.ADMIN, Role.WAITER, Role.KITCHEN})
+  @DeleteMapping("/item/{id}")
+  public ResponseEntity<MenuItemDTO> deleteMenuItem(@PathVariable Long id) {
+    return ResponseEntity.ok(serviceMenu.deleteItem(id));
+  }
+
 }

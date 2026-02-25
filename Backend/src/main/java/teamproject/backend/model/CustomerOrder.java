@@ -47,11 +47,11 @@ public class CustomerOrder {
     this.items = new ArrayList<>();
   }
 
-  /** 
+  /**
    * Constructor for JPA sake.
-  */
+   */
   public CustomerOrder() {
-    //JPA only.
+    // JPA only.
   }
 
   /**
@@ -100,16 +100,16 @@ public class CustomerOrder {
    * Calculates the entire price of the order.
    *
    * @param items The list of items involved in the order.
-   * @return The total price. 
+   * @return The total price.
    */
   public BigDecimal totalPrice(List<CustomerOrderItem> items) {
     BigDecimal total = new BigDecimal(0);
     for (CustomerOrderItem item : items) {
-      total.add(item.linePrice());
+      total = total.add(item.linePrice());
     }
     return total;
   }
-  
+
   public Long getId() {
     return id;
   }
@@ -142,5 +142,5 @@ public class CustomerOrder {
     return items;
   }
 
-  
+
 }
