@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { useCart } from '../hooks/useCart';
 import { useMenu } from '../hooks/useMenu';
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
+import { useAuth } from '../context/AuthContext';
 import { type MenuItem } from '../types';
 
 import Header from '../components/Header';
@@ -9,11 +10,13 @@ import Hero from '../components/Hero';
 import Footer from '../components/Footer';
 import MenuItemCard from '../components/MenuItemCard';
 import CartSidebar from '../components/CartSideBar';
+import WaiterControls from '../components/WaiterControls';
 
 const Menu: React.FC = () => {
   const cartService = useCart();
   const menuService = useMenu();
   const revealService = useIntersectionObserver();
+  const { isWaiter } = useAuth();
 
   const dietaryFilters = [
     { label: 'Vegan', icon: 'eco' },
@@ -52,6 +55,13 @@ const Menu: React.FC = () => {
             </div>
 
             <div className="sticky top-20 z-40 bg-background-light/95 py-6 mb-8 border-b border-slate-100 backdrop-blur-lg">
+              {/* ── Waiter Controls ── */}
+              {isWaiter() && (
+                <div className="mb-6">
+                  <WaiterControls onItemAdded={menuService.refetch} />
+                </div>
+              )}
+
               <div className="flex flex-wrap gap-4 overflow-x-auto pb-2 scrollbar-hide">
                 {menuService.categories.map((cat) => (
                   <button 
@@ -115,7 +125,8 @@ const Menu: React.FC = () => {
                         <MenuItemCard 
                           key={item.id} 
                           item={item} 
-                          onAddToCart={cartService.addToCart} 
+                          onAddToCart={cartService.addToCart}
+                          onMenuChanged={menuService.refetch}
                         />
                       ))}
                     </div>
