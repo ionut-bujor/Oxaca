@@ -1,5 +1,6 @@
 package teamproject.backend.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import teamproject.backend.dto.UserDTO;
 import teamproject.backend.model.Role;
 import teamproject.backend.model.User;
+import teamproject.backend.security.RequireRole;
 import teamproject.backend.service.ServiceUser;
 
 /**
@@ -22,15 +24,18 @@ import teamproject.backend.service.ServiceUser;
 @RequestMapping("/api/v1/users")
 public class UserController {
   private final ServiceUser serviceUser;
-  private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+  private final BCryptPasswordEncoder passwordEncoder;
 
   /**
    * Constructor used to inject the service class within the UserController.
    *
    * @param serviceUser - Instance of the service class which handles user logic.
+   * @param passwordEncoder - The BCrypt password encoder which handles encrypting and decrypting
+   *        passwords.
    */
-  public UserController(ServiceUser serviceUser) {
+  public UserController(ServiceUser serviceUser, BCryptPasswordEncoder passwordEncoder) {
     this.serviceUser = serviceUser;
+    this.passwordEncoder = passwordEncoder;
   }
 
   /**
@@ -57,6 +62,7 @@ public class UserController {
   @PostMapping("/addUser")
   public ResponseEntity<Void> addUser(@RequestParam String firstName, @RequestParam String lastName,
       @RequestParam String email, @RequestParam String password) {
+
     User user = new User();
     user.setFirstName(firstName);
     user.setlastName(lastName);
@@ -70,6 +76,24 @@ public class UserController {
   }
 
   /**
+   * API endpoint for removing a customer's account from the DB (a customer can delete their account
+   * only).
+   *
+   * @param request - The POST request from the frontend.
+   * @return - HTTP ACCEPTED if user is successfully removed, else an UNAUTHORISED status code if
+   *         user is not logged in.
+   */
+  @PostMapping("/removeUser")
+  public ResponseEntity<Void> removeUser(HttpServletRequest request) {
+
+    HttpSession session = request.getSession(false);
+    serviceUser.removeUser(session);
+    session.invalidate();
+
+    return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+  }
+
+  /**
    * API endpoint for adding a new user into the DB as an admin user.
    *
    * @param firstName - The users first name.
@@ -77,14 +101,14 @@ public class UserController {
    * @param email - The email of the new user.
    * @param password - The password of the new user.
    * @param role - The role of the new user.
-   * @param session - The session provided by Spring.
+   * @param request - The POST request from the frontend.
    * @return - HTTP CREATED if user is successfully added, else 400 BAD_REQUEST if an error occured.
    */
+  @RequireRole(Role.ADMIN)
   @PostMapping("/adminAddUser")
   public ResponseEntity<Void> adminAddUser(@RequestParam String firstName,
       @RequestParam String lastName, @RequestParam String email, @RequestParam String password,
-      @RequestParam String role, HttpSession session) {
-    serviceUser.requireRole(session, Role.ADMIN);
+      @RequestParam String role, HttpServletRequest request) {
 
     User user = new User();
     user.setFirstName(firstName);
@@ -102,15 +126,16 @@ public class UserController {
    * API endpoint for deleting a user from the DB as an admin.
    *
    * @param email - The email of the user you want to delete.
-   * @param session - The session provided by Spring.
+   * @param request - The POST request from the frontend.
    * @return - HTTP ACCEPTED if the user is successfully deleted, else 400 BAD_REQUEST if an error
    *         occured.
    */
+  @RequireRole(Role.ADMIN)
   @PostMapping("/adminRemoveUser")
-  public ResponseEntity<Void> removeUser(@RequestParam String email, HttpSession session) {
-    serviceUser.requireRole(session, Role.ADMIN);
+  public ResponseEntity<Void> adminRemoveUser(@RequestParam String email,
+      HttpServletRequest request) {
 
-    serviceUser.removeUser(email);
+    serviceUser.removeUserByEmail(email);
 
     return ResponseEntity.status(HttpStatus.ACCEPTED).build(); // HTTP 202 - user deletion success
 
