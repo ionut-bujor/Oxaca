@@ -1,5 +1,6 @@
 package teamproject.backend.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -7,7 +8,10 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.List;
 
 /**
  * Represents a User of the Restaurant Management System.
@@ -35,6 +39,9 @@ public class User {
 
   @Column(name = "last_name", nullable = false)
   private String lastName;
+
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+  private List<CustomerOrder> orders;
 
   /**
    * Default constructor for JPA mapping.
