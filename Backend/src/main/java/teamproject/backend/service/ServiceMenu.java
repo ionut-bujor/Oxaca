@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import teamproject.backend.dto.ItemDTOHelper;
 import teamproject.backend.dto.MenuItemDTO;
 import teamproject.backend.model.ItemGroup;
 import teamproject.backend.model.MenuItem;
@@ -116,6 +117,19 @@ public class ServiceMenu {
     dto.setDietary_flags(menuItem.getTags());
     dto.setCat(menuItem.getItemGroup().getName());
 
+    return dto;
+  }
+
+  /**
+   * This uses a menuItem dto and returns the items name and quantity in a list.
+   *
+   * @param menuItemDto This is the provided menuitem dto.
+   * @return This returns the dto of a menuItem's name and quantity.
+   */
+  public ItemDTOHelper dtoToHelper(MenuItemDTO menuItemDto) {
+    ItemDTOHelper dto = new ItemDTOHelper();
+    dto.setMenuItemName(menuItemDto.getTitle());
+    dto.setMenuItemQuantity(menuItemDto.getQuantity());
     return dto;
   }
   /**
