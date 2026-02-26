@@ -44,14 +44,3 @@ export interface MenuItem {
 export interface CartItem extends MenuItem {
   quantity: number;
 }
-
-// ── Authentication Types ──────────────────────────────────────────────
-export type Role = 'CUSTOMER' | 'WAITER' | 'KITCHEN' | 'ADMIN';
-
-export interface User {
-  id: number;
-  email: string;
-  role: Role;
-  firstName: string;
-  lastName: string;
-}

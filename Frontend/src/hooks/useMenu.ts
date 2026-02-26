@@ -1,5 +1,5 @@
 
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Category, type MenuItem } from '../types';
 import { menuService } from '../services/menuService';
 
@@ -10,28 +10,29 @@ export const useMenu = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const load = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      setError(null);
-      const data = await menuService.fetchMenuItems();
-      setItems(data);
-    } catch {
-      setError("We're having trouble reaching our kitchen. Please try again later.");
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
   useEffect(() => {
     let active = true;
-    const init = async () => {
-      await load();
-      if (!active) return;
+    const load = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        const data = await menuService.fetchMenuItems();
+        if (active) {
+          setItems(data);
+        }
+      } catch (err) {
+        if (active) {
+          setError("We're having trouble reaching our kitchen. Please try again later.");
+        }
+      } finally {
+        if (active) {
+          setIsLoading(false);
+        }
+      }
     };
-    init();
+    load();
     return () => { active = false; };
-  }, [load]);
+  }, []);
 
   const categories = useMemo(() => {
     return ['All', ...Object.values(Category)];
@@ -58,8 +59,6 @@ export const useMenu = () => {
     activeFilters,
     toggleFilter,
     isLoading,
-    error,
-    /** Re-fetch the menu from backend. Call after add / edit / delete. */
-    refetch: load,
+    error
   };
 };
