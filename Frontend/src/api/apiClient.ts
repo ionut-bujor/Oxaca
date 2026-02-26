@@ -15,7 +15,9 @@ class ApiClient {
     console.debug(`[API] Requesting: ${path}`);
 
     try {
-      const response = await fetch(`${this.baseUrl}${path}`);
+      const response = await fetch(`${this.baseUrl}${path}`, {
+        credentials: 'include',
+      });
       if (!response.ok) throw new Error("Backend unavailable");
       return response.json();
     } catch (error) {
@@ -26,9 +28,47 @@ class ApiClient {
     }
   }
 
-  async post<T>(path: string, body: any): Promise<T> {
-    console.debug(`[API] Posting to: ${path}`, body);
-    throw new Error("POST methods not yet implemented by backend team.");
+  async post<T>(path: string, body: unknown): Promise<T> {
+    console.debug(`[API] POST ${path}`, body);
+    const response = await fetch(`${this.baseUrl}${path}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify(body),
+    });
+    if (!response.ok) {
+      const msg = await response.text().catch(() => 'Request failed');
+      throw new Error(msg);
+    }
+    return response.json();
+  }
+
+  async put<T>(path: string, body: unknown): Promise<T> {
+    console.debug(`[API] PUT ${path}`, body);
+    const response = await fetch(`${this.baseUrl}${path}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify(body),
+    });
+    if (!response.ok) {
+      const msg = await response.text().catch(() => 'Request failed');
+      throw new Error(msg);
+    }
+    return response.json();
+  }
+
+  async delete<T>(path: string): Promise<T> {
+    console.debug(`[API] DELETE ${path}`);
+    const response = await fetch(`${this.baseUrl}${path}`, {
+      method: 'DELETE',
+      credentials: 'include',
+    });
+    if (!response.ok) {
+      const msg = await response.text().catch(() => 'Request failed');
+      throw new Error(msg);
+    }
+    return response.json();
   }
 }
 
