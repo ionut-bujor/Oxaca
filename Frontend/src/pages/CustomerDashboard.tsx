@@ -24,6 +24,11 @@ const CustomerDashboardSandbox: React.FC = () => {
     ]
   };
 
+  const total = dashboardData.orders.reduce(
+    (sum, item) => sum + item.qty * item.price,
+    0
+  );
+
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <Header cartCount={0} onCartClick={() => {}} />
@@ -56,6 +61,19 @@ const CustomerDashboardSandbox: React.FC = () => {
               </div>
             ))}
           </div>
+
+          <div className="flex justify-between items-center pt-4 border-t border-slate-200 mt-6">
+            <span className="text-xl font-bold text-slate-800">
+              Total
+            </span>
+            <span className="text-xl font-bold text-primary">
+              £{total.toFixed(2)}
+            </span>
+          </div>
+
+          <button className="w-full mt-6 bg-primary hover:bg-darkGreen text-white py-4 rounded-2xl font-bold tracking-wider transition active:scale-95 shadow-lg">
+            Proceed To Pay
+          </button>
 
         </div>
       </main>
