@@ -29,9 +29,35 @@ const CustomerDashboardSandbox: React.FC = () => {
       <Header cartCount={0} onCartClick={() => {}} />
 
       <main className="flex-grow pt-28 px-6">
-        <h2 className="text-4xl font-bold text-slate-800">
-          My Order
-        </h2>
+        <div className="max-w-6xl mx-auto">
+
+          <h2 className="text-4xl font-bold text-slate-800 mb-8">
+            My Order
+          </h2>
+
+          <div className="space-y-4">
+            {dashboardData.orders.map((order, index) => (
+              <div
+                key={index}
+                className="flex justify-between items-center p-6 bg-gray-50 rounded-2xl shadow-sm"
+              >
+                <div>
+                  <p className="font-semibold text-lg text-slate-800">
+                    {order.name}
+                  </p>
+                  <p className="text-sm text-slate-500">
+                    Quantity: {order.qty}
+                  </p>
+                </div>
+
+                <p className="font-semibold text-slate-700">
+                  £{(order.qty * order.price).toFixed(2)}
+                </p>
+              </div>
+            ))}
+          </div>
+
+        </div>
       </main>
 
       <Footer />
