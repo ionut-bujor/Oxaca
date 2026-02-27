@@ -6,9 +6,9 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import teamproject.backend.dto.UserDTO;
-import teamproject.backend.model.Role;
 import teamproject.backend.model.User;
 import teamproject.backend.repository.UserRepository;
 
@@ -16,17 +16,19 @@ import teamproject.backend.repository.UserRepository;
  * Contains business logic for the UserController and AuthController.
  */
 @Service
+@Transactional
 public class ServiceUser {
   private final UserRepository userRepository;
-  private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+  private final BCryptPasswordEncoder passwordEncoder;
 
   /**
    * Constructor for a ServiceUser object which initialises the user repository.
    *
    * @param userRepository - The user repository to initialise.
    */
-  public ServiceUser(UserRepository userRepository) {
+  public ServiceUser(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
     this.userRepository = userRepository;
+    this.passwordEncoder = passwordEncoder;
   }
 
   /**
@@ -79,22 +81,6 @@ public class ServiceUser {
   }
 
   /**
-   * Helper method to permit access to certain endpoint's by setting a required role.
-   *
-   * @param session - The session provided by Spring.
-   * @param role - The role required to grant permission.
-   */
-  public void requireRole(HttpSession session, Role role) {
-    if (!isLoggedIn(session)) {
-      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
-    }
-
-    if (session.getAttribute("ROLE") != role) {
-      throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-    }
-  }
-
-  /**
    * Finds the current user by getting the current ID stored in the session and searching the
    * repository for it.
    *
@@ -137,7 +123,64 @@ public class ServiceUser {
     dto.setId(user.getId());
     dto.setEmail(user.getEmail());
     dto.setRole(user.getRole());
+    dto.setFirstName(user.getFirstName());
+    dto.setlastName(user.getlastName());
 
     return dto;
   }
+
+  /**
+   * Adds a user to the database from parameters passed on from the frontend.
+   *
+   * @param user - The user object created from given attributes.
+   */
+  public void addUser(User user) {
+    if (user != null) {
+      userRepository.save(user);
+    } else {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  /**
+   * Deletes a user from the database - first checking if the email provided matches.
+   *
+   * @param email - The email of the user to be deleted.
+   */
+  public void removeUserByEmail(String email) {
+    User userToDelete = userRepository.findByEmail(email);
+    if (userToDelete == null) {
+      throw new IllegalArgumentException("Could not find user with provided email.");
+    }
+
+    userRepository.delete(userToDelete);
+  }
+
+  /**
+   * Deletes a user from the database - first checking if the id provided matches.
+   *
+   * @param id - The id of the user who is to be deleted.
+   */
+  public void removeUserById(Long id) {
+    if (!userRepository.existsById(id)) {
+      throw new IllegalArgumentException("Could not find user with provided ID.");
+    }
+    userRepository.deleteById(id);
+  }
+
+  /**
+   * Deletes a user from the database by using the ID stored in the session of the currently
+   * logged-in user.
+   *
+   * @param session - The session of the currently logged-in user.
+   */
+  public void removeUser(HttpSession session) {
+    if (!isLoggedIn(session)) {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+    }
+
+    Long userId = (Long) session.getAttribute("userId");
+    removeUserById(userId);
+  }
+
 }
