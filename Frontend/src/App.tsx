@@ -13,10 +13,9 @@ const App: React.FC = () => {
       <Routes>
         <Route path='/' element={<Menu />}/>
         <Route path='/portal' element={<Auth />}/>
-
         <Route path="/checkout" element={<Checkout />} />
-<Route path="/order-confirmation" element={<OrderConfirmation />} />
-<Route path="/dashboard" element={<CustomerDashboard />} />
+        <Route path="/order-confirmation" element={<OrderConfirmation />} />
+<       Route path="/dashboard" element={<CustomerDashboard />} />
 
       </Routes>
     </Router>

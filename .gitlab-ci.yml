@@ -6,6 +6,7 @@ stages:
   - jacoco
   - checkstyle
   - spotbugs
+  - frontend
 
 cache:
   paths:
@@ -46,3 +47,18 @@ spotbugs:
     - cd Backend
     - mvn spotbugs:check
   allow_failure: true
+
+frontend:
+  stage: frontend
+  image: node:20
+  variables:
+    VITE_API_URL: "http://localhost:8080"
+  cache:
+    paths:
+      - Frontend/node_modules
+  script:
+    - cd Frontend
+    - npm ci
+    - npm run dev -- --host 0.0.0.0 &  # start dev server
+    - sleep 10                           # wait for server to start
+    - curl --fail http://localhost:5173  # check it responds
