@@ -33,7 +33,16 @@ const register: React.FC = () => {
 
 					{error && <p className="text-red-500">{error}</p>}
 
-					<button className="w-full bg-primary text-white px-8 py-4 rounded-xl font-bold uppercase tracking-widest hover:bg-darkGreen transition-all shadow-xl shadow-primary/20 active:scale-95">
+					<button className="w-full bg-primary text-white px-8 py-4 rounded-xl font-bold uppercase tracking-widest hover:bg-darkGreen transition-all shadow-xl shadow-primary/20 active:scale-95"
+					onClick={async () => {
+						setError("");
+
+						if (email === "" || name === "" || password === "" || confirmPassword === "") {
+							setError("Please ensure all fields are filled");
+						} else if (password != confirmPassword) {
+							setError("Password does not match")
+						}
+					}}>
 						Register
 					</button>
 				</div>
