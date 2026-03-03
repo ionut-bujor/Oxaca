@@ -13,7 +13,7 @@ interface DashboardData {
   orders: OrderItem[];
 }
 
-const CustomerDashboardSandbox: React.FC = () => {
+const CustomerDashboard: React.FC = () => {
 
   const dashboardData: DashboardData = {
     tableNumber: 4,
@@ -113,4 +113,4 @@ const CustomerDashboardSandbox: React.FC = () => {
   );
 };
 
-export default CustomerDashboardSandbox;
+export default CustomerDashboard;
