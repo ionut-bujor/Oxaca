@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Menu from './pages/menu'
-import Auth from './pages/auth'
+import Auth from './pages/Auth'
 import CustomerDashboard from './pages/CustomerDashboard'
 import Checkout from './pages/Checkout'
 import OrderConfirmation from './pages/OrderConfirmation'
