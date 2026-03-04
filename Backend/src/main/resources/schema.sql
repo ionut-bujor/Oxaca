@@ -25,7 +25,8 @@ CREATE TABLE IF NOT EXISTS menu_item (
                            item_image_url TEXT NOT NULL,
                            item_group_id INT NOT NULL,
                            calories INT,
-                           FOREIGN KEY (item_group_id) REFERENCES item_group(id)
+                           FOREIGN KEY (item_group_id) REFERENCES item_group(id),
+                           FOREIGN KEY (customer_order_id) REFERENCES customer_order(id) ON DELETE CASCADE
 );
 
 
@@ -53,24 +54,23 @@ CREATE TABLE IF NOT EXISTS customer_order (
                                 created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
- -- orders
-CREATE TABLE IF NOT EXISTS customer_order_item (
-                                     id SERIAL PRIMARY KEY,
-                                     order_id INT NOT NULL,
-                                     menu_item_id INT NOT NULL,
-                                     quantity INT NOT NULL CHECK (quantity > 0),
-                                     FOREIGN KEY (order_id) REFERENCES customer_order(id) ON DELETE CASCADE,
-                                     FOREIGN KEY (menu_item_id) REFERENCES menu_item(id)
-);
-
-
 -- USERS
 CREATE TABLE IF NOT EXISTS users (
-                       id SERIAL PRIMARY KEY,
-                       email VARCHAR(255) NOT NULL UNIQUE,
-                       password_hash VARCHAR(255) NOT NULL,
-                       role VARCHAR(255) NOT NULL,
-                       first_name VARCHAR(255) NOT NULL,
-                       last_name VARCHAR(255) NOT NULL
+                                id SERIAL PRIMARY KEY,
+                                email VARCHAR(255) NOT NULL UNIQUE,
+                                password_hash VARCHAR(255) NOT NULL,
+                                role VARCHAR(255) NOT NULL,
+                                first_name VARCHAR(255) NOT NULL,
+                                last_name VARCHAR(255) NOT NULL
+);
+
+-- WAITER CALL
+CREATE TABLE IF NOT EXISTS waiter_call (
+                                id SERIAL PRIMARY KEY,
+                                table_number INT NOT NULL,
+                                status VARCHAR(20) NOT NULL DEFAULT 'OPEN',
+                                note TEXT,
+                                created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                resolved_at TIMESTAMP
 );
 

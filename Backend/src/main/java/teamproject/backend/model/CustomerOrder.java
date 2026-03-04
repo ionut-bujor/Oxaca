@@ -3,9 +3,13 @@ package teamproject.backend.model;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
@@ -27,13 +31,23 @@ public class CustomerOrder {
   @Column(name = "table_number")
   private int tableNumber;
 
-  private String status = "PLACED";
+  @Enumerated(EnumType.STRING)
+  @Column(name = "status", nullable = false)
+  private OrderStatus status;
+
+  @Column(name = "paid", nullable = false)
+  private boolean paid;
 
   @Column(name = "created_at")
   private LocalDateTime createdAt = LocalDateTime.now();
 
   @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<CustomerOrderItem> items;
+  private List<MenuItem> items = new ArrayList<>();
+
+  @ManyToOne
+  @JoinColumn(name = "user_id", nullable = false)
+  private User user;
+
 
   /**
    * Constructs an order.
@@ -60,9 +74,8 @@ public class CustomerOrder {
    * @param item The item being added.
    * @param quantity The amount of times the item is added.
    */
-  public void addItem(CustomerOrderItem item, int quantity) {
+  public void addItem(MenuItem item, int quantity) {
     items.add(item);
-    item.setOrder(this);
     item.setQuantity(quantity + item.getQuantity());
   }
 
@@ -71,9 +84,8 @@ public class CustomerOrder {
    *
    * @param item The item being removed.
    */
-  public void removeItem(CustomerOrderItem item) {
+  public void removeItem(MenuItem item) {
     items.remove(item);
-    item.setOrder(null);
   }
 
   /**
@@ -82,7 +94,7 @@ public class CustomerOrder {
    * @param item The item that is having its quantity increased.
    * @param quantity The amount the quantity is changing to.
    */
-  public void increase(CustomerOrderItem item, int quantity) {
+  public void increase(MenuItem item, int quantity) {
     item.setQuantity(quantity);
   }
 
@@ -92,7 +104,7 @@ public class CustomerOrder {
    * @param item The item being decreased.
    * @param quantity The amount the quantity is changing to.
    */
-  public void decrease(CustomerOrderItem item, int quantity) {
+  public void decrease(MenuItem item, int quantity) {
     item.setQuantity(quantity);
   }
 
@@ -102,10 +114,10 @@ public class CustomerOrder {
    * @param items The list of items involved in the order.
    * @return The total price.
    */
-  public BigDecimal totalPrice(List<CustomerOrderItem> items) {
+  public BigDecimal totalPrice(List<MenuItem> items) {
     BigDecimal total = new BigDecimal(0);
-    for (CustomerOrderItem item : items) {
-      total = total.add(item.linePrice());
+    for (MenuItem item : items) {
+      total = total.add(item.getPrice());
     }
     return total;
   }
@@ -122,11 +134,11 @@ public class CustomerOrder {
     this.tableNumber = tableNumber;
   }
 
-  public String getStatus() {
+  public OrderStatus getStatus() {
     return status;
   }
 
-  public void setStatus(String status) {
+  public void setStatus(OrderStatus status) {
     this.status = status;
   }
 
@@ -138,9 +150,15 @@ public class CustomerOrder {
     this.createdAt = createdAt;
   }
 
-  public List<CustomerOrderItem> getItems() {
+  public List<MenuItem> getItems() {
     return items;
   }
 
+  public boolean isPaid() {
+    return paid;
+  }
 
+  public void setPaid(boolean paid) {
+    this.paid = paid;
+  }
 }

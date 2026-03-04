@@ -21,6 +21,8 @@ public class MenuItemDTO {
   private BigDecimal price_usd;
   @NotBlank(message = "Description can't be blank")
   private String desc;
+  @PositiveOrZero(message = "Quantity can't be negative")
+  private int quantity;
   @NotBlank(message = "Image url can't be blank")
   private String img;
   @NotBlank(message = "Category can't be blank")
@@ -101,5 +103,13 @@ public class MenuItemDTO {
 
   public void setAllergen_list(List<Allergens> allergen_list) {
     this.allergen_list = allergen_list;
+  }
+
+  public int getQuantity() {
+    return quantity;
+  }
+
+  public void setQuantity(int quantity) {
+    this.quantity = quantity;
   }
 }
