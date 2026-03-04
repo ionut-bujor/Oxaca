@@ -29,7 +29,8 @@ public class StripeService {
 
   public CustomerOrder findCustomerOrder(Long id) {
     return customerOrders.findById(id)
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "This order doesn't exist"));
+        .orElseThrow(() -> new ResponseStatusException(
+            HttpStatus.NOT_FOUND, "This order doesn't exist"));
   }
 
   public Map<String, String> createCheckoutSession(Long orderId) throws Exception {
@@ -37,35 +38,35 @@ public class StripeService {
     validateOrder(order);
     Stripe.apiKey = stripeSecretKey;
     Builder builder = createResponseRedirect(orderId);
-    populateBuilderObject(builder,order);
+    populateBuilderObject(builder, order);
     Session session = Session.create(builder.build());
     return Map.of("url", session.getUrl());
   }
 
-  public Builder createResponseRedirect(Long orderId){
-         SessionCreateParams.Builder
-             builder = SessionCreateParams.builder()
+  public Builder createResponseRedirect(Long orderId) {
+    SessionCreateParams.Builder
+        builder = SessionCreateParams.builder()
         .setMode(SessionCreateParams.Mode.PAYMENT)
         .setSuccessUrl("http://localhost:3000/success?session_id={CHECKOUT_SESSION_ID}")
         .setCancelUrl("http://localhost:3000/cancel")
         .putMetadata("orderId", String.valueOf(orderId));
-        return builder;
+    return builder;
   }
 
-  public long convertPriceIntoFormat(BigDecimal price){
+  public long convertPriceIntoFormat(BigDecimal price) {
     return price
         .setScale(2, RoundingMode.HALF_UP)
         .movePointRight(2)
         .longValueExact();
   }
 
-  public void validateOrder(CustomerOrder order){
+  public void validateOrder(CustomerOrder order) {
     if (order.getItems() == null || order.getItems().isEmpty()) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Order has no items");
     }
   }
 
-  public void validateOrderItems(MenuItem item){
+  public void validateOrderItems(MenuItem item) {
     if (item.getName() == null || item.getName().isBlank()) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Item name is missing");
     }
@@ -73,14 +74,16 @@ public class StripeService {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Item price is missing");
     }
     if (item.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid item price, price can't be negative");
+      throw new ResponseStatusException(
+          HttpStatus.BAD_REQUEST, "Invalid item price, price can't be negative");
     }
-    if (item.getQuantity() <= 0){
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid item quantity, cant have negative or 0 products");
+    if (item.getQuantity() <= 0) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+          "Invalid item quantity, cant have negative or 0 products");
     }
   }
 
-  public void assignValuesToCheckoutObject(Builder builder, long price, MenuItem item ){
+  public void assignValuesToCheckoutObject(Builder builder, long price, MenuItem item) {
     builder.addLineItem(
         SessionCreateParams.LineItem.builder()
             .setQuantity((long) item.getQuantity())
@@ -99,7 +102,7 @@ public class StripeService {
     );
   }
 
-  public void populateBuilderObject(Builder builder, CustomerOrder order){
+  public void populateBuilderObject(Builder builder, CustomerOrder order) {
     for (MenuItem item : order.getItems()) {
       validateOrderItems(item);
       long price = convertPriceIntoFormat(item.getPrice());
