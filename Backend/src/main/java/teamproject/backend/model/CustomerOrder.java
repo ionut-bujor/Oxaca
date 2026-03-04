@@ -115,7 +115,7 @@ public class CustomerOrder {
    * @return The total price.
    */
   public BigDecimal totalPrice(List<MenuItem> items) {
-    BigDecimal total = new BigDecimal(0);
+    BigDecimal total = BigDecimal.ZERO;
     for (MenuItem item : items) {
       total.add(item.getPrice());
     }
@@ -124,6 +124,10 @@ public class CustomerOrder {
 
   public Long getId() {
     return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
   }
 
   public Integer getTableNumber() {
@@ -152,6 +156,10 @@ public class CustomerOrder {
 
   public List<MenuItem> getItems() {
     return items;
+  }
+
+  public void setItems(List<MenuItem> items) {
+    this.items = items;
   }
 
   public boolean isPaid() {

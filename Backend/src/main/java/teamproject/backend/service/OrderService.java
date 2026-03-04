@@ -69,8 +69,8 @@ public class OrderService {
   * @return This returns the order for the customer.
   */
   @Transactional
-  public CustomerOrderDTO createOrder(Long id, int tableNumber) {
-    CustomerOrder order = new CustomerOrder(id, tableNumber);
+  public CustomerOrderDTO createOrder(int tableNumber) {
+    CustomerOrder order = new CustomerOrder(null, tableNumber);
     CustomerOrder saved = orderRepository.save(order);
     return orderMapper.orderToDto(saved);
   }
