@@ -42,7 +42,7 @@ const register: React.FC = () => {
 					onClick={async () => {
 						setError("");
 
-						if (email === "" || firstName === "" || password === "" || confirmPassword === "") {
+						if (email === "" || firstName === "" || lastName === "" || password === "" || confirmPassword === "") {
 							setError("Please ensure all fields are filled");
 							return;
 						} else if (password != confirmPassword) {
@@ -63,7 +63,16 @@ const register: React.FC = () => {
 									email,
 									password
 								})
+
 							})
+							const response = await fetch(request);
+
+							if (response.ok) {
+								window.location.href = "/portal";
+							} else {
+								setError("Something went wrong")
+							}
+
 						} catch (err) {
 							setError("Server Error")
 						}
