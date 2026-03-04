@@ -5,7 +5,8 @@ const register: React.FC = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
-	const [name, setName] = useState("");
+	const [firstName, setFirstName] = useState("");
+	const [lastName, setLastName] = useState("");
 	const [error, setError] = useState("");
 
 	return (
@@ -18,9 +19,13 @@ const register: React.FC = () => {
 						value={email}
 						onChange={(element) => setEmail(element.target.value)}
 					/>
-					<input type="text" placeholder="Full name" className="group flex flex-col gap-y-5 bg-white p-5 rounded-2xl border border-slate-100 shadow-2xl"
-						value={name}
-						onChange={(element) => setName(element.target.value)}
+					<input type="text" placeholder="First name" className="group flex flex-col gap-y-5 bg-white p-5 rounded-2xl border border-slate-100 shadow-2xl"
+						value={firstName}
+						onChange={(element) => setFirstName(element.target.value)}
+					/>
+					<input type="text" placeholder="Surname" className="group flex flex-col gap-y-5 bg-white p-5 rounded-2xl border border-slate-100 shadow-2xl"
+						value={lastName}
+						onChange={(element) => setLastName(element.target.value)}
 					/>
 					<input type="password" placeholder="Password" className="group flex flex-col gap-y-5 bg-white p-5 rounded-2xl border border-slate-100 shadow-2xl"
 						value={password}
@@ -37,11 +42,14 @@ const register: React.FC = () => {
 					onClick={async () => {
 						setError("");
 
-						if (email === "" || name === "" || password === "" || confirmPassword === "") {
+						if (email === "" || firstName === "" || password === "" || confirmPassword === "") {
 							setError("Please ensure all fields are filled");
+							return;
 						} else if (password != confirmPassword) {
 							setError("Password does not match")
+							return;
 						}
+
 					}}>
 						Register
 					</button>
