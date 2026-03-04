@@ -15,17 +15,31 @@ import teamproject.backend.model.CustomerOrder;
 import teamproject.backend.model.MenuItem;
 import teamproject.backend.repository.CustomerOrderRepository;
 
+/**
+ * Logic used to create a checkout session using Stripe API.
+ */
 @Service
 public class StripeService {
 
   @Value("${stripe.secret.key}")
   private String stripeSecretKey;
-
   private final CustomerOrderRepository customerOrders;
 
+  /**
+   * Injection of the customer order repositories.
+   *
+   * @param customerOrders repo of customer orders
+   */
   public StripeService(CustomerOrderRepository customerOrders) {
     this.customerOrders = customerOrders;
   }
+
+  /**
+   * Used to find the order using the id of the order.
+   *
+   * @param id id of the order being checked out
+   * @return the customer order
+   */
 
   public CustomerOrder findCustomerOrder(Long id) {
     return customerOrders.findById(id)
@@ -33,6 +47,14 @@ public class StripeService {
             HttpStatus.NOT_FOUND, "This order doesn't exist"));
   }
 
+  /**
+   * Used to create the checkout session object.
+   *
+   * @param orderId of the order being checked out
+   *
+   * @return map of the items being purchased
+   * @throws Exception if the checkout session fails.
+   */
   public Map<String, String> createCheckoutSession(Long orderId) throws Exception {
     CustomerOrder order = findCustomerOrder(orderId);
     validateOrder(order);
@@ -43,6 +65,12 @@ public class StripeService {
     return Map.of("url", session.getUrl());
   }
 
+  /**
+   * Used to redirect the customer after finishing checking out
+   * based on if the payment went through or something was wrong.
+   * @param orderId order being paid for
+   * @return builder object
+   */
   public Builder createResponseRedirect(Long orderId) {
     SessionCreateParams.Builder
         builder = SessionCreateParams.builder()
@@ -53,6 +81,11 @@ public class StripeService {
     return builder;
   }
 
+  /**
+   *
+   * @param price
+   * @return
+   */
   public long convertPriceIntoFormat(BigDecimal price) {
     return price
         .setScale(2, RoundingMode.HALF_UP)
