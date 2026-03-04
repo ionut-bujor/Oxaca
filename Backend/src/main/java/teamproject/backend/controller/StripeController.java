@@ -48,7 +48,7 @@ public class StripeController {
       return stripeService.createCheckoutSession(req.orderId());
     } catch (Exception e) {
       throw new ResponseStatusException(
-          HttpStatus.BAD_REQUEST, "Could not create checkout session");
+          HttpStatus.BAD_REQUEST, "Could not create checkout session", e);
     }
   }
 
