@@ -60,6 +60,7 @@ export interface CustomerOrderDTO {
   createdAt: string;    // ISO date string
   items: ItemDTOHelper[];
   totalPrice: number;   // BigDecimal mapped to number
+}
 
 // ── Authentication Types ──────────────────────────────────────────────
 export type Role = 'CUSTOMER' | 'WAITER' | 'KITCHEN' | 'ADMIN';
