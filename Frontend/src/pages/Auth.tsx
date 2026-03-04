@@ -59,6 +59,11 @@ const auth: React.FC = () => {
 					</button>
 
 					<button 
+						className="bg-primary text-white px-8 py-4 rounded-xl font-bold uppercase tracking-widest hover:bg-darkGreen transition-all shadow-xl shadow-primary/20 active:scale-95">
+						<a href="/Register">Register</a>
+					</button>
+
+					<button 
 						className="bg-primary text-white px-8 py-4 rounded-xl font-bold uppercase tracking-widest hover:bg-darkGreen transition-all shadow-xl shadow-primary/20 active:scale-95"
 						onClick={() => {
 							let loginOptions = document.getElementById("loginOptions");
