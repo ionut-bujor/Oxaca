@@ -53,6 +53,7 @@ public class StripeService {
    * @param orderId of the order being checked out
    *
    * @return map of the items being purchased
+   *
    * @throws Exception if the checkout session fails.
    */
   public Map<String, String> createCheckoutSession(Long orderId) throws Exception {
@@ -68,6 +69,7 @@ public class StripeService {
   /**
    * Used to redirect the customer after finishing checking out
    * based on if the payment went through or something was wrong.
+   *
    * @param orderId order being paid for
    * @return builder object
    */
@@ -82,9 +84,11 @@ public class StripeService {
   }
 
   /**
+   * Convert price into stripe format.
    *
-   * @param price
-   * @return
+   * @param price big decimal format
+   *
+   * @return Stripe format i.e 1225
    */
   public long convertPriceIntoFormat(BigDecimal price) {
     return price
@@ -93,12 +97,23 @@ public class StripeService {
         .longValueExact();
   }
 
+  /**
+   * This is used to validate the order, make sure its not empty.
+   *
+   * @param order being checked out
+   */
+
   public void validateOrder(CustomerOrder order) {
     if (order.getItems() == null || order.getItems().isEmpty()) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Order has no items");
     }
   }
 
+  /**
+   * Validating that the items are valid.
+   *
+   * @param item individual item from the order
+   */
   public void validateOrderItems(MenuItem item) {
     if (item.getName() == null || item.getName().isBlank()) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Item name is missing");
@@ -115,6 +130,14 @@ public class StripeService {
           "Invalid item quantity, cant have negative or 0 products");
     }
   }
+
+  /**
+   * Assigning the item to the Stripe checkout object.
+   *
+   * @param builder stripe checkout object
+   * @param price price of the item
+   * @param item that is included in the order
+   */
 
   public void assignValuesToCheckoutObject(Builder builder, long price, MenuItem item) {
     builder.addLineItem(
@@ -134,6 +157,13 @@ public class StripeService {
             .build()
     );
   }
+
+  /**
+   * Function used to add all items from an order to the stripe object.
+   *
+   * @param builder Stripe checkout object
+   * @param order being checked out
+   */
 
   public void populateBuilderObject(Builder builder, CustomerOrder order) {
     for (MenuItem item : order.getItems()) {
