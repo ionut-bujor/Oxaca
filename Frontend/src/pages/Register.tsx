@@ -51,7 +51,7 @@ const register: React.FC = () => {
 						}
 
 						try {
-							const request: Request = new Request("localhost:8080/api/v1/users/addUser", {
+							const request: Request = new Request("http://localhost:8080/api/v1/users/addUser", {
 								method: "POST",
 								headers: {
 									"Content-Type": "application/x-www-form-urlencoded"
