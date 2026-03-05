@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 import type { User } from '../types';
 
 const API_BASE = 'http://localhost:8080';
+
 const STORAGE_KEY = 'authUser';
 
 interface AuthContextType {
