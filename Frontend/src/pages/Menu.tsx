@@ -9,6 +9,7 @@ import Hero from '../components/Hero';
 import Footer from '../components/Footer';
 import MenuItemCard from '../components/MenuItemCard';
 import CartSidebar from '../components/CartSideBar';
+import WaiterControls from '../components/WaiterControls';
 
 const Menu: React.FC = () => {
   const cartService = useCartStore();
@@ -50,6 +51,8 @@ const Menu: React.FC = () => {
               <h2 className="serif-text text-5xl lg:text-6xl text-slate-900 italic font-medium">The Menu</h2>
               <div className="w-16 h-1 bg-primary mx-auto mt-6"></div>
             </div>
+
+            <WaiterControls onItemAdded={() => menuService.refetch?.()} />
 
             <div className="sticky top-20 z-40 bg-background-light/95 py-6 mb-8 border-b border-slate-100 backdrop-blur-lg">
               <div className="flex flex-wrap gap-4 overflow-x-auto pb-2 scrollbar-hide">
