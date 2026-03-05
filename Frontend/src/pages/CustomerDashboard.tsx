@@ -3,6 +3,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { CustomerOrderDTO } from '../types';
 import { ItemDTOHelper } from '../types';
+import CustomerDashboardHeader from "../components/CustomerDashboardHeader";
 
 const CustomerDashboard: React.FC = () => {
   const [order, setOrder] = useState<CustomerOrderDTO | null>(null);
@@ -53,7 +54,7 @@ const CustomerDashboard: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
-      <Header cartCount={0} onCartClick={() => {}} />
+      <CustomerDashboardHeader/>
 
       <main className="flex-grow pt-28 px-6">
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-start">
