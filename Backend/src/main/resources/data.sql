@@ -71,10 +71,18 @@ VALUES (
            'Smith'
        );
 
+INSERT INTO users (email, password_hash, role, first_name, last_name)
+VALUES (
+           'waiter@oaxaca.com',
+           '$2a$10$mYY0PtF7uw3Fb5pv5WB5ou6e8wsY.ZAOoRcGPivLINUJ92C5pzLd2',
+           'ADMIN',
+           'Maria',
+           'Garcia'
+       );
 
 
 -- Customer orders for the admin
---INSERT INTO customer_order (id, table_number, status, paid, created_at, user_id) VALUES
---(1, 5, 'DELIVERED', false, NOW(), 1),
---(2, 6, 'DELIVERED', true, NOW(), 1),
---(3, 7, 'PREPARING', false, NOW(), 1);
+INSERT INTO customer_order (id, table_number, status, paid, created_at, user_id) VALUES
+(1, 5, 'DELIVERED', false, NOW(), 1),
+(2, 6, 'DELIVERED', true, NOW(), 1),
+(3, 7, 'PREPARING', false, NOW(), 1);
