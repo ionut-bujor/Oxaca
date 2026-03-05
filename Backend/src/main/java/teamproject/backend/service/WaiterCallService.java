@@ -58,4 +58,18 @@ public class WaiterCallService {
     call.resolve();
     return waiterCallRepository.save(call);
   }
+
+
+  /**
+   * Lists calls by status ordered by creation time.
+   *
+   * @param status waiter call status
+   * @return list of calls
+   */
+  @Transactional(readOnly = true)
+  public List<WaiterCall> listByStatus(String status) {
+    return waiterCallRepository.findByStatusOrderByCreatedAtAsc(status);
+  }
 }
+
+
