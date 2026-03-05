@@ -68,7 +68,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const isWaiter = () => user?.role === 'WAITER';
+  const isWaiter = () => user?.role === 'WAITER' || user?.role === 'KITCHEN' || user?.role === 'ADMIN';
   const isAuthenticated = user !== null;
 
   return (
