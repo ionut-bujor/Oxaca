@@ -16,8 +16,7 @@ INSERT INTO menu_item
 VALUES
     ('Oaxacan Black Mole',
      'Authentic black mole with 32 ingredients, served with chicken breast and handmade tortillas.',
-     50, 100.00,
-     'https://lh3.googleusercontent.com/aida-public/AB6AXuC7J15XCZfi0FBwpfXmEmtumAkVxVIJheynRAlmFEyRPWMc8eKH8xAXfL5L-vscbF5iwonbjv4hPTu3BzffptERUaQWZiI8wUW2zwxgylCcNMzB7YpgtlQgxicLxTh706NmSc2811RVmsRcLLzA4ng8hSPDLkSOqwJWtsphfvS_SgbqcTYPTb7vBnE8FD-mm4HgXt3WdnU1zNZ2WfXARa_uUpkorCewwaVlHBM8D-5QhCfiysIwCzz_fNjSGqxyJfQ-b9yrqp49urg',
+     50, 100.00,',
      1, 450),
 
     ('Tlayuda Tradicional',
@@ -78,3 +77,12 @@ VALUES (
 --(1, 5, 'DELIVERED', false, NOW(), 1),
 --(2, 6, 'DELIVERED', true, NOW(), 1),
 --(3, 7, 'PREPARING', false, NOW(), 1);
+
+--INSERT INTO users (email, password_hash, role, first_name, last_name)
+--VALUES (
+ --          'waiter@oaxaca.com',
+ --          '$2a$10$mYY0PtF7uw3Fb5pv5WB5ou6e8wsY.ZAOoRcGPivLINUJ92C5pzLd2',
+   --        'WAITER',
+     --      'John',
+       --    'Smith'
+       --);
