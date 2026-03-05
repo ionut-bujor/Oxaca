@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
 import { menuService, type MenuItemPayload } from '../services/menuService';
 
 /** Known item-group names from the database seed. Used for the category dropdown. */
@@ -17,11 +18,11 @@ interface WaiterControlsProps {
 }
 
 const WaiterControls: React.FC<WaiterControlsProps> = ({ onItemAdded }) => {
+  const { isWaiter, user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-
   const [form, setForm] = useState<MenuItemPayload>({
     title: '',
     price_usd: 0,
@@ -32,6 +33,19 @@ const WaiterControls: React.FC<WaiterControlsProps> = ({ onItemAdded }) => {
     dietary_flags: [],
     allergen_list: [],
   });
+
+  // Debug logging
+  console.log('WaiterControls - user:', user);
+  console.log('WaiterControls - isWaiter():', isWaiter());
+
+  // Don't hide during loading
+  if (!user) {
+    return null;
+  }
+
+  if (!isWaiter()) {
+    return null;
+  }
 
   const resetForm = () => {
     setForm({

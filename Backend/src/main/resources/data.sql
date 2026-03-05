@@ -16,8 +16,7 @@ INSERT INTO menu_item
 VALUES
     ('Oaxacan Black Mole',
      'Authentic black mole with 32 ingredients, served with chicken breast and handmade tortillas.',
-     50, 100.00,
-     'https://lh3.googleusercontent.com/aida-public/AB6AXuC7J15XCZfi0FBwpfXmEmtumAkVxVIJheynRAlmFEyRPWMc8eKH8xAXfL5L-vscbF5iwonbjv4hPTu3BzffptERUaQWZiI8wUW2zwxgylCcNMzB7YpgtlQgxicLxTh706NmSc2811RVmsRcLLzA4ng8hSPDLkSOqwJWtsphfvS_SgbqcTYPTb7vBnE8FD-mm4HgXt3WdnU1zNZ2WfXARa_uUpkorCewwaVlHBM8D-5QhCfiysIwCzz_fNjSGqxyJfQ-b9yrqp49urg',
+     50, 100.00,',
      1, 450),
 
     ('Tlayuda Tradicional',

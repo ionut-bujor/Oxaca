@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 import type { User } from '../types';
 
 const API_BASE = 'http://localhost:8080';
+
 const STORAGE_KEY = 'authUser';
 
 interface AuthContextType {
@@ -68,7 +69,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const isWaiter = () => user?.role === 'WAITER';
+  const isWaiter = () => user?.role === 'WAITER' || user?.role === 'KITCHEN' || user?.role === 'ADMIN';
   const isAuthenticated = user !== null;
 
   return (
