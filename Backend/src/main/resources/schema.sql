@@ -74,3 +74,9 @@ CREATE TABLE IF NOT EXISTS waiter_call (
                                 resolved_at TIMESTAMP
 );
 
+-- Used to check if there is a conflict with inserting data by adding a unique index to each table.
+CREATE UNIQUE INDEX IF NOT EXISTS uq_menu_type_name ON menu_type(name);
+CREATE UNIQUE INDEX IF NOT EXISTS uq_item_group_name ON item_group(name);
+CREATE UNIQUE INDEX IF NOT EXISTS uq_menu_item_name ON menu_item(item_name);
+CREATE UNIQUE INDEX IF NOT EXISTS uq_tags ON menu_item_tags(menu_item_id, tag);
+CREATE UNIQUE INDEX IF NOT EXISTS uq_allergens ON menu_item_allergens(menu_item_id, allergens);

@@ -45,6 +45,23 @@ export interface CartItem extends MenuItem {
   quantity: number;
 }
 
+
+export interface ItemDTOHelper {
+  menuItemName: string;
+  menuItemQuantity: number;
+  // Add price if backend provides it
+  price?: number; // optional if not yet included
+}
+
+export interface CustomerOrderDTO {
+  id: number;
+  tableNumber: number;
+  status: string;       // OrderStatus as string
+  createdAt: string;    // ISO date string
+  items: ItemDTOHelper[];
+  totalPrice: number;   // BigDecimal mapped to number
+}
+
 // ── Authentication Types ──────────────────────────────────────────────
 export type Role = 'CUSTOMER' | 'WAITER' | 'KITCHEN' | 'ADMIN';
 
@@ -54,4 +71,5 @@ export interface User {
   role: Role;
   firstName: string;
   lastName: string;
+
 }
