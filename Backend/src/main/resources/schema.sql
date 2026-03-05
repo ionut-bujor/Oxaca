@@ -74,3 +74,8 @@ CREATE TABLE IF NOT EXISTS waiter_call (
                                 resolved_at TIMESTAMP
 );
 
+ALTER TABLE menu_type ADD CONSTRAINT uq_menu_type_name UNIQUE (name);
+ALTER TABLE item_group ADD CONSTRAINT uq_item_group_name UNIQUE (name);
+ALTER TABLE menu_item ADD CONSTRAINT uq_menu_item_name UNIQUE (item_name);
+ALTER TABLE menu_item_tags ADD CONSTRAINT uq_tags PRIMARY KEY (menu_item_id, tag);
+ALTER TABLE menu_item_allergens ADD CONSTRAINT uq_allergens PRIMARY KEY (menu_item_id, allergens);
