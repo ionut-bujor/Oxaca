@@ -44,3 +44,12 @@ export interface MenuItem {
 export interface CartItem extends MenuItem {
   quantity: number;
 }
+
+/** Alert placed by waiter when a client needs help */
+export interface Alert {
+  id: number;
+  tableNumber: number;
+  message: string | null;
+  status: 'ACTIVE' | 'RESOLVED';
+  createdAt: string;
+}
