@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import ButtonlessHeader from "../components/ButtonlessHeader";
+import { useAuth } from "../context/AuthContext";
 
-const auth: React.FC = () => {
+const Auth: React.FC = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState("");
-
+	const { fetchCurrentUser } = useAuth();
 	return (
 		<main>
 			<ButtonlessHeader />
@@ -40,6 +41,7 @@ const auth: React.FC = () => {
 							const response = await fetch(request);
 
 							if (response.ok) {
+								await fetchCurrentUser();
 								window.location.href = "/";
 							} else {
 								setError("Invalid email or password")
@@ -78,4 +80,4 @@ const auth: React.FC = () => {
 	)
 }
 
-export default auth;
+export default Auth;

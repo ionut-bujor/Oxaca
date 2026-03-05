@@ -1,15 +1,14 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Checkout from "./pages/Checkout.tsx";
-import OrderConfirmation from "./pages/OrderConfirmation.tsx";
-import Menu from './pages/Menu'
+import Menu from './pages/menu'
 import Auth from './pages/Auth'
 import Register from './pages/Register'
 import CustomerDashboard from './pages/CustomerDashboard'
+import Checkout from './pages/Checkout'
+import OrderConfirmation from './pages/OrderConfirmation'
 
 const App: React.FC = () => {
 
   return (
-    <>
     <Router>
       <Routes>
         <Route path='/' element={<Menu />}/>
@@ -21,7 +20,6 @@ const App: React.FC = () => {
 
       </Routes>
     </Router>
-    </>
   )
 
 };
