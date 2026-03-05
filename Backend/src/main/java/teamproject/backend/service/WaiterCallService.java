@@ -70,6 +70,7 @@ public class WaiterCallService {
   public List<WaiterCall> listByStatus(String status) {
     return waiterCallRepository.findByStatusOrderByCreatedAtAsc(status);
   }
+  
 }
 
 
