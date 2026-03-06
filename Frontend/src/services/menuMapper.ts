@@ -30,10 +30,24 @@ export const mapMenuItemDtoToDomain = (dto: BackendMenuItem): MenuItem => {
     image: dto.img || '',
     category: mapCategory(dto.cat),
     group: dto.cat,
-    tags: (dto.dietary_flags || []) as Tag[],
+    tags: mapDietaryFlags(dto.dietary_flags),
     calories: dto.kcal,
     allergens: mapAllergens(dto.allergen_list)
   };
+};
+
+const mapDietaryFlags = (list?: string[]): Tag[] => {
+  if (!list) return [];
+  const tagMap: Record<string, Tag> = {
+    'vegan': 'Vegan',
+    'gluten_free': 'Gluten-Free',
+    'spicy': 'Spicy',
+    'vegetarian': 'Vegetarian'
+  };
+  return list
+    .map(tag => tag.trim().toLowerCase())
+    .filter(tag => tagMap[tag])
+    .map(tag => tagMap[tag]);
 };
 
 const mapAllergens = (list?: string[]): Allergen[] => {
