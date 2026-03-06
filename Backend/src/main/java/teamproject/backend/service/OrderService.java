@@ -70,7 +70,7 @@ public class OrderService {
   */
   @Transactional
   public CustomerOrderDTO createOrder(int tableNumber) {
-    CustomerOrder order = new CustomerOrder(null, tableNumber);
+    CustomerOrder order = new CustomerOrder(tableNumber);
     CustomerOrder saved = orderRepository.save(order);
     return orderMapper.orderToDto(saved);
   }
