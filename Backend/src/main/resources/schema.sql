@@ -25,8 +25,7 @@ CREATE TABLE IF NOT EXISTS menu_item (
                            item_image_url TEXT NOT NULL,
                            item_group_id INT NOT NULL,
                            calories INT,
-                           FOREIGN KEY (item_group_id) REFERENCES item_group(id),
-                           FOREIGN KEY (customer_order_id) REFERENCES customer_order(id) ON DELETE CASCADE
+                           FOREIGN KEY (item_group_id) REFERENCES item_group(id)
 );
 
 

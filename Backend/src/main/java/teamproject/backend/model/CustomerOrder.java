@@ -52,11 +52,9 @@ public class CustomerOrder {
   /**
    * Constructs an order.
    *
-   * @param id This is the order id.
    * @param tableNumber This is the tableNumber the order comes from.
    */
-  public CustomerOrder(Long id, int tableNumber) {
-    this.id = id;
+  public CustomerOrder(int tableNumber) {
     this.tableNumber = tableNumber;
     this.items = new ArrayList<>();
   }
@@ -168,5 +166,13 @@ public class CustomerOrder {
 
   public void setPaid(boolean paid) {
     this.paid = paid;
+  }
+
+  public User getUser() {
+    return user;
+  }
+
+  public void setUser(User user) {
+    this.user = user;
   }
 }
