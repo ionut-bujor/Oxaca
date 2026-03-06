@@ -33,7 +33,6 @@ const Header: React.FC<HeaderProps> = ({ cartCount, onCartClick }) => {
   return (
     <header className="fixed top-0 w-full z-50 bg-background-light/90 backdrop-blur-md border-b border-slate-100">
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-
         {/* left section of the header */}
         <div className="w-40 hidden lg:block flex-shrink-0">
           <div className="flex items-center space-x-2 text-primary font-bold text-xs uppercase tracking-tighter">
@@ -44,7 +43,11 @@ const Header: React.FC<HeaderProps> = ({ cartCount, onCartClick }) => {
             </span>
           </div>
         </div>
-
+        {isWaiter() && (
+                <span className="px-3 py-1 bg-blue-600 text-white rounded-full text-[10px] font-black uppercase tracking-widest">
+                  Waiter
+                </span>
+              )}
         {/* centre logo of the header */}
         <div
           className="flex-1 text-center cursor-pointer"
@@ -58,14 +61,6 @@ const Header: React.FC<HeaderProps> = ({ cartCount, onCartClick }) => {
           {/* Auth controls */}
           {isAuthenticated ? (
             <>
-              {isWaiter() && (
-                <span className="px-3 py-1 bg-blue-600 text-white rounded-full text-[10px] font-black uppercase tracking-widest">
-                  Waiter
-                </span>
-              )}
-              <span className="text-xs text-slate-500 font-medium hidden sm:inline">
-                {user?.firstName || user?.email}
-              </span>
               {MyOrdersButton}
               <button
                 onClick={handleLogout}
