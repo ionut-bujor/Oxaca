@@ -154,5 +154,9 @@ public class MenuItem {
   public CustomerOrder getCustomerOrder() {
     return order;
   }
+
+  public void setCustomerOrder(CustomerOrder order) {
+    this.order = order;
+  }
 }
 

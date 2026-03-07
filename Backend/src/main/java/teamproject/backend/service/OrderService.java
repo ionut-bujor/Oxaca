@@ -7,7 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+import teamproject.backend.dto.CreateOrderRequest;
 import teamproject.backend.dto.CustomerOrderDTO;
+import teamproject.backend.dto.OrderItemRequest;
 import teamproject.backend.model.CustomerOrder;
 import teamproject.backend.model.MenuItem;
 import teamproject.backend.model.OrderStatus;
@@ -74,11 +76,12 @@ public class OrderService {
   /**
   * This creates an order for a table number.
   *
-  * @param tableNumber This is the table number for the customer.
+  * @param body This holds the items the customer orders.
+  * @param session This checks for the user in the session.
   * @return This returns the order for the customer.
   */
   @Transactional
-  public CustomerOrderDTO createOrder(int tableNumber, HttpSession session) {
+  public CustomerOrderDTO createOrder(CreateOrderRequest body, HttpSession session) {
     if (session == null) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not logged in");
     }
@@ -94,11 +97,16 @@ public class OrderService {
         HttpStatus.UNAUTHORIZED, "User not found"));
 
     
-    CustomerOrder order = new CustomerOrder(tableNumber);
+    CustomerOrder order = new CustomerOrder(body.getTableNumber());
     order.setUser(user);
     order.setStatus(OrderStatus.PLACED);
     order.setPaid(false);
-
+    if (body.getItems() != null) {
+      for (OrderItemRequest itemReq : body.getItems()) {
+        MenuItem item = getValidMenuItem(itemReq.getID());
+        order.addItem(item, itemReq.getQuantity());
+      }
+    }
     CustomerOrder saved = orderRepository.save(order);
     return orderMapper.orderToDto(saved);
   }

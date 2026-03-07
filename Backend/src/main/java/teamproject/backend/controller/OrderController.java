@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import teamproject.backend.dto.CreateOrderRequest;
 import teamproject.backend.dto.CustomerOrderDTO;
 import teamproject.backend.dto.MenuItemDTO;
 import teamproject.backend.model.Role;
@@ -66,11 +67,12 @@ public class OrderController {
   @PostMapping
   @RequireRole({Role.ADMIN, Role.WAITER, Role.CUSTOMER, Role.KITCHEN})
   public ResponseEntity<CustomerOrderDTO> createOrder(
-      @RequestBody CustomerOrderDTO body,
+      @RequestBody CreateOrderRequest body,
       HttpServletRequest request) {
+    
     HttpSession session = request.getSession(false);
     CustomerOrderDTO createdOrder = orderService.createOrder(
-        body.getTableNumber(), session);
+        body, session);
     return ResponseEntity.ok(createdOrder);  
   }
 
