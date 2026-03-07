@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import ButtonlessHeader from "../components/ButtonlessHeader";
 import { useAuth } from "../context/AuthContext";
 
 const auth: React.FC = () => {
@@ -11,8 +10,6 @@ const auth: React.FC = () => {
 
 	return (
 		<main>
-			<ButtonlessHeader />
-
 			<div className="flex items-center justify-center min-h-screen">
 				<div id="loginScreen" className="group flex flex-col gap-y-5 bg-white p-5 rounded-2xl border border-slate-100 shadow-2xl hidden">
 					<input type="text" id = "userField" placeholder="Username" className="group flex flex-col gap-y-5 bg-white p-5 rounded-2xl border border-slate-100 shadow-2xl"
@@ -58,6 +55,10 @@ const auth: React.FC = () => {
 				</div>
 
 				<div id="loginOptions" className="group flex flex-col gap-y-5 bg-white p-5 rounded-2xl border border-slate-100 shadow-2xl">
+					<div className="text-center">
+    					<h2 className="serif-text text-3xl font-black tracking-widest uppercase text-primary"><a href="/">Oaxaca</a></h2>
+    					<p className="text-slate-400 text-xs uppercase tracking-widest mt-1">Welcome back</p>
+					</div>
 					<button 
 						className="bg-primary text-white px-8 py-4 rounded-xl font-bold uppercase tracking-widest hover:bg-darkGreen transition-all shadow-xl shadow-primary/20 active:scale-95"
 						onClick={() => {
@@ -65,15 +66,6 @@ const auth: React.FC = () => {
 						}}>
 						Continue as guest
 					</button>
-
-					<button 
-						className="bg-primary text-white px-8 py-4 rounded-xl font-bold uppercase tracking-widest hover:bg-darkGreen transition-all shadow-xl shadow-primary/20 active:scale-95"
-						onClick={() => {
-							window.location.href = "/register";
-						}}>
-						Register
-					</button>
-
 					<button 
 						className="bg-primary text-white px-8 py-4 rounded-xl font-bold uppercase tracking-widest hover:bg-darkGreen transition-all shadow-xl shadow-primary/20 active:scale-95"
 						onClick={() => {
@@ -87,6 +79,23 @@ const auth: React.FC = () => {
 							loginScreen.classList.toggle("hidden");
 						}}>
 						Sign in
+					</button>
+
+					<div className="relative my-1">
+    					<div className="absolute inset-0 flex items-center">
+        					<div className="w-full border-t border-slate-200" />
+    					</div>
+    					<div className="relative flex justify-center text-xs">
+        					<span className="bg-white px-3 text-slate-400">Don't have an account?</span>
+    					</div>
+					</div>
+
+					<button 
+    					className="w-full border border-primary text-primary px-8 py-4 rounded-xl font-bold uppercase tracking-widest hover:bg-primary/5 transition-all active:scale-95"
+    					onClick={() => {
+        					window.location.href = "/register";
+    					}}>
+    					Register
 					</button>
 				</div>
 			</div>

@@ -15,7 +15,7 @@ const RoleBadge: React.FC = () => {
   if (!role) return null;
 
   return (
-    <span className="px-3 py-1 bg-green-600 text-white rounded-full text-[10px] font-black uppercase tracking-widest">
+    <span className="px-3 py-1 bg-primary text-white rounded-full text-[10px] font-black uppercase tracking-widest">
       {role}
     </span>
   );

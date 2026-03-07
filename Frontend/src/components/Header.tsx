@@ -19,6 +19,7 @@ const Header: React.FC<HeaderProps> = ({ cartCount, onCartClick }) => {
   {/* My Orders button - will take the user to the customer dashboard */}
   const MyOrdersButton = (
     <button
+      title="My Orders"
       onClick={() => window.location.href = '/dashboard'}
       className="flex items-center space-x-2 px-5 py-2.5 rounded-full bg-primary text-white hover:bg-accent transition-all shadow-md shadow-primary/20 active:scale-95 mr-2"
     >
@@ -30,17 +31,17 @@ const Header: React.FC<HeaderProps> = ({ cartCount, onCartClick }) => {
   {/* Order Basket button - will open the "Your Basket" sidebar */}
   const OrderBasketButton = (
     <button 
-            onClick={onCartClick}
-            className="flex items-center space-x-2 px-5 py-2.5 rounded-full bg-primary text-white hover:bg-accent transition-all shadow-md shadow-primary/20 active:scale-95 mr-2"
-          >
-            <span className="text-sm font-bold uppercase tracking-wider hidden sm:inline">My Basket</span>
-            <span className="material-symbols-outlined text-xl">shopping_basket</span>
-            {cartCount > 0 && (
-              <span className="ml-2 w-5 h-5 bg-white text-primary rounded-full flex items-center justify-center text-[10px] font-black">
-                {cartCount}
-              </span>
-            )}
-          </button>
+      title="My Basket"
+      onClick={onCartClick}
+      className="flex items-center space-x-2 px-5 py-2.5 rounded-full bg-primary text-white hover:bg-accent transition-all shadow-md shadow-primary/20 active:scale-95 mr-2">
+        <span className="text-sm font-bold uppercase tracking-wider hidden sm:inline">My Basket</span>
+        <span className="material-symbols-outlined text-xl">shopping_basket</span>
+        {cartCount > 0 && (
+          <span className="ml-2 w-5 h-5 bg-white text-primary rounded-full flex items-center justify-center text-[10px] font-black">
+            {cartCount}
+          </span>
+        )}
+    </button>
   );
 
   {/* Sign In button - will redirect the user to the /portal page */}
