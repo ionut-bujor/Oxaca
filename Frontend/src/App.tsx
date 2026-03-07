@@ -5,6 +5,8 @@ import Register from './pages/Register'
 import CustomerDashboard from './pages/CustomerDashboard'
 import Checkout from './pages/Checkout'
 import OrderConfirmation from './pages/OrderConfirmation'
+import StripeCancel from "./pages/StripeCancel";
+import StripeSuccess from "./pages/StripeSuccess";
 
 const App: React.FC = () => {
 
@@ -17,6 +19,8 @@ const App: React.FC = () => {
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/order-confirmation" element={<OrderConfirmation />} />
         <Route path="/dashboard" element={<CustomerDashboard />} />
+        <Route path="/success" element={<StripeSuccess />} />
+        <Route path="/cancel" element={<StripeCancel />} />
 
       </Routes>
     </Router>
