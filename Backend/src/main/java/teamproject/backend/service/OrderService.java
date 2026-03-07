@@ -1,14 +1,22 @@
 package teamproject.backend.service;
 
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
+import teamproject.backend.dto.CreateOrderRequest;
 import teamproject.backend.dto.CustomerOrderDTO;
+import teamproject.backend.dto.OrderItemRequest;
 import teamproject.backend.model.CustomerOrder;
 import teamproject.backend.model.MenuItem;
+import teamproject.backend.model.OrderStatus;
+import teamproject.backend.model.User;
 import teamproject.backend.repository.CustomerOrderRepository;
 import teamproject.backend.repository.MenuItemRepository;
+import teamproject.backend.repository.UserRepository;
 
 /**
  * This class handles the service layer for orders.
@@ -19,6 +27,7 @@ public class OrderService {
 
   private final CustomerOrderRepository orderRepository;
   private final MenuItemRepository menuItemRepository;
+  private final UserRepository userRepository;
   private final OrderMapper orderMapper;
 
   /**
@@ -29,10 +38,12 @@ public class OrderService {
   * @param orderMapper uses the orderMapper class.
   */
   public OrderService(CustomerOrderRepository orderRepository, OrderMapper orderMapper, 
-      MenuItemRepository menuItemRepository) {
+      MenuItemRepository menuItemRepository,
+      UserRepository userRepository) {
     this.orderMapper = orderMapper;
     this.orderRepository = orderRepository;
     this.menuItemRepository = menuItemRepository;
+    this.userRepository = userRepository;
   }
 
 
@@ -65,12 +76,37 @@ public class OrderService {
   /**
   * This creates an order for a table number.
   *
-  * @param tableNumber This is the table number for the customer.
+  * @param body This holds the items the customer orders.
+  * @param session This checks for the user in the session.
   * @return This returns the order for the customer.
   */
   @Transactional
-  public CustomerOrderDTO createOrder(int tableNumber) {
-    CustomerOrder order = new CustomerOrder(tableNumber);
+  public CustomerOrderDTO createOrder(CreateOrderRequest body, HttpSession session) {
+    if (session == null) {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not logged in");
+    }
+
+    Long id = (Long) session.getAttribute("USER_ID");
+
+    if (id == null) {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User ID not found");
+    }
+    
+    User user = userRepository.findById(id)
+        .orElseThrow(() -> new ResponseStatusException(
+        HttpStatus.UNAUTHORIZED, "User not found"));
+
+    
+    CustomerOrder order = new CustomerOrder(body.getTableNumber());
+    order.setUser(user);
+    order.setStatus(OrderStatus.PLACED);
+    order.setPaid(false);
+    if (body.getItems() != null) {
+      for (OrderItemRequest itemReq : body.getItems()) {
+        MenuItem item = getValidMenuItem(itemReq.getID());
+        order.addItem(item, itemReq.getQuantity());
+      }
+    }
     CustomerOrder saved = orderRepository.save(order);
     return orderMapper.orderToDto(saved);
   }
