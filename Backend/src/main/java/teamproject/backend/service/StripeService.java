@@ -77,8 +77,8 @@ public class StripeService {
     SessionCreateParams.Builder
         builder = SessionCreateParams.builder()
         .setMode(SessionCreateParams.Mode.PAYMENT)
-        .setSuccessUrl("http://localhost:3000/success?session_id={CHECKOUT_SESSION_ID}")
-        .setCancelUrl("http://localhost:3000/cancel")
+        .setSuccessUrl("http://localhost:5173/success?session_id={CHECKOUT_SESSION_ID}")
+        .setCancelUrl("http://localhost:5173/cancel")
         .putMetadata("orderId", String.valueOf(orderId));
     return builder;
   }
