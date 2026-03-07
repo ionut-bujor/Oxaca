@@ -16,7 +16,7 @@ const Header: React.FC<HeaderProps> = ({ cartCount, onCartClick }) => {
     window.location.href = '/portal';
   };
 
-  {/* myorders button - will take the user to the customer dashboard */}
+  {/* My Orders button - will take the user to the customer dashboard */}
   const MyOrdersButton = (
     <button
       onClick={() => window.location.href = '/dashboard'}
@@ -27,6 +27,7 @@ const Header: React.FC<HeaderProps> = ({ cartCount, onCartClick }) => {
     </button>
   );
 
+  {/* Order Basket button - will open the "Your Basket" sidebar */}
   const OrderBasketButton = (
     <button 
             onClick={onCartClick}
@@ -42,6 +43,7 @@ const Header: React.FC<HeaderProps> = ({ cartCount, onCartClick }) => {
           </button>
   );
 
+  {/* Sign In button - will redirect the user to the /portal page */}
   const SignInButton = (
     <a
               href="/portal"
@@ -51,6 +53,7 @@ const Header: React.FC<HeaderProps> = ({ cartCount, onCartClick }) => {
             </a>
   );
 
+  {/* Logout button - will run the logout() method and invalidate the users session */}
   const LogoutButton = (
     <button
                 onClick={handleLogout}
@@ -58,7 +61,7 @@ const Header: React.FC<HeaderProps> = ({ cartCount, onCartClick }) => {
               >
                 Logout
               </button>
-  )
+  );
 
   return (
     <header className="fixed top-0 w-full z-50 bg-background-light/90 backdrop-blur-md border-b border-slate-100">
@@ -104,7 +107,7 @@ const Header: React.FC<HeaderProps> = ({ cartCount, onCartClick }) => {
           </h1>
         </div>
         <div className="flex items-center gap-3 flex-shrink-0">
-          {/* Auth controls */}
+          {/* Auth controls - show different buttons depending on whether user is logged in or not */}
           {isAuthenticated ? (
             <>
               {MyOrdersButton}
