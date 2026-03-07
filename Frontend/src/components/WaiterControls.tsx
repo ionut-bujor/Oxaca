@@ -34,10 +34,6 @@ const WaiterControls: React.FC<WaiterControlsProps> = ({ onItemAdded }) => {
     allergen_list: [],
   });
 
-  // Debug logging
-  console.log('WaiterControls - user:', user);
-  console.log('WaiterControls - isWaiter():', isWaiter());
-
   // Don't hide during loading
   if (!user) {
     return null;
