@@ -72,8 +72,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const isCustomer = () => user?.role == 'CUSTOMER';
   const isWaiter = () => user?.role === 'WAITER'; 
+  const isCustomer = () => user?.role === 'CUSTOMER';
   const isKitchen = () => user?.role === 'KITCHEN';
   const isAdmin = () => user?.role === 'ADMIN';
   const isAuthenticated = user !== null;

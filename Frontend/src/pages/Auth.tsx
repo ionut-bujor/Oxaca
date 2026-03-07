@@ -43,6 +43,7 @@ const auth: React.FC = () => {
 							const response = await fetch(request);
 
 							if (response.ok) {
+								localStorage.removeItem('authUser');
 								await fetchCurrentUser();
 								window.location.href = "/";
 							} else {

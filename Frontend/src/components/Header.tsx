@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
-import { Sign } from 'crypto';
+import RoleBadge from './RoleBadge';
 
 interface HeaderProps {
   cartCount: number;
@@ -67,36 +67,18 @@ const Header: React.FC<HeaderProps> = ({ cartCount, onCartClick }) => {
     <header className="fixed top-0 w-full z-50 bg-background-light/90 backdrop-blur-md border-b border-slate-100">
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         {/* left section of the header */}
-        <div className="w-40 hidden lg:block flex-shrink-0">
-          <div className="flex items-center space-x-2 text-primary font-bold text-xs uppercase tracking-tighter">
-            <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-            <span>
+        <div className="w-40 hidden lg:block flex-shrink-0 whitespace-nowrap">
+          <div className="flex items-center space-x-2 text-primary font-bold text-s uppercase tracking-tighter">
+            <span className="inline-block w-2 h-2 rounded-full bg-primary animate-pulse flex-shrink-0"></span>
+            <span className="px-4 py-1.5 bg-primary/10 text-primary rounded-full text-xs font-black uppercase tracking-widest">
               {/* if user is logged in + found, show welcome message, otherwise show general message */}
               {isAuthenticated && user ? `Welcome,\xa0 ${user.firstName}` : 'Experience Oaxaca'} 
             </span>
+            {/* Role Badge icon */}
+            <RoleBadge />
           </div>
         </div>
-        {/* role display icon */}
-        {isCustomer() && (
-                <span className="px-3 py-1 bg-blue-600 text-white rounded-full text-[10px] font-black uppercase tracking-widest">
-                  Customer
-                </span>
-              )}
-        {isWaiter() && (
-                <span className="px-3 py-1 bg-blue-600 text-white rounded-full text-[10px] font-black uppercase tracking-widest">
-                  Waiter
-                </span>
-              )}
-        {isKitchen() && (
-                <span className="px-3 py-1 bg-blue-600 text-white rounded-full text-[10px] font-black uppercase tracking-widest">
-                  Kitchen
-                </span>
-              )}
-        {isAdmin() && (
-                <span className="px-3 py-1 bg-blue-600 text-white rounded-full text-[10px] font-black uppercase tracking-widest">
-                  Admin
-                </span>
-              )}
+
         {/* centre logo of the header */}
         <div
           className="flex-1 text-center cursor-pointer"
