@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
 
+import teamproject.backend.dto.ItemDTOHelper;
 import teamproject.backend.dto.MenuItemDTO;
 import teamproject.backend.model.Allergens;
 import teamproject.backend.model.DietaryTag;
@@ -80,5 +81,18 @@ public class ServiceMenuTest {
         "The received and mocked items do not match");
     // dont need to check any other attributes as id is unique across all
   }
+
+  @Test
+  void dtoToHelper_shouldMapTitleAndQuantity() {
+    MenuItemDTO menuItemDTO = new MenuItemDTO();
+    menuItemDTO.setTitle("Burger");
+    menuItemDTO.setQuantity(2);
+
+    ItemDTOHelper result = serviceMenu.dtoToHelper(menuItemDTO);
+
+    assertEquals("Burger", result.getMenuItemName());
+    assertEquals(2, result.getMenuItemQuantity());
+  }
+
 
 }

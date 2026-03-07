@@ -25,8 +25,7 @@ CREATE TABLE IF NOT EXISTS menu_item (
                            item_image_url TEXT NOT NULL,
                            item_group_id INT NOT NULL,
                            calories INT,
-                           FOREIGN KEY (item_group_id) REFERENCES item_group(id),
-                           FOREIGN KEY (customer_order_id) REFERENCES customer_order(id) ON DELETE CASCADE
+                           FOREIGN KEY (item_group_id) REFERENCES item_group(id)
 );
 
 
@@ -56,11 +55,27 @@ CREATE TABLE IF NOT EXISTS customer_order (
 
 -- USERS
 CREATE TABLE IF NOT EXISTS users (
-                       id SERIAL PRIMARY KEY,
-                       email VARCHAR(255) NOT NULL UNIQUE,
-                       password_hash VARCHAR(255) NOT NULL,
-                       role VARCHAR(255) NOT NULL,
-                       first_name VARCHAR(255) NOT NULL,
-                       last_name VARCHAR(255) NOT NULL
+                                id SERIAL PRIMARY KEY,
+                                email VARCHAR(255) NOT NULL UNIQUE,
+                                password_hash VARCHAR(255) NOT NULL,
+                                role VARCHAR(255) NOT NULL,
+                                first_name VARCHAR(255) NOT NULL,
+                                last_name VARCHAR(255) NOT NULL
 );
 
+-- WAITER CALL
+CREATE TABLE IF NOT EXISTS waiter_call (
+                                id SERIAL PRIMARY KEY,
+                                table_number INT NOT NULL,
+                                status VARCHAR(20) NOT NULL DEFAULT 'OPEN',
+                                note TEXT,
+                                created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                resolved_at TIMESTAMP
+);
+
+-- Used to check if there is a conflict with inserting data by adding a unique index to each table.
+CREATE UNIQUE INDEX IF NOT EXISTS uq_menu_type_name ON menu_type(name);
+CREATE UNIQUE INDEX IF NOT EXISTS uq_item_group_name ON item_group(name);
+CREATE UNIQUE INDEX IF NOT EXISTS uq_menu_item_name ON menu_item(item_name);
+CREATE UNIQUE INDEX IF NOT EXISTS uq_tags ON menu_item_tags(menu_item_id, tag);
+CREATE UNIQUE INDEX IF NOT EXISTS uq_allergens ON menu_item_allergens(menu_item_id, allergens);

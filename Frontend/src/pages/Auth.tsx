@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import ButtonlessHeader from "../components/ButtonlessHeader";
+import { useAuth } from "../context/AuthContext";
 
 const auth: React.FC = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState("");
+
+	const { fetchCurrentUser } = useAuth();
 
 	return (
 		<main>
@@ -40,6 +43,7 @@ const auth: React.FC = () => {
 							const response = await fetch(request);
 
 							if (response.ok) {
+								await fetchCurrentUser();
 								window.location.href = "/";
 							} else {
 								setError("Invalid email or password")
@@ -54,8 +58,19 @@ const auth: React.FC = () => {
 
 				<div id="loginOptions" className="group flex flex-col gap-y-5 bg-white p-5 rounded-2xl border border-slate-100 shadow-2xl">
 					<button 
-						className="bg-primary text-white px-8 py-4 rounded-xl font-bold uppercase tracking-widest hover:bg-darkGreen transition-all shadow-xl shadow-primary/20 active:scale-95">
-						<a href="/">Continue as guest</a>
+						className="bg-primary text-white px-8 py-4 rounded-xl font-bold uppercase tracking-widest hover:bg-darkGreen transition-all shadow-xl shadow-primary/20 active:scale-95"
+						onClick={() => {
+							window.location.href = "/";
+						}}>
+						Continue as guest
+					</button>
+
+					<button 
+						className="bg-primary text-white px-8 py-4 rounded-xl font-bold uppercase tracking-widest hover:bg-darkGreen transition-all shadow-xl shadow-primary/20 active:scale-95"
+						onClick={() => {
+							window.location.href = "/register";
+						}}>
+						Register
 					</button>
 
 					<button 

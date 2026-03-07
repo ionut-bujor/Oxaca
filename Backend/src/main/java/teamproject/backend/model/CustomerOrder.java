@@ -52,11 +52,9 @@ public class CustomerOrder {
   /**
    * Constructs an order.
    *
-   * @param id This is the order id.
    * @param tableNumber This is the tableNumber the order comes from.
    */
-  public CustomerOrder(Long id, int tableNumber) {
-    this.id = id;
+  public CustomerOrder(int tableNumber) {
     this.tableNumber = tableNumber;
     this.items = new ArrayList<>();
   }
@@ -115,15 +113,19 @@ public class CustomerOrder {
    * @return The total price.
    */
   public BigDecimal totalPrice(List<MenuItem> items) {
-    BigDecimal total = new BigDecimal(0);
+    BigDecimal total = BigDecimal.ZERO;
     for (MenuItem item : items) {
-      total.add(item.getPrice());
+      total = total.add(item.getPrice());
     }
     return total;
   }
 
   public Long getId() {
     return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
   }
 
   public Integer getTableNumber() {
@@ -154,11 +156,23 @@ public class CustomerOrder {
     return items;
   }
 
+  public void setItems(List<MenuItem> items) {
+    this.items = items;
+  }
+
   public boolean isPaid() {
     return paid;
   }
 
   public void setPaid(boolean paid) {
     this.paid = paid;
+  }
+
+  public User getUser() {
+    return user;
+  }
+
+  public void setUser(User user) {
+    this.user = user;
   }
 }
