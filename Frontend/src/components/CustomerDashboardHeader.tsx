@@ -38,7 +38,6 @@ const CustomerDashboardHeader: React.FC = () => {
         {/* left section of the header */}
         <div className="w-40 hidden lg:block flex-shrink-0 whitespace-nowrap">
           <div className="flex items-center space-x-2 text-primary font-bold text-s uppercase tracking-tighter">
-            <span className="inline-block w-2 h-2 rounded-full bg-primary animate-pulse flex-shrink-0"></span>
             <span className="px-4 py-1.5 bg-primary/10 text-primary rounded-full text-xs font-black uppercase tracking-widest">
               {/* if user is logged in + found, show welcome message, otherwise show general message */}
               {isAuthenticated && user ? `Welcome,\xa0 ${user.firstName}` : 'Experience Oaxaca'} 
