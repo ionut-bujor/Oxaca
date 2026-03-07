@@ -8,7 +8,7 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ cartCount, onCartClick }) => {
-  const { user, isWaiter, logout, isAuthenticated } = useAuth();
+  const { user, isCustomer, isWaiter, isKitchen, isAdmin, logout, isAuthenticated } = useAuth();
 
   const handleLogout = async () => {
     await logout();
@@ -43,9 +43,25 @@ const Header: React.FC<HeaderProps> = ({ cartCount, onCartClick }) => {
             </span>
           </div>
         </div>
+        {/* role display */}
+        {isCustomer() && (
+                <span className="px-3 py-1 bg-blue-600 text-white rounded-full text-[10px] font-black uppercase tracking-widest">
+                  Customer
+                </span>
+              )}
         {isWaiter() && (
                 <span className="px-3 py-1 bg-blue-600 text-white rounded-full text-[10px] font-black uppercase tracking-widest">
                   Waiter
+                </span>
+              )}
+        {isKitchen() && (
+                <span className="px-3 py-1 bg-blue-600 text-white rounded-full text-[10px] font-black uppercase tracking-widest">
+                  Kitchen
+                </span>
+              )}
+        {isAdmin() && (
+                <span className="px-3 py-1 bg-blue-600 text-white rounded-full text-[10px] font-black uppercase tracking-widest">
+                  Admin
                 </span>
               )}
         {/* centre logo of the header */}
