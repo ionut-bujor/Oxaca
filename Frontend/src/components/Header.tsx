@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
+import { Sign } from 'crypto';
 
 interface HeaderProps {
   cartCount: number;
@@ -40,6 +41,24 @@ const Header: React.FC<HeaderProps> = ({ cartCount, onCartClick }) => {
             )}
           </button>
   );
+
+  const SignInButton = (
+    <a
+              href="/portal"
+              className="px-4 py-2 rounded-full border border-slate-200 text-slate-600 text-xs font-bold uppercase tracking-wider hover:bg-slate-50 transition-all"
+            >
+              Sign In
+            </a>
+  );
+
+  const LogoutButton = (
+    <button
+                onClick={handleLogout}
+                className="px-4 py-2 rounded-full border border-slate-200 text-slate-600 text-xs font-bold uppercase tracking-wider hover:bg-slate-50 transition-all active:scale-95"
+              >
+                Logout
+              </button>
+  )
 
   return (
     <header className="fixed top-0 w-full z-50 bg-background-light/90 backdrop-blur-md border-b border-slate-100">
@@ -90,22 +109,12 @@ const Header: React.FC<HeaderProps> = ({ cartCount, onCartClick }) => {
             <>
               {MyOrdersButton}
               {OrderBasketButton}
-              <button
-                onClick={handleLogout}
-                className="px-4 py-2 rounded-full border border-slate-200 text-slate-600 text-xs font-bold uppercase tracking-wider hover:bg-slate-50 transition-all active:scale-95"
-              >
-                Logout
-              </button>
+              {LogoutButton}
             </>
           ) : (
             <>
             {OrderBasketButton}
-            <a
-              href="/portal"
-              className="px-4 py-2 rounded-full border border-slate-200 text-slate-600 text-xs font-bold uppercase tracking-wider hover:bg-slate-50 transition-all"
-            >
-              Sign In
-            </a>
+            {SignInButton}
             </>
           )}
         </div>
