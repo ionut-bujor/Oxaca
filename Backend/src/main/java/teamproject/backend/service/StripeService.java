@@ -12,7 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import teamproject.backend.model.CustomerOrder;
-import teamproject.backend.model.MenuItem;
+import teamproject.backend.model.OrderItem;
 import teamproject.backend.repository.CustomerOrderRepository;
 
 /**
@@ -114,14 +114,14 @@ public class StripeService {
    *
    * @param item individual item from the order
    */
-  public void validateOrderItems(MenuItem item) {
+  public void validateOrderItems(OrderItem item) {
     if (item.getName() == null || item.getName().isBlank()) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Item name is missing");
     }
-    if (item.getPrice() == null) {
+    if (item.getLinePrice() == null) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Item price is missing");
     }
-    if (item.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
+    if (item.getLinePrice().compareTo(BigDecimal.ZERO) <= 0) {
       throw new ResponseStatusException(
           HttpStatus.BAD_REQUEST, "Invalid item price, price can't be negative");
     }
@@ -139,7 +139,7 @@ public class StripeService {
    * @param item that is included in the order
    */
 
-  public void assignValuesToCheckoutObject(Builder builder, long price, MenuItem item) {
+  public void assignValuesToCheckoutObject(Builder builder, long price, OrderItem item) {
     builder.addLineItem(
         SessionCreateParams.LineItem.builder()
             .setQuantity((long) item.getQuantity())
@@ -166,9 +166,9 @@ public class StripeService {
    */
 
   public void populateBuilderObject(Builder builder, CustomerOrder order) {
-    for (MenuItem item : order.getItems()) {
+    for (OrderItem item : order.getItems()) {
       validateOrderItems(item);
-      long price = convertPriceIntoFormat(item.getPrice());
+      long price = convertPriceIntoFormat(item.getLinePrice());
       assignValuesToCheckoutObject(builder, price, item);
     }
   }
