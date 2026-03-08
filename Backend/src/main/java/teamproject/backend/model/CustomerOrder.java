@@ -44,7 +44,7 @@ public class CustomerOrder {
 
   @OneToMany(mappedBy = "order", cascade = CascadeType.ALL,
              orphanRemoval = true, fetch = FetchType.EAGER)
-  private List<MenuItem> items = new ArrayList<>();
+  private List<OrderItem> items = new ArrayList<>();
 
   @ManyToOne
   @JoinColumn(name = "user_id", nullable = false)
@@ -71,41 +71,43 @@ public class CustomerOrder {
   /**
    * Adds a CustomerOrderItem to the list of customer order items.
    *
-   * @param item The item being added.
+   * @param menuItem The item being added.
    * @param quantity The amount of times the item is added.
    */
-  public void addItem(MenuItem item, int quantity) {
+  public void addItem(MenuItem menuItem, int quantity) {
+    OrderItem item = new OrderItem(this, menuItem, quantity);
     items.add(item);
-    item.setQuantity(quantity + item.getQuantity());
-    item.setCustomerOrder(this);
   }
 
   /**
    * Removes a CustomerOrderItem from the list of customer order items.
    *
-   * @param item The item being removed.
+   * @param menuItem The item being removed.
    */
-  public void removeItem(MenuItem item) {
+  public void removeItem(MenuItem menuItem) {
+    OrderItem item = new OrderItem(this, menuItem, menuItem.getQuantity());
     items.remove(item);
   }
 
   /**
    * Increases the quantity of a provided CustomerOrderItem.
    *
-   * @param item The item that is having its quantity increased.
+   * @param menuItem The item that is having its quantity increased.
    * @param quantity The amount the quantity is changing to.
    */
-  public void increase(MenuItem item, int quantity) {
+  public void increase(MenuItem menuItem, int quantity) {
+    OrderItem item = new OrderItem(this, menuItem, menuItem.getQuantity());
     item.setQuantity(quantity);
   }
 
   /**
    * Decreases the quantity of a provided CustomerOrderItem.
    *
-   * @param item The item being decreased.
+   * @param menuItem The item being decreased.
    * @param quantity The amount the quantity is changing to.
    */
-  public void decrease(MenuItem item, int quantity) {
+  public void decrease(MenuItem menuItem, int quantity) {
+    OrderItem item = new OrderItem(this, menuItem, menuItem.getQuantity());
     item.setQuantity(quantity);
   }
 
@@ -115,10 +117,10 @@ public class CustomerOrder {
    * @param items The list of items involved in the order.
    * @return The total price.
    */
-  public BigDecimal totalPrice(List<MenuItem> items) {
+  public BigDecimal totalPrice(List<OrderItem> items) {
     BigDecimal total = BigDecimal.ZERO;
-    for (MenuItem item : items) {
-      total = total.add(item.getPrice());
+    for (OrderItem item : items) {
+      total = total.add(item.getLinePrice());
     }
     return total;
   }
@@ -155,11 +157,11 @@ public class CustomerOrder {
     this.createdAt = createdAt;
   }
 
-  public List<MenuItem> getItems() {
+  public List<OrderItem> getItems() {
     return items;
   }
 
-  public void setItems(List<MenuItem> items) {
+  public void setItems(List<OrderItem> items) {
     this.items = items;
   }
 

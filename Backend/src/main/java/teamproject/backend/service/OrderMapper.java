@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import teamproject.backend.dto.CustomerOrderDTO;
 import teamproject.backend.dto.ItemDTOHelper;
 import teamproject.backend.model.CustomerOrder;
+import teamproject.backend.model.MenuItem;
 
 /**
  * This Class maps an order and a customerorderitem to their respective DTOs.
@@ -33,7 +34,13 @@ public class OrderMapper {
     dto.setCreatedAt(order.getCreatedAt());
 
     List<ItemDTOHelper> itemDtos = order.getItems().stream()
-        .map(menuItem -> serviceMenu.dtoToHelper(serviceMenu.itemToDto(menuItem)))
+        .map(orderItem -> {
+          MenuItem menuItem = orderItem.getMenuItem();
+          var menuItemDto = serviceMenu.itemToDto(menuItem);
+          var helper = serviceMenu.dtoToHelper(menuItemDto);
+          helper.setMenuItemQuantity(orderItem.getQuantity());
+          return helper;
+        })
         .collect(Collectors.toList());
     dto.setItems(itemDtos);
     dto.setTotalPrice(order.totalPrice(order.getItems()));
