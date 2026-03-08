@@ -27,19 +27,13 @@ const OrderConfirmation: React.FC = () => {
   return (
     <div className="min-h-screen bg-white">
       <div className="max-w-5xl mx-auto px-6 py-10">
-        <div className="flex items-start justify-between mb-8">
+        <div className="flex items-center justify-center mb-8">
           <div>
-            <h1 className="serif-text text-4xl font-bold text-slate-900">Order confirmed 🎉</h1>
+            <h1 className="serif-text text-4xl font-bold text-slate-900 flex items-center justify-center">Order confirmed 🎉</h1>
             <p className="text-slate-500 mt-2">
               Thanks! Your order has been placed. You can show this screen to staff if needed.
             </p>
           </div>
-          <button
-            onClick={() => navigate("/")}
-            className="text-sm font-bold uppercase tracking-widest text-primary hover:text-accent transition-colors"
-          >
-            Back to menu
-          </button>
         </div>
 
         <div className="rounded-2xl border border-slate-100 bg-slate-50 p-6">
@@ -69,13 +63,23 @@ const OrderConfirmation: React.FC = () => {
               <span className="font-bold text-slate-900">{order.status ?? "N/A"}</span>
             </div>
           </div>
+          <div className="w-full flex flex-row items-center justify-center gap-4 mt-8">
+            <button
+                onClick={() => navigate("/dashboard")}
+                className="w-full max-w-xs bg-primary text-white py-4 rounded-xl font-bold uppercase tracking-widest hover:bg-accent transition-all shadow-xl shadow-primary/20 active:scale-95 flex items-center justify-center gap-2"
+              >
+                My orders
+                <span className="material-symbols-outlined text-xl">receipt_long</span>
+              </button>
 
-          <button
-            onClick={() => navigate("/")}
-            className="mt-8 w-full bg-primary text-white py-4 rounded-xl font-bold uppercase tracking-widest hover:bg-accent transition-all shadow-xl shadow-primary/20 active:scale-95"
-          >
-            Back to menu
-          </button>
+            <button
+              onClick={() => navigate("/")}
+              className="w-full max-w-xs bg-primary text-white py-4 rounded-xl font-bold uppercase tracking-widest hover:bg-accent transition-all shadow-xl shadow-primary/20 active:scale-95 flex items-center justify-center gap-2"
+            >
+              Back to menu
+              <span className="material-symbols-outlined text-xl">menu</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
