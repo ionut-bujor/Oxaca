@@ -69,7 +69,9 @@ public class OrderService {
   @Transactional
   public CustomerOrderDTO getOrderById(Long id) {
     CustomerOrder order = orderRepository.findById(id)
-        .orElseThrow(() -> new IllegalArgumentException("Order not found: " + id));
+        .orElseThrow(() -> new ResponseStatusException(
+          HttpStatus.NOT_FOUND,
+          "The Order number: " + id + " cannot be found"));
     return orderMapper.orderToDto(order);
   }
 
@@ -136,7 +138,9 @@ public class OrderService {
    */
   private CustomerOrder getValidCustomerOrder(Long orderid) {
     return orderRepository.findById(orderid).orElseThrow(() -> 
-        new IllegalArgumentException("Order not found: " + orderid));
+        new ResponseStatusException(
+          HttpStatus.NOT_FOUND,
+          "The Order number: " + orderid + " cannot be found"));
   }
 
   /**
@@ -147,6 +151,8 @@ public class OrderService {
    */
   private MenuItem getValidMenuItem(Long menuItemid) {
     return menuItemRepository.findById(menuItemid).orElseThrow(() ->
-        new IllegalArgumentException("MenuItem order found: " + menuItemid));
+        new ResponseStatusException(
+          HttpStatus.NOT_FOUND,
+          "The MenuItem with this id: " + menuItemid + " cannot be found"));
   }
 }
