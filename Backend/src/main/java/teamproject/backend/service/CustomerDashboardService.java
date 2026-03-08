@@ -69,8 +69,8 @@ public class CustomerDashboardService {
     List<CustomerOrder> matchingOrders = customerOrderRepo.findByUserId(id);
 
     return matchingOrders.stream()
-        .filter(order -> order.getStatus().equals(OrderStatus.DELIVERED))
-        .filter(order -> !Boolean.TRUE.equals(order.isPaid()))
+        .filter(order -> !order.getStatus().equals(OrderStatus.DELIVERED))
+        .filter(order -> !order.isPaid())
         .map(orderMapper::orderToDto)
         .toList();
   }
