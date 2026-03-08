@@ -10,7 +10,10 @@ interface AuthContextType {
   loading: boolean;
   fetchCurrentUser: () => Promise<void>;
   logout: () => Promise<void>;
+  isCustomer: () => boolean;
   isWaiter: () => boolean;
+  isKitchen: () => boolean;
+  isAdmin: () => boolean;
   isAuthenticated: boolean;
 }
 
@@ -69,12 +72,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const isWaiter = () => user?.role === 'WAITER' || user?.role === 'KITCHEN' || user?.role === 'ADMIN';
+  const isWaiter = () => user?.role === 'WAITER'; 
+  const isCustomer = () => user?.role === 'CUSTOMER';
+  const isKitchen = () => user?.role === 'KITCHEN';
+  const isAdmin = () => user?.role === 'ADMIN';
   const isAuthenticated = user !== null;
 
   return (
     <AuthContext.Provider
-      value={{ user, loading, fetchCurrentUser, logout, isWaiter, isAuthenticated }}
+      value={{ user, loading, fetchCurrentUser, logout, isCustomer, isWaiter, isKitchen, isAdmin, isAuthenticated }}
     >
       {children}
     </AuthContext.Provider>
