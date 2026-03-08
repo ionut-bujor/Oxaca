@@ -1,5 +1,7 @@
 package teamproject.backend.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,8 +10,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import teamproject.backend.dto.CreateOrderRequest;
 import teamproject.backend.dto.CustomerOrderDTO;
 import teamproject.backend.dto.MenuItemDTO;
+import teamproject.backend.model.Role;
+import teamproject.backend.security.RequireRole;
 import teamproject.backend.service.OrderService;
 
 /**
@@ -60,9 +65,14 @@ public class OrderController {
    * @return This returns the created order.
    */
   @PostMapping
+  @RequireRole({Role.ADMIN, Role.WAITER, Role.CUSTOMER, Role.KITCHEN})
   public ResponseEntity<CustomerOrderDTO> createOrder(
-      @RequestBody CustomerOrderDTO request) {
-    CustomerOrderDTO createdOrder = orderService.createOrder(request.getTableNumber());
+      @RequestBody CreateOrderRequest body,
+      HttpServletRequest request) {
+    
+    HttpSession session = request.getSession(false);
+    CustomerOrderDTO createdOrder = orderService.createOrder(
+        body, session);
     return ResponseEntity.ok(createdOrder);  
   }
 
