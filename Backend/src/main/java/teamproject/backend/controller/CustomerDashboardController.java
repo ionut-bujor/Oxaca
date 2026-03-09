@@ -30,14 +30,14 @@ public class CustomerDashboardController {
   }
 
   /**
-   * Handles GET request regarding orders, only returns the ones that are related
-   * to the user logged in.
+   * Handles GET request regarding orders, only returns the ones that are related to the user logged
+   * in.
    *
    * @param request provides the session so that user can be identified.
    * @return dto of the customer orders.
    */
   @GetMapping
-  @RequireRole({Role.ADMIN, Role.WAITER, Role.CUSTOMER, Role.KITCHEN})
+  @RequireRole({Role.MANAGER, Role.WAITER, Role.CUSTOMER, Role.KITCHEN})
   public ResponseEntity<List<CustomerOrderDTO>> displayCurrentOrders(HttpServletRequest request) {
     HttpSession session = request.getSession(false);
     List<CustomerOrderDTO> currentOrders = customerDashboardService.getCurrentOrders(session);

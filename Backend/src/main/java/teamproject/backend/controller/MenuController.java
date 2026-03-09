@@ -56,7 +56,7 @@ public class MenuController {
    *
    * @return status code if the menu item was stored succesfully or not
    */
-  @RequireRole({Role.ADMIN, Role.WAITER, Role.KITCHEN})
+  @RequireRole({Role.MANAGER, Role.WAITER, Role.KITCHEN})
   @PostMapping("/item")
   public ResponseEntity<MenuItemDTO> addMenuItem(@Valid @RequestBody MenuItemDTO menuDto) {
     return ResponseEntity.ok(serviceMenu.addMenuItem(menuDto));
@@ -70,7 +70,7 @@ public class MenuController {
    * @return 200 if the item is updated, 404 if not found.
    */
 
-  @RequireRole({Role.ADMIN, Role.WAITER, Role.KITCHEN})
+  @RequireRole({Role.MANAGER, Role.WAITER, Role.KITCHEN})
   @PutMapping("/item/{id}")
   public ResponseEntity<MenuItemDTO> updateMenuItem(@PathVariable Long id,
       @RequestBody MenuItemDTO menuDto) {
@@ -84,7 +84,7 @@ public class MenuController {
    * @return 200 if the menuitem is deleted, 404 if not found.
    */
 
-  @RequireRole({Role.ADMIN, Role.WAITER, Role.KITCHEN})
+  @RequireRole({Role.MANAGER, Role.WAITER, Role.KITCHEN})
   @DeleteMapping("/item/{id}")
   public ResponseEntity<MenuItemDTO> deleteMenuItem(@PathVariable Long id) {
     return ResponseEntity.ok(serviceMenu.deleteItem(id));

@@ -36,11 +36,11 @@ public class OrderController {
   }
 
   /**
-  * This gets the order based on their id.
-  *
-  * @param id this is the given id.
-  * @return this returns the order in JSON.
-  */
+   * This gets the order based on their id.
+   *
+   * @param id this is the given id.
+   * @return this returns the order in JSON.
+   */
   @GetMapping("/{id}")
   public ResponseEntity<CustomerOrderDTO> getOrder(@PathVariable Long id) {
     CustomerOrderDTO order = orderService.getOrderById(id);
@@ -48,10 +48,10 @@ public class OrderController {
   }
 
   /**
-  * This gets all orders.
-  *
-  * @return all orders.
-  */
+   * This gets all orders.
+   *
+   * @return all orders.
+   */
   @GetMapping("/allOrders")
   public ResponseEntity<List<CustomerOrderDTO>> getAllOrders() {
     List<CustomerOrderDTO> orders = orderService.getAllOrders();
@@ -65,15 +65,13 @@ public class OrderController {
    * @return This returns the created order.
    */
   @PostMapping
-  @RequireRole({Role.ADMIN, Role.WAITER, Role.CUSTOMER, Role.KITCHEN})
-  public ResponseEntity<CustomerOrderDTO> createOrder(
-      @RequestBody CreateOrderRequest body,
+  @RequireRole({Role.MANAGER, Role.WAITER, Role.CUSTOMER, Role.KITCHEN})
+  public ResponseEntity<CustomerOrderDTO> createOrder(@RequestBody CreateOrderRequest body,
       HttpServletRequest request) {
-    
+
     HttpSession session = request.getSession(false);
-    CustomerOrderDTO createdOrder = orderService.createOrder(
-        body, session);
-    return ResponseEntity.ok(createdOrder);  
+    CustomerOrderDTO createdOrder = orderService.createOrder(body, session);
+    return ResponseEntity.ok(createdOrder);
   }
 
   /**
@@ -84,12 +82,12 @@ public class OrderController {
    * @return The order gets returned with updated quantities.
    */
   @PostMapping("/{orderId}/items")
-  public ResponseEntity<CustomerOrderDTO> addItemsToOrder(
-      @PathVariable Long orderId, @RequestBody MenuItemDTO itemDto) {
-    CustomerOrderDTO updatedOrder = orderService.addItemToOrder(orderId, 
-        itemDto.getId(), itemDto.getQuantity());
-    return ResponseEntity.ok(updatedOrder);  
+  public ResponseEntity<CustomerOrderDTO> addItemsToOrder(@PathVariable Long orderId,
+      @RequestBody MenuItemDTO itemDto) {
+    CustomerOrderDTO updatedOrder =
+        orderService.addItemToOrder(orderId, itemDto.getId(), itemDto.getQuantity());
+    return ResponseEntity.ok(updatedOrder);
   }
-  
-  
+
+
 }
