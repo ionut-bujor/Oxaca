@@ -2,9 +2,9 @@ import React from 'react';
 import { useAuth } from '../context/AuthContext';
 
 const RoleBadge: React.FC = () => {
-  const { isCustomer, isWaiter, isKitchen, isAdmin, user } = useAuth();
+  const { isCustomer, isWaiter, isKitchen, isManager, user } = useAuth();
 
-  const role = isAdmin() ? 'Admin'
+  const role = isManager() ? 'Manager'
     : isKitchen() ? 'Kitchen'
     : isWaiter() ? 'Waiter'
     : isCustomer() ? 'Customer'

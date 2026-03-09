@@ -63,7 +63,7 @@ export interface CustomerOrderDTO {
 }
 
 // ── Authentication Types ──────────────────────────────────────────────
-export type Role = 'CUSTOMER' | 'WAITER' | 'KITCHEN' | 'ADMIN';
+export type Role = 'CUSTOMER' | 'WAITER' | 'KITCHEN' | 'MANAGER';
 
 export interface User {
   id: number;
