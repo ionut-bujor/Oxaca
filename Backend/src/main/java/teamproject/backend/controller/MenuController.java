@@ -1,6 +1,5 @@
 package teamproject.backend.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import teamproject.backend.dto.MenuItemDTO;
-import teamproject.backend.model.MenuItem;
 import teamproject.backend.model.Role;
 import teamproject.backend.security.RequireRole;
 import teamproject.backend.service.ServiceMenu;
