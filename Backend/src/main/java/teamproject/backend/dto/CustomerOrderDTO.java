@@ -15,6 +15,7 @@ public class CustomerOrderDTO {
   private LocalDateTime createdAt;
   private List<ItemDTOHelper> items;
   private BigDecimal totalPrice;
+  private boolean paid;
 
   public Long getId() {
     return id;
@@ -62,5 +63,13 @@ public class CustomerOrderDTO {
 
   public void setTotalPrice(BigDecimal totalPrice) {
     this.totalPrice = totalPrice;
+  }
+
+  public boolean isPaid() {
+    return paid;
+  }
+
+  public void setPaid(boolean paid) {
+    this.paid = paid;
   }
 }

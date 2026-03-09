@@ -32,6 +32,7 @@ public class OrderMapper {
     dto.setTableNumber(order.getTableNumber());
     dto.setStatus(order.getStatus());
     dto.setCreatedAt(order.getCreatedAt());
+    dto.setPaid(order.isPaid());
 
     List<ItemDTOHelper> itemDtos = order.getItems().stream()
         .map(orderItem -> {
