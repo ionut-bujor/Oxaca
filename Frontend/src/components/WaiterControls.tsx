@@ -18,7 +18,7 @@ interface WaiterControlsProps {
 }
 
 const WaiterControls: React.FC<WaiterControlsProps> = ({ onItemAdded }) => {
-  const { isWaiter, user } = useAuth();
+  const { isWaiter, isManager, user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
@@ -34,12 +34,15 @@ const WaiterControls: React.FC<WaiterControlsProps> = ({ onItemAdded }) => {
     allergen_list: [],
   });
 
+
+  console.log('isWaiter:', isWaiter(), 'isManager:', isManager(), 'user:', user?.role);
+
   // Don't hide during loading
   if (!user) {
     return null;
   }
 
-  if (!isWaiter()) {
+  if (!isWaiter() && !isManager()) {
     return null;
   }
 

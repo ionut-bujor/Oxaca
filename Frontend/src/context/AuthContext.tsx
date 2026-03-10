@@ -13,7 +13,7 @@ interface AuthContextType {
   isCustomer: () => boolean;
   isWaiter: () => boolean;
   isKitchen: () => boolean;
-  isAdmin: () => boolean;
+  isManager: () => boolean;
   isAuthenticated: boolean;
 }
 
@@ -75,12 +75,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const isWaiter = () => user?.role === 'WAITER'; 
   const isCustomer = () => user?.role === 'CUSTOMER';
   const isKitchen = () => user?.role === 'KITCHEN';
-  const isAdmin = () => user?.role === 'ADMIN';
+  const isManager = () => user?.role === 'MANAGER';
   const isAuthenticated = user !== null;
 
   return (
     <AuthContext.Provider
-      value={{ user, loading, fetchCurrentUser, logout, isCustomer, isWaiter, isKitchen, isAdmin, isAuthenticated }}
+      value={{ user, loading, fetchCurrentUser, logout, isCustomer, isWaiter, isKitchen, isManager, isAuthenticated }}
     >
       {children}
     </AuthContext.Provider>

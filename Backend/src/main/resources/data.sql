@@ -75,9 +75,9 @@ ON CONFLICT (menu_item_id, allergens) DO NOTHING;
 -- users: unique on email
 INSERT INTO users (email, password_hash, role, first_name, last_name)
 VALUES (
-    'admin@oaxaca.com',
+    'manager@oaxaca.com',
     '$2a$10$mYY0PtF7uw3Fb5pv5WB5ou6e8wsY.ZAOoRcGPivLINUJ92C5pzLd2',
-    'ADMIN',
+    'MANAGER',
     'John',
     'Smith'
 )
@@ -87,9 +87,29 @@ INSERT INTO users (email, password_hash, role, first_name, last_name)
 VALUES (
     'waiter@oaxaca.com',
     '$2a$10$mYY0PtF7uw3Fb5pv5WB5ou6e8wsY.ZAOoRcGPivLINUJ92C5pzLd2',
-    'ADMIN',
+    'WAITER',
     'Maria',
     'Garcia'
+)
+ON CONFLICT (email) DO NOTHING;
+
+INSERT INTO users (email, password_hash, role, first_name, last_name)
+VALUES (
+    'kitchen@oaxaca.com',
+    '$2a$10$mYY0PtF7uw3Fb5pv5WB5ou6e8wsY.ZAOoRcGPivLINUJ92C5pzLd2',
+    'KITCHEN',
+    'David',
+    'Cross'
+)
+ON CONFLICT (email) DO NOTHING;
+
+INSERT INTO users (email, password_hash, role, first_name, last_name)
+VALUES (
+    'customer@oaxaca.com',
+    '$2a$10$mYY0PtF7uw3Fb5pv5WB5ou6e8wsY.ZAOoRcGPivLINUJ92C5pzLd2',
+    'CUSTOMER',
+    'Emily',
+    'Pelant'
 )
 ON CONFLICT (email) DO NOTHING;
 
