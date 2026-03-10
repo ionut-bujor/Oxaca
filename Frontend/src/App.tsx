@@ -9,6 +9,7 @@ import StripeSuccess from './pages/StripeSuccess'
 import StripeCancel from './pages/StripeCancel'
 
 const App: React.FC = () => {
+  const { isWaiter } = useAuth();
 
   return (
     <Router>

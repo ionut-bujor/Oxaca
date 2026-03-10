@@ -9,7 +9,7 @@ interface User {
 }
 
 const CustomerDashboardHeader: React.FC = () => {
-  const { user, isCustomer, isWaiter, isKitchen, isAdmin, logout, isAuthenticated } = useAuth();
+  const { user, isCustomer, isWaiter, isKitchen, isManager, logout, isAuthenticated } = useAuth();
   
     const handleLogout = async () => {
       await logout();

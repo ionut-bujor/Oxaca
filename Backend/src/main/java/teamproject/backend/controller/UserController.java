@@ -44,6 +44,7 @@ public class UserController {
    *
    * @return - The list of all users in the DB in DTO format.
    */
+  @RequireRole(Role.MANAGER)
   @GetMapping("/getAllUsers")
   public ResponseEntity<List<UserDTO>> displayUsers() {
     List<UserDTO> allUsers = serviceUser.getAllUsers();
@@ -94,7 +95,7 @@ public class UserController {
   }
 
   /**
-   * API endpoint for adding a new user into the DB as an admin user.
+   * API endpoint for adding a new user into the DB as an MANAGER user.
    *
    * @param firstName - The users first name.
    * @param lastName - The users last name.
@@ -104,7 +105,7 @@ public class UserController {
    * @param request - The POST request from the frontend.
    * @return - HTTP CREATED if user is successfully added, else 400 BAD_REQUEST if an error occured.
    */
-  @RequireRole(Role.ADMIN)
+  @RequireRole(Role.MANAGER)
   @PostMapping("/adminAddUser")
   public ResponseEntity<Void> adminAddUser(@RequestParam String firstName,
       @RequestParam String lastName, @RequestParam String email, @RequestParam String password,
@@ -123,14 +124,14 @@ public class UserController {
   }
 
   /**
-   * API endpoint for deleting a user from the DB as an admin.
+   * API endpoint for deleting a user from the DB as an MANAGER.
    *
    * @param email - The email of the user you want to delete.
    * @param request - The POST request from the frontend.
    * @return - HTTP ACCEPTED if the user is successfully deleted, else 400 BAD_REQUEST if an error
    *         occured.
    */
-  @RequireRole(Role.ADMIN)
+  @RequireRole(Role.MANAGER)
   @PostMapping("/adminRemoveUser")
   public ResponseEntity<Void> adminRemoveUser(@RequestParam String email,
       HttpServletRequest request) {

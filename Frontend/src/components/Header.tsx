@@ -9,21 +9,21 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ cartCount, onCartClick }) => {
-  const { user, isCustomer, isWaiter, isKitchen, isAdmin, logout, isAuthenticated } = useAuth();
+  const { user, isCustomer, isWaiter, isKitchen, isManager, logout, isAuthenticated } = useAuth();
 
   const handleLogout = async () => {
     await logout();
     window.location.href = '/portal';
   };
 
-  {/* My Orders button - will take the user to the customer dashboard */}
+  {/* My Orders button - shows "Order Board" for waiters, "My Orders" for others */}
   const MyOrdersButton = (
     <button
-      title="My Orders"
+      title={isWaiter() ? 'Order Board' : 'My Orders'}
       onClick={() => window.location.href = '/dashboard'}
       className="flex items-center space-x-2 px-5 py-2.5 rounded-full bg-primary text-white hover:bg-accent transition-all shadow-md shadow-primary/20 active:scale-95 mr-2"
     >
-      <span className="text-sm font-bold uppercase tracking-wider">My Orders</span>
+      <span className="text-sm font-bold uppercase tracking-wider">{isWaiter() ? 'Order Board' : 'My Orders'}</span>
       <span className="material-symbols-outlined text-xl">receipt_long</span>
     </button>
   );

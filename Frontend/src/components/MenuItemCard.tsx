@@ -14,7 +14,7 @@ interface MenuItemCardProps {
 
 const MenuItemCard: React.FC<MenuItemCardProps> = ({ item, onAddToCart, onMenuChanged }) => {
   const [imgError, setImgError] = useState(false);
-  const { isWaiter } = useAuth();
+  const { isWaiter, isManager } = useAuth();
   const [editOpen, setEditOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
   
@@ -99,8 +99,8 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({ item, onAddToCart, onMenuCh
             )}
           </div>
           <div className="flex items-center justify-end mt-4 sm:mt-0 gap-2">
-            {/* ── Waiter-only controls ── */}
-            {isWaiter() && (
+            {/* Menu management controls for waiter and manager roles. */}
+            {(isWaiter() || isManager()) && (
               <>
                 <button
                   onClick={() => setEditOpen(true)}

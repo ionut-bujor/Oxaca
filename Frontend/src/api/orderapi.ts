@@ -38,3 +38,9 @@ export async function addItemToOrder(orderId: number, item: AddItemRequest): Pro
     body: JSON.stringify(item),
   });
 }
+
+export async function getOrdersByTable(tableNumber: number): Promise<any[]> {
+  return http<any[]>(`/waiterDashboard/table/${tableNumber}`, {
+    method: "GET",
+  });
+}
