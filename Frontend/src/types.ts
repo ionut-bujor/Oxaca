@@ -74,3 +74,7 @@ export interface User {
   lastName: string;
 
 }
+
+// Used in customer dashboard to separate orders into tabs
+export type Tab = "current" | "past";
+

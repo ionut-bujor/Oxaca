@@ -3,6 +3,7 @@ import Footer from "../components/Footer";
 import { CustomerOrderDTO } from '../types';
 import { ItemDTOHelper } from '../types';
 import CustomerDashboardHeader from "../components/CustomerDashboardHeader";
+import { Tab } from '../types';
 
 const CustomerDashboard: React.FC = () => {
   const [orders, setOrders] = useState<CustomerOrderDTO[]>([]);
