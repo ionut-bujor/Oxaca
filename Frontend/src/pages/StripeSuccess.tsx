@@ -41,7 +41,7 @@ const StripeSuccess: React.FC = () => {
               Thank you! Your payment was successful.
             </p>
             <p className="text-slate-400 text-sm mb-10">
-              Your order is now being prepared. You'll be notified when it's ready.
+              "Sit back and relax — your order is already being taken care of."
             </p>
 
             {/* Session ID badge */}
@@ -67,14 +67,14 @@ const StripeSuccess: React.FC = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
                   onClick={() => navigate("/dashboard")}
-                  className="flex items-center justify-center gap-2 px-8 py-4 bg-primary text-white rounded-xl font-bold uppercase tracking-widest hover:bg-accent transition-all shadow-xl shadow-primary/20 active:scale-95"
+                  className="flex-1 flex items-center justify-center gap-2 px-8 py-4 bg-primary text-white rounded-xl font-bold uppercase tracking-widest hover:bg-accent transition-all shadow-xl shadow-primary/20 active:scale-95"
               >
                 <span className="material-symbols-outlined text-xl">receipt_long</span>
                 View My Orders
               </button>
               <button
                   onClick={() => navigate("/")}
-                  className="flex items-center justify-center gap-2 px-8 py-4 border border-slate-200 text-slate-600 rounded-xl font-bold uppercase tracking-widest hover:bg-slate-50 transition-all active:scale-95"
+                  className="flex-1 flex items-center justify-center gap-2 px-8 py-4 border border-slate-200 text-slate-600 rounded-xl font-bold uppercase tracking-widest hover:bg-slate-50 transition-all active:scale-95"
               >
                 <span className="material-symbols-outlined text-xl">restaurant_menu</span>
                 Back to Menu
