@@ -40,8 +40,7 @@ export async function addItemToOrder(orderId: number, item: AddItemRequest): Pro
 }
 
 export async function getOrdersByTable(tableNumber: number): Promise<any[]> {
-  // TODO: Backend endpoint pending. Expected response: CustomerOrderDTO[] for a table.
-  return http<any[]>(`/orders/by-table/${tableNumber}`, {
+  return http<any[]>(`/waiterDashboard/table/${tableNumber}`, {
     method: "GET",
   });
 }
