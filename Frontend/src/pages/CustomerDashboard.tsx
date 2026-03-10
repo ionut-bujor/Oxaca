@@ -57,6 +57,9 @@ const CustomerDashboard: React.FC = () => {
   if (loading) return <div className="p-6">Loading...</div>;
   if (error) return <div className="p-6 text-red-600">{error}</div>;
 
+  const currentOrders = orders.filter(order => !(order.paid && order.status === "DELIVERED"));
+  const pastOrders = orders.filter(order => order.paid && order.status === "DELIVERED");
+
   const groupedOrders = orders.reduce((groups, order) => {
     const table = order.tableNumber;
     if (!groups[table]) groups[table] = [];
