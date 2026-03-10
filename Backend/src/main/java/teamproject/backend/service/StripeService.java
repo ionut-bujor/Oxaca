@@ -1,7 +1,9 @@
 package teamproject.backend.service;
 
 import com.stripe.Stripe;
+import com.stripe.model.Event;
 import com.stripe.model.checkout.Session;
+import com.stripe.net.Webhook;
 import com.stripe.param.checkout.SessionCreateParams;
 import com.stripe.param.checkout.SessionCreateParams.Builder;
 import java.math.BigDecimal;
@@ -170,6 +172,22 @@ public class StripeService {
       validateOrderItems(item);
       long price = convertPriceIntoFormat(item.getLinePrice());
       assignValuesToCheckoutObject(builder, price, item);
+    }
+  }
+
+  public void handleWebhook(String payload, String sigHeader) throws Exception {
+    Event event = Webhook.constructEvent(payload, sigHeader, webhookSecret);
+
+    if ("checkout.session.completed".equals(event.getType())) {
+      Session session = (Session) event.getDataObjectDeserializer()
+          .getObject()
+          .orElseThrow();
+
+      Long orderId = Long.parseLong(session.getMetadata().get("orderId"));
+
+      CustomerOrder order = findCustomerOrder(orderId);
+      order.setPaid(true);
+      customerOrders.save(order);
     }
   }
 }
