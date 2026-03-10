@@ -2,9 +2,12 @@ package teamproject.backend.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 import teamproject.backend.dto.CustomerOrderDTO;
+import teamproject.backend.model.CustomerOrder;
 import teamproject.backend.model.OrderStatus;
 import teamproject.backend.repository.CustomerOrderRepository;
 
@@ -44,15 +47,18 @@ public class WaiterDashboardService {
   /**
    * This is the business logic where the order status changes to preparing.
    *
-   * @param tableNumber The table number we will confirm orders for.
+   * @param id The id we will confirm orders for.
    * @return A list of orders with their orders confirmed.
    */
   @Transactional(readOnly = true)
-  public List<CustomerOrderDTO> confirmOrder(int tableNumber) {
-    return orderRepository.findByTableNumber(tableNumber).stream()
-        .peek(order -> order.setStatus(OrderStatus.PREPARING))
-        .map(orderRepository::save)
-        .map(orderMapper::orderToDto)
-        .collect(Collectors.toList());
+  public CustomerOrderDTO confirmOrder(Long id) {
+    CustomerOrder order = orderRepository.findById(id).orElseThrow(
+      () -> new ResponseStatusException(
+        HttpStatus.NOT_FOUND,
+        "The Order number: " + id + " cannot be found."
+      ));
+    order.setStatus(OrderStatus.PREPARING);
+    CustomerOrder confirmedOrder = orderRepository.save(order);
+    return orderMapper.orderToDto(confirmedOrder);
   }
 }
