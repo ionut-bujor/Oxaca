@@ -41,7 +41,7 @@ const StripeSuccess: React.FC = () => {
               Thank you! Your payment was successful.
             </p>
             <p className="text-slate-400 text-sm mb-10">
-              "Sit back and relax — your order is already being taken care of."
+              Sit back and relax — your order is already being taken care of.
             </p>
 
             {/* Session ID badge */}
