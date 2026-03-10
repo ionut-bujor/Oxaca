@@ -5,8 +5,11 @@ import Register from './pages/Register'
 import CustomerDashboard from './pages/CustomerDashboard'
 import Checkout from './pages/Checkout'
 import OrderConfirmation from './pages/OrderConfirmation'
+import WaiterDashboard from './pages/WaiterDashboard'
+import { useAuth } from './context/AuthContext'
 
 const App: React.FC = () => {
+  const { isWaiter } = useAuth();
 
   return (
     <Router>
@@ -16,7 +19,7 @@ const App: React.FC = () => {
         <Route path='/register' element={<Register />}/>
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/order-confirmation" element={<OrderConfirmation />} />
-        <Route path="/dashboard" element={<CustomerDashboard />} />
+        <Route path="/dashboard" element={isWaiter() ? <WaiterDashboard /> : <CustomerDashboard />} />
 
       </Routes>
     </Router>
