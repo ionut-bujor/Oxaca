@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import teamproject.backend.model.CustomerOrder;
 import teamproject.backend.model.OrderItem;
+import teamproject.backend.model.OrderStatus;
 import teamproject.backend.repository.CustomerOrderRepository;
 
 /**
@@ -190,6 +191,8 @@ public class StripeService {
       Long orderId = Long.parseLong(session.getMetadata().get("orderId"));
 
       CustomerOrder order = findCustomerOrder(orderId);
+      System.out.println("Changing the order status here");
+      order.setStatus(OrderStatus.DELIVERED);
       order.setPaid(true);
       customerOrders.save(order);
     }

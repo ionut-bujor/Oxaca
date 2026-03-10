@@ -73,23 +73,4 @@ public class StripeController {
   public CustomerOrderDTO getCurrentOrderId(@PathVariable Long id) {
     return orderMapper.orderToDto(stripeService.findCustomerOrder(id));
   }
-  @RestController
-  @RequestMapping("/api/stripe")
-  public class StripeWebhookController {
-    @Value("${stripe.webhook.secret}")
-    private String webhookSecret;
-
-    @PostMapping("/webhook")
-    public ResponseEntity<String> handleWebhook(
-        @RequestBody String payload,
-        @RequestHeader("Stripe-Signature") String sigHeader) {
-      try {
-        stripeService.handleWebhook(payload, sigHeader);
-        return ResponseEntity.ok("OK");
-      } catch (Exception e) {
-        return ResponseEntity.badRequest().body(e.getMessage());
-      }
-
-    }
-  }
 }
