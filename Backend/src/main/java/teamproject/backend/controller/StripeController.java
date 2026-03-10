@@ -14,9 +14,8 @@ import teamproject.backend.service.OrderMapper;
 import teamproject.backend.service.StripeService;
 
 /**
- * REST controller for Stripe checkout operations.
- * Provides endpoints for creating a Stripe checkout session
- * and retrieving the order associated with the checkout.
+ * REST controller for Stripe checkout operations. Provides endpoints for creating a Stripe checkout
+ * session and retrieving the order associated with the checkout.
  */
 @RestController
 @RequestMapping("/api/stripe")
@@ -47,8 +46,9 @@ public class StripeController {
     try {
       return stripeService.createCheckoutSession(req.orderId());
     } catch (Exception e) {
-      throw new ResponseStatusException(
-          HttpStatus.BAD_REQUEST, "Could not create checkout session", e);
+      e.printStackTrace();
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not create checkout session",
+          e);
     }
   }
 
@@ -57,7 +57,8 @@ public class StripeController {
    *
    * @param orderId the ID of the order being paid for
    */
-  public record CheckoutSessionRequest(Long orderId) {}
+  public record CheckoutSessionRequest(Long orderId) {
+  }
 
   /**
    * Endpoint used to fetch the id of the order being checked out.
