@@ -25,6 +25,10 @@ public class StripeService {
 
   @Value("${stripe.secret.key}")
   private String stripeSecretKey;
+
+  @Value("${stripe.webhook.secret}")
+  private String webhookSecret;  // add this
+
   private final CustomerOrderRepository customerOrders;
 
   /**
