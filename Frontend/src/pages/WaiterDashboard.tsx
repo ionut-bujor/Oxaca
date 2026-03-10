@@ -4,7 +4,7 @@ import CustomerDashboardHeader from "../components/CustomerDashboardHeader";
 import Footer from "../components/Footer";
 import TableNumberForm from "../components/TableNumberForm";
 import { useAuth } from "../context/AuthContext";
-import { fetchOrdersByTable } from "../services/orderservice";
+import { fetchOrdersByTable, confirmTableOrder } from "../services/orderservice";
 import { CustomerOrderDTO, ItemDTOHelper } from "../types";
 
 const WaiterDashboard: React.FC = () => {
@@ -14,10 +14,48 @@ const WaiterDashboard: React.FC = () => {
   const [orders, setOrders] = useState<CustomerOrderDTO[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [confirmingOrderId, setConfirmingOrderId] = useState<number | null>(null);
 
   if (!isWaiter()) {
     return <Navigate to="/dashboard" replace />;
   }
+
+  const getElapsedTime = (createdAt: string): string => {
+    const diffMs = Date.now() - new Date(createdAt).getTime();
+    const minutes = Math.floor(diffMs / 60000);
+    const hours = Math.floor(minutes / 60);
+    if (hours > 0) return `${hours}h ${minutes % 60}m`;
+    return `${minutes}m`;
+  };
+
+  const statusBadge = (status: string) => {
+    const styles: Record<string, string> = {
+      PLACED: "bg-yellow-100 text-yellow-800 border-yellow-200",
+      PREPARING: "bg-blue-100 text-blue-800 border-blue-200",
+      READY: "bg-green-100 text-green-800 border-green-200",
+      DELIVERED: "bg-slate-100 text-slate-600 border-slate-200",
+    };
+    return (
+      <span className={`inline-block px-2 py-0.5 rounded-full border text-xs font-semibold ${
+        styles[status] ?? "bg-slate-100 text-slate-600 border-slate-200"
+      }`}>
+        {status}
+      </span>
+    );
+  };
+
+  const handleConfirmOrder = async (orderId: number) => {
+    setConfirmingOrderId(orderId);
+    setError(null);
+    try {
+      const updated = await confirmTableOrder(orderId);
+      setOrders((prev) => prev.map((o) => (o.id === updated.id ? updated : o)));
+    } catch {
+      setError("Could not confirm order. Please try again.");
+    } finally {
+      setConfirmingOrderId(null);
+    }
+  };
 
   const handleFetchByTable = async () => {
     const tn = Number(tableNumber);
@@ -106,8 +144,13 @@ const WaiterDashboard: React.FC = () => {
                     <p className="text-slate-700">
                       <span className="font-semibold">Order ID:</span> {order.id}
                     </p>
+                    <div className="flex items-center gap-2">
+                      <span className="font-semibold text-slate-700">Status:</span>
+                      {statusBadge(order.status)}
+                    </div>
                     <p className="text-slate-700">
-                      <span className="font-semibold">Status:</span> {order.status}
+                      <span className="font-semibold">Time in Progress:</span>{" "}
+                      {order.createdAt ? getElapsedTime(order.createdAt) : "N/A"}
                     </p>
                     <p className="text-slate-700">
                       <span className="font-semibold">Created:</span>{" "}
@@ -122,6 +165,15 @@ const WaiterDashboard: React.FC = () => {
                     <p className="text-xl font-bold text-primary">
                       Total: GBP {order.totalPrice.toFixed(2)}
                     </p>
+                    {order.status === "PLACED" && (
+                      <button
+                        onClick={() => handleConfirmOrder(order.id)}
+                        disabled={confirmingOrderId === order.id}
+                        className="w-full mt-2 px-4 py-2 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      >
+                        {confirmingOrderId === order.id ? "Confirming…" : "Confirm Order"}
+                      </button>
+                    )}
                   </div>
                 </div>
               ))}

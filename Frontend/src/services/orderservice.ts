@@ -1,4 +1,4 @@
-import { createOrder, addItemToOrder, getOrdersByTable } from "../api/orderapi";
+import { createOrder, addItemToOrder, getOrdersByTable, confirmOrder } from "../api/orderapi";
 import { CartItem, CustomerOrderDTO } from "../types";
 
 export async function placeOrder(params: {
@@ -43,4 +43,8 @@ export async function fetchOrdersByTable(tableNumber: number): Promise<CustomerO
   }
 
   return getOrdersByTable(tableNumber);
+}
+
+export async function confirmTableOrder(orderId: number): Promise<CustomerOrderDTO> {
+  return confirmOrder(orderId);
 }
