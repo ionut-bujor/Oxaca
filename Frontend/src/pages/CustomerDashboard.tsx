@@ -9,6 +9,7 @@ const CustomerDashboard: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [payingTable, setPayingTable] = useState<number | null>(null);
+  const [activeTab, setActiveTab] = useState<Tab>("current");
 
   useEffect(() => {
     fetch("http://localhost:8080/dashboard", {
@@ -97,103 +98,140 @@ const CustomerDashboard: React.FC = () => {
     const allPaid = tableOrders.every(order => order.paid);
     const isPayingNow = payingTable === Number(tableNumber);
 
+   return (
+      <div key={tableNumber} className="grid md:grid-cols-2 gap-12 items-start border rounded-2xl p-6 shadow-sm">
+
+        {/* Items list */}
+        <div className="space-y-4">
+          {allItems.map((item: ItemDTOHelper, index: number) => (
+            <div
+              key={index}
+              className="flex justify-between items-center p-6 bg-gray-50 rounded-2xl shadow-sm border border-slate-100"
+            >
+              <div>
+                <p className="font-semibold text-lg text-slate-800">{item.menuItemName}</p>
+                <p className="text-sm text-slate-500">Quantity: {item.menuItemQuantity}</p>
+              </div>
+              <div className="text-right">
+                {item.price ? `£${(item.menuItemQuantity * item.price).toFixed(2)}` : "-"}
+              </div>
+            </div>
+          ))}
+
+          <div className="flex justify-between pt-4 border-t">
+            <span className="text-xl font-bold">Total</span>
+            <span className="text-xl font-bold text-primary">
+              £{totalPrice.toFixed(2)}
+            </span>
+          </div>
+        </div>
+
+        {/* Table and status info */}
+        <div className="space-y-6 pt-2">
+          <div className="text-center space-y-4 border-b-4 border-primary pb-8">
+            <h3 className="text-2xl font-bold uppercase tracking-widest text-primary">
+              Table Number {tableNumber}
+            </h3>
+            <p className="text-slate-600">Status: <span className="font-semibold">{latestStatus}</span></p>
+            <p className="text-slate-600">
+              {isPast ? "Completed at: " : "Created at: "}
+              {latestCreatedAt ? new Date(latestCreatedAt).toLocaleString() : "N/A"}
+            </p>
+            {renderPaymentBadge(tableOrders)}
+          </div>
+
+          {!isPast && (
+            <>
+              <button className="w-full bg-primary hover:bg-darkGreen text-white py-4 rounded-2xl text-lg font-semibold tracking-wide transition shadow-xl active:scale-95">
+                Call A Waiter
+              </button>
+
+              {!allPaid && (
+                <button
+                  onClick={() => handlePayOrder(tableOrders, tableNumber)}
+                  disabled={isPayingNow}
+                  className="w-full bg-green-600 hover:bg-green-700 disabled:bg-green-300 text-white py-4 rounded-2xl text-lg font-semibold tracking-wide transition shadow-xl active:scale-95"
+                >
+                  {isPayingNow ? "Processing..." : `Pay £${totalPrice.toFixed(2)}`}
+                </button>
+              )}
+            </>
+          )}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <CustomerDashboardHeader />
 
       <main className="flex-grow pt-28 px-6">
-        <div className="max-w-6xl mx-auto space-y-12">
+        <div className="max-w-6xl mx-auto space-y-8">
           <h2 className="text-4xl font-bold text-slate-800">My Orders</h2>
 
-          {Object.keys(groupedOrders).length === 0 ? (
-            <p className="text-slate-500">You have no active orders.</p>
-          ) : (
-            Object.entries(groupedOrders).map(([tableNumber, tableOrders]) => {
-              const allItems = tableOrders.flatMap(order => order.items);
-              const totalPrice = tableOrders.reduce((sum, order) => sum + order.totalPrice, 0);
-              const latestStatus = tableOrders[tableOrders.length - 1].status;
-              const latestCreatedAt = tableOrders[tableOrders.length - 1].createdAt;
-              const allPaid = tableOrders.every(order => order.paid);
-              const somePaid = tableOrders.some(order => order.paid);
-              const isPayingNow = payingTable === Number(tableNumber);
+          {/* Tab navigation */}
+          <div className="flex gap-2 border-b border-slate-200">
+            <button
+              onClick={() => setActiveTab("current")}
+              className={`px-6 py-3 text-sm font-bold uppercase tracking-widest transition rounded-t-lg ${
+                activeTab === "current"
+                  ? "bg-primary text-white"
+                  : "text-slate-500 hover:text-slate-800"
+              }`}
+            >
+              Current Orders
+              {currentOrders.length > 0 && (
+                <span className={`ml-2 px-2 py-0.5 rounded-full text-xs ${
+                  activeTab === "current" ? "bg-white/20 text-white" : "bg-slate-100 text-slate-600"
+                }`}>
+                  {Object.keys(groupedCurrent).length}
+                </span>
+              )}
+            </button>
+            <button
+              onClick={() => setActiveTab("past")}
+              className={`px-6 py-3 text-sm font-bold uppercase tracking-widest transition rounded-t-lg ${
+                activeTab === "past"
+                  ? "bg-primary text-white"
+                  : "text-slate-500 hover:text-slate-800"
+              }`}
+            >
+              Past Orders
+              {pastOrders.length > 0 && (
+                <span className={`ml-2 px-2 py-0.5 rounded-full text-xs ${
+                  activeTab === "past" ? "bg-white/20 text-white" : "bg-slate-100 text-slate-600"
+                }`}>
+                  {Object.keys(groupedPast).length}
+                </span>
+              )}
+            </button>
+          </div>
 
-              const paymentStatusLabel = allPaid
-                ? "Paid"
-                : somePaid
-                ? "Partially Paid"
-                : "Requires Payment";
+          {/* Current orders tab */}
+          {activeTab === "current" && (
+            <div className="space-y-12 pb-12">
+              {Object.keys(groupedCurrent).length === 0 ? (
+                <p className="text-slate-500">You have no active orders.</p>
+              ) : (
+                Object.entries(groupedCurrent).map(([tableNumber, tableOrders]) =>
+                  renderOrderGroup(tableNumber, tableOrders, false)
+                )
+              )}
+            </div>
+          )}
 
-              const paymentStatusColor = allPaid
-                ? "text-green-600 bg-green-50 border-green-200"
-                : somePaid
-                ? "text-yellow-600 bg-yellow-50 border-yellow-200"
-                : "text-red-600 bg-red-50 border-red-200";
-
-              return (
-                <div key={tableNumber} className="grid md:grid-cols-2 gap-12 items-start border rounded-2xl p-6 shadow-sm">
-
-                  {/* list of order items */}
-                  <div className="space-y-4">
-                    {allItems.map((item: ItemDTOHelper, index: number) => (
-                      <div
-                        key={index}
-                        className="flex justify-between items-center p-6 bg-gray-50 rounded-2xl shadow-sm border border-slate-100"
-                      >
-                        <div>
-                          <p className="font-semibold text-lg text-slate-800">{item.menuItemName}</p>
-                          <p className="text-sm text-slate-500">Quantity: {item.menuItemQuantity}</p>
-                        </div>
-                        <div className="text-right">
-                          {item.price ? `£${(item.menuItemQuantity * item.price).toFixed(2)}` : "-"}
-                        </div>
-                      </div>
-                    ))}
-
-                    <div className="flex justify-between pt-4 border-t">
-                      <span className="text-xl font-bold">Total</span>
-                      <span className="text-xl font-bold text-primary">
-                        £{totalPrice.toFixed(2)}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* table and status info */}
-                  <div className="space-y-6 pt-2">
-                    <div className="text-center space-y-4 border-b-4 border-primary pb-8">
-                      <h3 className="text-2xl font-bold uppercase tracking-widest text-primary">
-                        Table Number {tableNumber}
-                      </h3>
-                      <p className="text-slate-600">Status: <span className="font-semibold">{latestStatus}</span></p>
-                      <p className="text-slate-600">
-                        Created at:{" "}
-                        {latestCreatedAt ? new Date(latestCreatedAt).toLocaleString() : "N/A"}
-                      </p>
-
-                      {/* payment status */}
-                      <div className={`inline-block px-4 py-1.5 rounded-full border text-sm font-semibold ${paymentStatusColor}`}>
-                        Payment: {paymentStatusLabel}
-                      </div>
-                    </div>
-
-                    <button className="w-full bg-primary hover:bg-darkGreen text-white py-4 rounded-2xl text-lg font-semibold tracking-wide transition shadow-xl active:scale-95">
-                      Call A Waiter
-                    </button>
-
-                    {/* pay button — hidden if already fully paid */}
-                    {!allPaid && (
-                      <button
-                        onClick={() => handlePayOrder(tableOrders, tableNumber)}
-                        disabled={isPayingNow}
-                        className="w-full bg-green-600 hover:bg-green-700 disabled:bg-green-300 text-white py-4 rounded-2xl text-lg font-semibold tracking-wide transition shadow-xl active:scale-95"
-                      >
-                        {isPayingNow ? "Processing..." : `Pay £${totalPrice.toFixed(2)}`}
-                      </button>
-                    )}
-                  </div>
-
-                </div>
-              );
-            })
+          {/* Past orders tab */}
+          {activeTab === "past" && (
+            <div className="space-y-12 pb-12">
+              {Object.keys(groupedPast).length === 0 ? (
+                <p className="text-slate-500">You have no past orders.</p>
+              ) : (
+                Object.entries(groupedPast).map(([tableNumber, tableOrders]) =>
+                  renderOrderGroup(tableNumber, tableOrders, true)
+                )
+              )}
+            </div>
           )}
         </div>
       </main>
