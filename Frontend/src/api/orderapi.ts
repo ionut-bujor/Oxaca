@@ -38,3 +38,10 @@ export async function addItemToOrder(orderId: number, item: AddItemRequest): Pro
     body: JSON.stringify(item),
   });
 }
+
+export async function getOrdersByTable(tableNumber: number): Promise<any[]> {
+  // TODO: Backend endpoint pending. Expected response: CustomerOrderDTO[] for a table.
+  return http<any[]>(`/orders/by-table/${tableNumber}`, {
+    method: "GET",
+  });
+}
