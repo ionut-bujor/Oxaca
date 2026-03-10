@@ -46,10 +46,10 @@ public class WaiterDashboardController {
   /**
    * This changes the status of an order to preparing.
    */
-  @PostMapping("/confirmOrder/{tableNumber}")
+  @PostMapping("/confirmOrder/{id}")
   @RequireRole({Role.MANAGER, Role.WAITER})
-  public ResponseEntity<List<CustomerOrderDTO>> confirmOrder(@PathVariable int tableNumber) {
-    List<CustomerOrderDTO> updated = waiterDashboardService.confirmOrder(tableNumber);
+  public ResponseEntity<CustomerOrderDTO> confirmOrder(@PathVariable Long id) {
+    CustomerOrderDTO updated = waiterDashboardService.confirmOrder(id);
     return ResponseEntity.ok(updated);
   }
 }
