@@ -89,6 +89,14 @@ const CustomerDashboard: React.FC = () => {
     );
   };
 
+  const renderOrderGroup = (tableNumber: string, tableOrders: CustomerOrderDTO[], isPast: boolean) => {
+    const allItems = tableOrders.flatMap(order => order.items);
+    const totalPrice = tableOrders.reduce((sum, order) => sum + order.totalPrice, 0);
+    const latestStatus = tableOrders[tableOrders.length - 1].status;
+    const latestCreatedAt = tableOrders[tableOrders.length - 1].createdAt;
+    const allPaid = tableOrders.every(order => order.paid);
+    const isPayingNow = payingTable === Number(tableNumber);
+
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <CustomerDashboardHeader />
