@@ -1,5 +1,5 @@
-import { createOrder, addItemToOrder } from "../api/orderapi";
-import { CartItem } from "../types";
+import { createOrder, addItemToOrder, getOrdersByTable } from "../api/orderapi";
+import { CartItem, CustomerOrderDTO } from "../types";
 
 export async function placeOrder(params: {
   userId: number;
@@ -35,4 +35,12 @@ export async function placeOrder(params: {
   }
 
   return updated;
+}
+
+export async function fetchOrdersByTable(tableNumber: number): Promise<CustomerOrderDTO[]> {
+  if (!Number.isInteger(tableNumber) || tableNumber <= 0) {
+    throw new Error("Table number must be a positive integer.");
+  }
+
+  return getOrdersByTable(tableNumber);
 }
