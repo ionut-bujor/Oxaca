@@ -1,11 +1,14 @@
 package teamproject.backend.controller;
 
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -70,5 +73,23 @@ public class StripeController {
   public CustomerOrderDTO getCurrentOrderId(@PathVariable Long id) {
     return orderMapper.orderToDto(stripeService.findCustomerOrder(id));
   }
+  @RestController
+  @RequestMapping("/api/stripe")
+  public class StripeWebhookController {
+    @Value("${stripe.webhook.secret}")
+    private String webhookSecret;
 
+    @PostMapping("/webhook")
+    public ResponseEntity<String> handleWebhook(
+        @RequestBody String payload,
+        @RequestHeader("Stripe-Signature") String sigHeader) {
+      try {
+        stripeService.handleWebhook(payload, sigHeader);
+        return ResponseEntity.ok("OK");
+      } catch (Exception e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
+      }
+
+    }
+  }
 }
