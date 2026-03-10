@@ -28,7 +28,7 @@ public class StripeService {
   private String stripeSecretKey;
 
   @Value("${stripe.webhook.secret}")
-  private String webhookSecret;  // add this
+  private String webhookSecret; // add this
 
   private final CustomerOrderRepository customerOrders;
 
@@ -49,9 +49,8 @@ public class StripeService {
    */
 
   public CustomerOrder findCustomerOrder(Long id) {
-    return customerOrders.findById(id)
-        .orElseThrow(() -> new ResponseStatusException(
-            HttpStatus.NOT_FOUND, "This order doesn't exist"));
+    return customerOrders.findById(id).orElseThrow(
+        () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "This order doesn't exist"));
   }
 
   /**
@@ -74,19 +73,18 @@ public class StripeService {
   }
 
   /**
-   * Used to redirect the customer after finishing checking out
-   * based on if the payment went through or something was wrong.
+   * Used to redirect the customer after finishing checking out based on if the payment went through
+   * or something was wrong.
    *
    * @param orderId order being paid for
    * @return builder object
    */
   public Builder createResponseRedirect(Long orderId) {
-    SessionCreateParams.Builder
-        builder = SessionCreateParams.builder()
-        .setMode(SessionCreateParams.Mode.PAYMENT)
-        .setSuccessUrl("http://localhost:5173/success?session_id={CHECKOUT_SESSION_ID}")
-        .setCancelUrl("http://localhost:5173/cancel")
-        .putMetadata("orderId", String.valueOf(orderId));
+    SessionCreateParams.Builder builder =
+        SessionCreateParams.builder().setMode(SessionCreateParams.Mode.PAYMENT)
+            .setSuccessUrl("http://localhost:5173/success?session_id={CHECKOUT_SESSION_ID}")
+            .setCancelUrl("http://localhost:5173/cancel")
+            .putMetadata("orderId", String.valueOf(orderId));
     return builder;
   }
 
@@ -98,10 +96,7 @@ public class StripeService {
    * @return Stripe format i.e 1225
    */
   public long convertPriceIntoFormat(BigDecimal price) {
-    return price
-        .setScale(2, RoundingMode.HALF_UP)
-        .movePointRight(2)
-        .longValueExact();
+    return price.setScale(2, RoundingMode.HALF_UP).movePointRight(2).longValueExact();
   }
 
   /**
@@ -129,8 +124,8 @@ public class StripeService {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Item price is missing");
     }
     if (item.getLinePrice().compareTo(BigDecimal.ZERO) <= 0) {
-      throw new ResponseStatusException(
-          HttpStatus.BAD_REQUEST, "Invalid item price, price can't be negative");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+          "Invalid item price, price can't be negative");
     }
     if (item.getQuantity() <= 0) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
@@ -147,22 +142,13 @@ public class StripeService {
    */
 
   public void assignValuesToCheckoutObject(Builder builder, long price, OrderItem item) {
-    builder.addLineItem(
-        SessionCreateParams.LineItem.builder()
-            .setQuantity((long) item.getQuantity())
-            .setPriceData(
-                SessionCreateParams.LineItem.PriceData.builder()
-                    .setCurrency("gbp")
-                    .setUnitAmount(price)
-                    .setProductData(
-                        SessionCreateParams.LineItem.PriceData.ProductData.builder()
-                            .setName(item.getName())
-                            .build()
-                    )
-                    .build()
-            )
-            .build()
-    );
+    builder.addLineItem(SessionCreateParams.LineItem.builder()
+        .setQuantity((long) item.getQuantity())
+        .setPriceData(SessionCreateParams.LineItem.PriceData.builder().setCurrency("gbp")
+            .setUnitAmount(price).setProductData(SessionCreateParams.LineItem.PriceData.ProductData
+                .builder().setName(item.getName()).build())
+            .build())
+        .build());
   }
 
   /**
@@ -181,10 +167,9 @@ public class StripeService {
   }
 
   /**
-   * Processes an incoming Stripe webhook event by verifying its signature and
-   * updating the associated order upon successful payment.
-   * If the event type is checkout.session.completed, the corresponding order
-   * is marked as delivered and paid.
+   * Processes an incoming Stripe webhook event by verifying its signature and updating the
+   * associated order upon successful payment. If the event type is checkout.session.completed, the
+   * corresponding order is marked as delivered and paid.
    *
    * @param payload the raw request body from Stripe used for signature verification
    * @param sigHeader the Stripe-Signature header used to authenticate the webhook request
@@ -195,12 +180,11 @@ public class StripeService {
     Event event = Webhook.constructEvent(payload, sigHeader, webhookSecret);
 
     if ("checkout.session.completed".equals(event.getType())) {
-      Session session = (Session) event.getDataObjectDeserializer()
-          .deserializeUnsafe();
+      Session session = (Session) event.getDataObjectDeserializer().deserializeUnsafe();
 
       Long orderId = Long.parseLong(session.getMetadata().get("orderId"));
       CustomerOrder order = findCustomerOrder(orderId);
-      order.setStatus(OrderStatus.DELIVERED);
+      // order.setStatus(OrderStatus.DELIVERED);
       order.setPaid(true);
       customerOrders.save(order);
     }
