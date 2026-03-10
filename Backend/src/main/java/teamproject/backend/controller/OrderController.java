@@ -65,7 +65,7 @@ public class OrderController {
    * @return This returns the created order.
    */
   @PostMapping
-  @RequireRole({Role.CUSTOMER})
+  @RequireRole({Role.MANAGER, Role.WAITER, Role.CUSTOMER, Role.KITCHEN})
   public ResponseEntity<CustomerOrderDTO> createOrder(@RequestBody CreateOrderRequest body,
       HttpServletRequest request) {
 
