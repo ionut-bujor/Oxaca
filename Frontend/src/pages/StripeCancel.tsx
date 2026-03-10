@@ -16,9 +16,9 @@ const StripeCancel: React.FC = () => {
       <div className="min-h-screen flex flex-col bg-background-light">
         <ButtonlessHeader />
 
-        <main className="flex-grow flex items-center justify-center px-6 pt-20">
+        <main className="flex-grow px-6 pt-32 pb-32">
           <div
-              className={`max-w-lg w-full text-center transition-all duration-700 ease-out ${
+              className={`max-w-lg w-full mx-auto text-center transition-all duration-700 ease-out ${
                   visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
           >
@@ -54,7 +54,7 @@ const StripeCancel: React.FC = () => {
                   className="flex items-center justify-center gap-2 px-8 py-4 bg-primary text-white rounded-xl font-bold uppercase tracking-widest hover:bg-accent transition-all shadow-xl shadow-primary/20 active:scale-95"
               >
                 <span className="material-symbols-outlined text-xl">arrow_back</span>
-                Back to Dashboard
+                Back to My Orders
               </button>
               <button
                   onClick={() => navigate("/")}
