@@ -10,4 +10,6 @@ import teamproject.backend.model.CustomerOrder;
 public interface CustomerOrderRepository extends JpaRepository<CustomerOrder, Long> {
   List<CustomerOrder> findByUserId(Long userId);
 
+  List<CustomerOrder> findByTableNumber(int tableNumber);
+
 }
