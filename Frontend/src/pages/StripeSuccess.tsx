@@ -16,12 +16,12 @@ const StripeSuccess: React.FC = () => {
   }, []);
 
   return (
-      <div className="min-h-screen flex flex-col bg-background-light">
+      <div className="min-h-[120vh] flex flex-col bg-background-light">
         <ButtonlessHeader />
 
-        <main className="flex-grow flex items-center justify-center px-6 pt-20">
+        <main className="flex-grow px-6 pt-32 pb-32">
           <div
-              className={`max-w-lg w-full text-center transition-all duration-700 ease-out ${
+              className={`max-w-lg w-full mx-auto text-center transition-all duration-700 ease-out ${
                   visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
           >
