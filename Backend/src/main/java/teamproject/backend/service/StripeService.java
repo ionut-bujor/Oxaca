@@ -185,13 +185,10 @@ public class StripeService {
 
     if ("checkout.session.completed".equals(event.getType())) {
       Session session = (Session) event.getDataObjectDeserializer()
-          .getObject()
-          .orElseThrow();
+          .deserializeUnsafe(); // ← change this
 
       Long orderId = Long.parseLong(session.getMetadata().get("orderId"));
-
       CustomerOrder order = findCustomerOrder(orderId);
-      System.out.println("Changing the order status here");
       order.setStatus(OrderStatus.DELIVERED);
       order.setPaid(true);
       customerOrders.save(order);
