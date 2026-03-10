@@ -71,6 +71,24 @@ const CustomerDashboard: React.FC = () => {
   const groupedCurrent = groupOrders(currentOrders);
   const groupedPast = groupOrders(pastOrders);
 
+  const renderPaymentBadge = (tableOrders: CustomerOrderDTO[]) => {
+    const allPaid = tableOrders.every(o => o.paid);
+    const somePaid = tableOrders.some(o => o.paid);
+
+    const label = allPaid ? "Paid" : somePaid ? "Partially Paid" : "Requires Payment";
+    const color = allPaid
+      ? "text-green-600 bg-green-50 border-green-200"
+      : somePaid
+      ? "text-yellow-600 bg-yellow-50 border-yellow-200"
+      : "text-red-600 bg-red-50 border-red-200";
+
+    return (
+      <div className={`inline-block px-4 py-1.5 rounded-full border text-sm font-semibold ${color}`}>
+        Payment: {label}
+      </div>
+    );
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <CustomerDashboardHeader />
