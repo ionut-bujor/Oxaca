@@ -53,7 +53,7 @@ public class WaiterDashboardService {
   @Transactional(readOnly = true)
   public CustomerOrderDTO confirmOrder(Long id) {
     CustomerOrder order = orderRepository.findById(id).orElseThrow(
-      () -> new ResponseStatusException(
+        () -> new ResponseStatusException(
         HttpStatus.NOT_FOUND,
         "The Order number: " + id + " cannot be found."
       ));
