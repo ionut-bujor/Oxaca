@@ -50,7 +50,7 @@ public class WaiterDashboardService {
    * @param id The id we will confirm orders for.
    * @return A list of orders with their orders confirmed.
    */
-  @Transactional(readOnly = true)
+  @Transactional
   public CustomerOrderDTO confirmOrder(Long id) {
     CustomerOrder order = orderRepository.findById(id).orElseThrow(
         () -> new ResponseStatusException(
