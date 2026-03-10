@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import teamproject.backend.service.StripeService;
 
-// StripeWebhookController.java
+/**
+ * Used to receive the POST object from Stripe API.
+ */
 @RestController
 @RequestMapping("/api/stripe")
 public class StripeWebhookController {
@@ -19,6 +21,16 @@ public class StripeWebhookController {
   public StripeWebhookController(StripeService stripeService) {
     this.stripeService = stripeService;
   }
+
+  /**
+   * Handles incoming Stripe webhook POST requests by reading the raw request body
+   * and forwarding it to the service layer for signature verification and processing.
+   *
+   * @param request the raw HTTP request used to extract the unmodified payload body
+   * @param sigHeader the Stripe-Signature header used to verify the webhook authenticity
+   * @return HTTP 200 with "OK" if the event was processed successfully,
+   *         HTTP 400 with the error message if verification or processing fails
+   */
 
   @PostMapping("/webhook")
   public ResponseEntity<String> handleWebhook(

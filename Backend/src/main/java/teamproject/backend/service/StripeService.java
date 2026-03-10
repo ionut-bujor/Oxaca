@@ -180,12 +180,23 @@ public class StripeService {
     }
   }
 
+  /**
+   * Processes an incoming Stripe webhook event by verifying its signature and
+   * updating the associated order upon successful payment.
+   * If the event type is checkout.session.completed, the corresponding order
+   * is marked as delivered and paid.
+   *
+   * @param payload the raw request body from Stripe used for signature verification
+   * @param sigHeader the Stripe-Signature header used to authenticate the webhook request
+   * @throws Exception if signature verification fails or the order cannot be found
+   */
+
   public void handleWebhook(String payload, String sigHeader) throws Exception {
     Event event = Webhook.constructEvent(payload, sigHeader, webhookSecret);
 
     if ("checkout.session.completed".equals(event.getType())) {
       Session session = (Session) event.getDataObjectDeserializer()
-          .deserializeUnsafe(); // ← change this
+          .deserializeUnsafe();
 
       Long orderId = Long.parseLong(session.getMetadata().get("orderId"));
       CustomerOrder order = findCustomerOrder(orderId);
