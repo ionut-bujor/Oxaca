@@ -9,7 +9,7 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ cartCount, onCartClick }) => {
-  const { user, isCustomer, isWaiter, isKitchen, isAdmin, logout, isAuthenticated } = useAuth();
+  const { user, isCustomer, isWaiter, isKitchen, isManager, logout, isAuthenticated } = useAuth();
 
   const handleLogout = async () => {
     await logout();

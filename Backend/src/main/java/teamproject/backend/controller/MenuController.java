@@ -1,6 +1,5 @@
 package teamproject.backend.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import teamproject.backend.dto.MenuItemDTO;
-import teamproject.backend.model.MenuItem;
 import teamproject.backend.model.Role;
 import teamproject.backend.security.RequireRole;
 import teamproject.backend.service.ServiceMenu;
@@ -56,7 +54,7 @@ public class MenuController {
    *
    * @return status code if the menu item was stored succesfully or not
    */
-  @RequireRole({Role.ADMIN, Role.WAITER, Role.KITCHEN})
+  @RequireRole({Role.MANAGER, Role.WAITER, Role.KITCHEN})
   @PostMapping("/item")
   public ResponseEntity<MenuItemDTO> addMenuItem(@Valid @RequestBody MenuItemDTO menuDto) {
     return ResponseEntity.ok(serviceMenu.addMenuItem(menuDto));
@@ -70,7 +68,7 @@ public class MenuController {
    * @return 200 if the item is updated, 404 if not found.
    */
 
-  @RequireRole({Role.ADMIN, Role.WAITER, Role.KITCHEN})
+  @RequireRole({Role.MANAGER, Role.WAITER, Role.KITCHEN})
   @PutMapping("/item/{id}")
   public ResponseEntity<MenuItemDTO> updateMenuItem(@PathVariable Long id,
       @RequestBody MenuItemDTO menuDto) {
@@ -84,7 +82,7 @@ public class MenuController {
    * @return 200 if the menuitem is deleted, 404 if not found.
    */
 
-  @RequireRole({Role.ADMIN, Role.WAITER, Role.KITCHEN})
+  @RequireRole({Role.MANAGER, Role.WAITER, Role.KITCHEN})
   @DeleteMapping("/item/{id}")
   public ResponseEntity<MenuItemDTO> deleteMenuItem(@PathVariable Long id) {
     return ResponseEntity.ok(serviceMenu.deleteItem(id));
