@@ -99,8 +99,8 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({ item, onAddToCart, onMenuCh
             )}
           </div>
           <div className="flex items-center justify-end mt-4 sm:mt-0 gap-2">
-            {/* ── Waiter-only controls ── */}
-            {isWaiter() || isManager() && (
+            {/* Menu management controls for waiter and manager roles. */}
+            {(isWaiter() || isManager()) && (
               <>
                 <button
                   onClick={() => setEditOpen(true)}
