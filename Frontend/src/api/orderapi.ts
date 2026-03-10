@@ -44,3 +44,9 @@ export async function getOrdersByTable(tableNumber: number): Promise<any[]> {
     method: "GET",
   });
 }
+
+export async function confirmOrder(orderId: number): Promise<any> {
+  return http<any>(`/waiterDashboard/confirmOrder/${orderId}`, {
+    method: "POST",
+  });
+}
