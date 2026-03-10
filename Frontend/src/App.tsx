@@ -5,6 +5,7 @@ import Register from './pages/Register'
 import CustomerDashboard from './pages/CustomerDashboard'
 import Checkout from './pages/Checkout'
 import OrderConfirmation from './pages/OrderConfirmation'
+import { useAuth } from './context/AuthContext'
 import StripeSuccess from './pages/StripeSuccess'
 import StripeCancel from './pages/StripeCancel'
 
