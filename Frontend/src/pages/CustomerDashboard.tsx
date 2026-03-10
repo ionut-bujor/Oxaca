@@ -60,12 +60,16 @@ const CustomerDashboard: React.FC = () => {
   const currentOrders = orders.filter(order => !(order.paid && order.status === "DELIVERED"));
   const pastOrders = orders.filter(order => order.paid && order.status === "DELIVERED");
 
-  const groupedOrders = orders.reduce((groups, order) => {
-    const table = order.tableNumber;
-    if (!groups[table]) groups[table] = [];
-    groups[table].push(order);
-    return groups;
-  }, {} as Record<number, CustomerOrderDTO[]>);
+  const groupOrders = (orderList: CustomerOrderDTO[]) =>
+    orderList.reduce((groups, order) => {
+      const table = order.tableNumber;
+      if (!groups[table]) groups[table] = [];
+      groups[table].push(order);
+      return groups;
+    }, {} as Record<number, CustomerOrderDTO[]>);
+
+  const groupedCurrent = groupOrders(currentOrders);
+  const groupedPast = groupOrders(pastOrders);
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
