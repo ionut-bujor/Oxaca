@@ -75,8 +75,24 @@ public class CustomerOrder {
    * @param quantity The amount of times the item is added.
    */
   public void addItem(MenuItem menuItem, int quantity) {
-    OrderItem item = new OrderItem(this, menuItem, quantity);
-    items.add(item);
+    // If the item already exists in this order, adjust its quantity
+    for (OrderItem existing : items) {
+      if (existing.getMenuItem().getId().equals(menuItem.getId())) {
+        int newQuantity = existing.getQuantity() + quantity;
+        if (newQuantity <= 0) {
+          items.remove(existing);
+        } else {
+          existing.setQuantity(newQuantity);
+        }
+        return;
+      }
+    }
+
+    // If quantity is positive and the item doesn't yet exist, create a new line
+    if (quantity > 0) {
+      OrderItem item = new OrderItem(this, menuItem, quantity);
+      items.add(item);
+    }
   }
 
   /**

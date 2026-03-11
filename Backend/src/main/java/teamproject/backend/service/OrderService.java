@@ -119,14 +119,79 @@ public class OrderService {
    * @param orderId This is the id of the order.
    * @param menuItemid This is the id of the menuitem.
    * @param quantity This is the quantity of items being added.
+   * @param session This checks and identifies the user in the session.
    * @return This returns the request in a DTO form.
    */
   @Transactional
-  public CustomerOrderDTO addItemToOrder(Long orderId, Long menuItemid, int quantity) {
-    CustomerOrder order = getValidCustomerOrder(orderId);   
+  public CustomerOrderDTO addItemToOrder(Long orderId, Long menuItemid, int quantity,
+      HttpSession session) {
+
+    if (session == null) {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not logged in");
+    }
+
+    Long userId = (Long) session.getAttribute("USER_ID");
+
+    if (userId == null) {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User ID not found");
+    }
+
+    CustomerOrder order = getValidCustomerOrder(orderId);
+
+    if (!order.getUser().getId().equals(userId)) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+          "You can only modify your own orders");
+    }
+
+    if (order.getStatus() != OrderStatus.PLACED) {
+      throw new ResponseStatusException(HttpStatus.CONFLICT,
+          "Food is already being prepared. You cannot change this order now.");
+    }
+
     MenuItem menuItem = getValidMenuItem(menuItemid);
 
     order.addItem(menuItem, quantity);
+    return orderMapper.orderToDto(order);
+  }
+
+  /**
+   * This allows items to be removed from a customer's order.
+   * Only orders with status PLACED can be modified and only by their owner.
+   *
+   * @param orderId This is the id of the order.
+   * @param menuItemid This is the id of the menu item to remove.
+   * @param session This checks and identifies the user in the session.
+   * @return This returns the updated order in DTO form.
+   */
+  @Transactional
+  public CustomerOrderDTO removeItemFromOrder(Long orderId, Long menuItemid,
+      HttpSession session) {
+
+    if (session == null) {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not logged in");
+    }
+
+    Long userId = (Long) session.getAttribute("USER_ID");
+
+    if (userId == null) {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User ID not found");
+    }
+
+    CustomerOrder order = getValidCustomerOrder(orderId);
+
+    if (!order.getUser().getId().equals(userId)) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+          "You can only modify your own orders");
+    }
+
+    if (order.getStatus() != OrderStatus.PLACED) {
+      throw new ResponseStatusException(HttpStatus.CONFLICT,
+          "Food is already being prepared. You cannot change this order now.");
+    }
+
+    // Remove all entries for this menu item from the order
+    order.getItems().removeIf(oi -> oi.getMenuItem().getId().equals(menuItemid));
+
     return orderMapper.orderToDto(order);
   }
 
