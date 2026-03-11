@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import teamproject.backend.model.CustomerOrder;
+import teamproject.backend.model.MenuItem;
 import teamproject.backend.model.OrderItem;
 import teamproject.backend.model.OrderStatus;
 import teamproject.backend.repository.CustomerOrderRepository;
@@ -28,7 +29,7 @@ public class StripeService {
   private String stripeSecretKey;
 
   @Value("${stripe.webhook.secret}")
-  private String webhookSecret;  // add this
+  private String webhookSecret;
 
   private final CustomerOrderRepository customerOrders;
 
@@ -98,6 +99,7 @@ public class StripeService {
    * @return Stripe format i.e 1225
    */
   public long convertPriceIntoFormat(BigDecimal price) {
+    System.out.println("Price is " + price);
     return price
         .setScale(2, RoundingMode.HALF_UP)
         .movePointRight(2)
@@ -175,7 +177,7 @@ public class StripeService {
   public void populateBuilderObject(Builder builder, CustomerOrder order) {
     for (OrderItem item : order.getItems()) {
       validateOrderItems(item);
-      long price = convertPriceIntoFormat(item.getLinePrice());
+      long price = convertPriceIntoFormat(item.getMenuItem().getPrice());
       assignValuesToCheckoutObject(builder, price, item);
     }
   }
