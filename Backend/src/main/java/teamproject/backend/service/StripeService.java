@@ -1,7 +1,9 @@
 package teamproject.backend.service;
 
 import com.stripe.Stripe;
+import com.stripe.model.Event;
 import com.stripe.model.checkout.Session;
+import com.stripe.net.Webhook;
 import com.stripe.param.checkout.SessionCreateParams;
 import com.stripe.param.checkout.SessionCreateParams.Builder;
 import java.math.BigDecimal;
@@ -12,7 +14,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import teamproject.backend.model.CustomerOrder;
+import teamproject.backend.model.MenuItem;
 import teamproject.backend.model.OrderItem;
+import teamproject.backend.model.OrderStatus;
 import teamproject.backend.repository.CustomerOrderRepository;
 
 /**
@@ -23,6 +27,10 @@ public class StripeService {
 
   @Value("${stripe.secret.key}")
   private String stripeSecretKey;
+
+  @Value("${stripe.webhook.secret}")
+  private String webhookSecret;
+
   private final CustomerOrderRepository customerOrders;
 
   /**
@@ -77,8 +85,8 @@ public class StripeService {
     SessionCreateParams.Builder
         builder = SessionCreateParams.builder()
         .setMode(SessionCreateParams.Mode.PAYMENT)
-        .setSuccessUrl("http://localhost:3000/success?session_id={CHECKOUT_SESSION_ID}")
-        .setCancelUrl("http://localhost:3000/cancel")
+        .setSuccessUrl("http://localhost:5173/success?session_id={CHECKOUT_SESSION_ID}")
+        .setCancelUrl("http://localhost:5173/cancel")
         .putMetadata("orderId", String.valueOf(orderId));
     return builder;
   }
@@ -91,6 +99,7 @@ public class StripeService {
    * @return Stripe format i.e 1225
    */
   public long convertPriceIntoFormat(BigDecimal price) {
+    System.out.println("Price is " + price);
     return price
         .setScale(2, RoundingMode.HALF_UP)
         .movePointRight(2)
@@ -168,8 +177,34 @@ public class StripeService {
   public void populateBuilderObject(Builder builder, CustomerOrder order) {
     for (OrderItem item : order.getItems()) {
       validateOrderItems(item);
-      long price = convertPriceIntoFormat(item.getLinePrice());
+      long price = convertPriceIntoFormat(item.getMenuItem().getPrice());
       assignValuesToCheckoutObject(builder, price, item);
+    }
+  }
+
+  /**
+   * Processes an incoming Stripe webhook event by verifying its signature and
+   * updating the associated order upon successful payment.
+   * If the event type is checkout.session.completed, the corresponding order
+   * is marked as delivered and paid.
+   *
+   * @param payload the raw request body from Stripe used for signature verification
+   * @param sigHeader the Stripe-Signature header used to authenticate the webhook request
+   * @throws Exception if signature verification fails or the order cannot be found
+   */
+
+  public void handleWebhook(String payload, String sigHeader) throws Exception {
+    Event event = Webhook.constructEvent(payload, sigHeader, webhookSecret);
+
+    if ("checkout.session.completed".equals(event.getType())) {
+      Session session = (Session) event.getDataObjectDeserializer()
+          .deserializeUnsafe();
+
+      Long orderId = Long.parseLong(session.getMetadata().get("orderId"));
+      CustomerOrder order = findCustomerOrder(orderId);
+      order.setStatus(OrderStatus.DELIVERED);
+      order.setPaid(true);
+      customerOrders.save(order);
     }
   }
 }

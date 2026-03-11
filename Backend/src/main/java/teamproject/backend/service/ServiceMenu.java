@@ -130,6 +130,7 @@ public class ServiceMenu {
     ItemDTOHelper dto = new ItemDTOHelper();
     dto.setMenuItemName(menuItemDto.getTitle());
     dto.setMenuItemQuantity(menuItemDto.getQuantity());
+    dto.setMenuItemId(menuItemDto.getId());
     return dto;
   }
   /**

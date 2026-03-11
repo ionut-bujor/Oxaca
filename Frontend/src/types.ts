@@ -49,6 +49,7 @@ export interface CartItem extends MenuItem {
 export interface ItemDTOHelper {
   menuItemName: string;
   menuItemQuantity: number;
+  menuItemId: number;
   // Add price if backend provides it
   price?: number; // optional if not yet included
 }
