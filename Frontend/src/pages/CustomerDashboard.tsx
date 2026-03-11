@@ -274,6 +274,23 @@ const CustomerDashboard: React.FC = () => {
                       </div>
                     </div>
 
+                    {/* add item button for editable orders */}
+                    {latestStatus === "PLACED" && !allPaid && (
+                      <button
+                        onClick={() => {
+                          const editableOrder = tableOrders.find(
+                            (o) => o.status === "PLACED" && !o.paid,
+                          );
+                          if (editableOrder) {
+                            openAddItemDialog(editableOrder.id);
+                          }
+                        }}
+                        className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-2xl text-md font-semibold tracking-wide transition shadow-md active:scale-95"
+                      >
+                        Add Item
+                      </button>
+                    )}
+
                     <button className="w-full bg-primary hover:bg-darkGreen text-white py-4 rounded-2xl text-lg font-semibold tracking-wide transition shadow-xl active:scale-95">
                       Call A Waiter
                     </button>
@@ -298,6 +315,48 @@ const CustomerDashboard: React.FC = () => {
       </main>
 
       <Footer />
+
+      {/* Add item modal */}
+      {isAddItemOpen && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden flex flex-col">
+            <div className="flex items-center justify-between px-6 py-4 border-b">
+              <h3 className="text-xl font-semibold text-slate-800">Add Item to Order</h3>
+              <button
+                onClick={() => {
+                  setIsAddItemOpen(false);
+                  setTargetOrderId(null);
+                }}
+                className="text-slate-500 hover:text-slate-800 text-2xl leading-none"
+              >
+                ×
+              </button>
+            </div>
+
+            <div className="p-6 overflow-y-auto space-y-3">
+              {menuItems.map((menuItem) => (
+                <button
+                  key={menuItem.id}
+                  onClick={() => handleAddNewMenuItemToOrder(Number(menuItem.id))}
+                  className="w-full flex items-center justify-between px-4 py-3 rounded-xl border border-slate-200 hover:border-primary hover:bg-primary/5 transition text-left"
+                >
+                  <div>
+                    <p className="font-semibold text-slate-800">{menuItem.name}</p>
+                    <p className="text-sm text-slate-500">{menuItem.description}</p>
+                  </div>
+                  <div className="font-semibold text-primary">
+                    £{menuItem.price.toFixed(2)}
+                  </div>
+                </button>
+              ))}
+
+              {menuItems.length === 0 && (
+                <p className="text-slate-500 text-sm">No menu items available.</p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
