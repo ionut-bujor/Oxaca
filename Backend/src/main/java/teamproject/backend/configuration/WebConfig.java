@@ -19,7 +19,9 @@ public class WebConfig implements WebMvcConfigurer {
 
   @Override
   public void addInterceptors(InterceptorRegistry registry) {
-    registry.addInterceptor(roleInterceptor).addPathPatterns("/api/**");
+    registry.addInterceptor(roleInterceptor)
+        .addPathPatterns("/api/**")
+        .excludePathPatterns("/api/stripe/webhook"); // add this
   }
 }
 

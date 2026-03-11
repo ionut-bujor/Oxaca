@@ -5,8 +5,9 @@ import Register from './pages/Register'
 import CustomerDashboard from './pages/CustomerDashboard'
 import Checkout from './pages/Checkout'
 import OrderConfirmation from './pages/OrderConfirmation'
-import WaiterDashboard from './pages/WaiterDashboard'
 import { useAuth } from './context/AuthContext'
+import StripeSuccess from './pages/StripeSuccess'
+import StripeCancel from './pages/StripeCancel'
 
 const App: React.FC = () => {
   const { isWaiter } = useAuth();
@@ -19,7 +20,9 @@ const App: React.FC = () => {
         <Route path='/register' element={<Register />}/>
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/order-confirmation" element={<OrderConfirmation />} />
-        <Route path="/dashboard" element={isWaiter() ? <WaiterDashboard /> : <CustomerDashboard />} />
+        <Route path="/dashboard" element={<CustomerDashboard />} />
+        <Route path="/success" element={<StripeSuccess />} />
+        <Route path ="/cancel" element = {<StripeCancel/>} />
 
       </Routes>
     </Router>
