@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -79,13 +80,34 @@ public class OrderController {
    *
    * @param orderId The id associated with the order.
    * @param itemDto The itemDTO that controls the item being added.
+   * @param request Used to identify the logged-in user via session.
    * @return The order gets returned with updated quantities.
    */
   @PostMapping("/{orderId}/items")
   public ResponseEntity<CustomerOrderDTO> addItemsToOrder(@PathVariable Long orderId,
-      @RequestBody MenuItemDTO itemDto) {
+      @RequestBody MenuItemDTO itemDto,
+      HttpServletRequest request) {
+    HttpSession session = request.getSession(false);
     CustomerOrderDTO updatedOrder =
-        orderService.addItemToOrder(orderId, itemDto.getId(), itemDto.getQuantity());
+        orderService.addItemToOrder(orderId, itemDto.getId(), itemDto.getQuantity(), session);
+    return ResponseEntity.ok(updatedOrder);
+  }
+
+  /**
+   * This endpoint allows customers to remove an item from their order.
+   *
+   * @param orderId The id associated with the order.
+   * @param itemId The id of the menu item to remove from the order.
+   * @param request Used to identify the logged-in user via session.
+   * @return The order gets returned with updated items.
+   */
+  @DeleteMapping("/{orderId}/items/{itemId}")
+  public ResponseEntity<CustomerOrderDTO> removeItemFromOrder(@PathVariable Long orderId,
+      @PathVariable Long itemId,
+      HttpServletRequest request) {
+    HttpSession session = request.getSession(false);
+    CustomerOrderDTO updatedOrder =
+        orderService.removeItemFromOrder(orderId, itemId, session);
     return ResponseEntity.ok(updatedOrder);
   }
 
