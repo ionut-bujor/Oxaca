@@ -179,7 +179,12 @@ const CustomerDashboard: React.FC = () => {
             <p className="text-slate-500">You have no active orders.</p>
           ) : (
             Object.entries(groupedOrders).map(([tableNumber, tableOrders]) => {
-              const allItems = tableOrders.flatMap(order => order.items);
+              const allItems = tableOrders.flatMap(order =>
+                order.items.map(item => ({
+                  item,
+                  orderId: order.id,
+                })),
+              );
               const totalPrice = tableOrders.reduce((sum, order) => sum + order.totalPrice, 0);
               const latestStatus = tableOrders[tableOrders.length - 1].status;
               const latestCreatedAt = tableOrders[tableOrders.length - 1].createdAt;
@@ -204,17 +209,41 @@ const CustomerDashboard: React.FC = () => {
 
                   {/* list of order items */}
                   <div className="space-y-4">
-                    {allItems.map((item: ItemDTOHelper, index: number) => (
+                    {allItems.map(({ item, orderId }: { item: ItemDTOHelper; orderId: number }, index: number) => (
                       <div
-                        key={index}
-                        className="flex justify-between items-center p-6 bg-gray-50 rounded-2xl shadow-sm border border-slate-100"
+                        key={`${orderId}-${item.menuItemId}-${index}`}
+                        className="flex justify-between items-center p-6 bg-gray-50 rounded-2xl shadow-sm border border-slate-100 transition-all duration-300 ease-out hover:shadow-md hover:-translate-y-0.5"
                       >
                         <div>
                           <p className="font-semibold text-lg text-slate-800">{item.menuItemName}</p>
                           <p className="text-sm text-slate-500">Quantity: {item.menuItemQuantity}</p>
                         </div>
-                        <div className="text-right">
-                          {item.price ? `£${(item.menuItemQuantity * item.price).toFixed(2)}` : "-"}
+                        <div className="flex flex-col items-end gap-2">
+                          <div className="transition-opacity duration-300">
+                            {item.price ? `£${(item.menuItemQuantity * item.price).toFixed(2)}` : "-"}
+                          </div>
+                          {latestStatus === "PLACED" && (
+                            <div className="flex gap-2">
+                              <button
+                                onClick={() => handleAddItem(orderId, item.menuItemId)}
+                                className="px-3 py-1 text-sm rounded-full bg-green-100 text-green-700 hover:bg-green-200 transition transform active:scale-95"
+                              >
+                                +1
+                              </button>
+                              <button
+                                onClick={() => handleDecreaseItem(orderId, item.menuItemId)}
+                                className="px-3 py-1 text-sm rounded-full bg-yellow-100 text-yellow-700 hover:bg-yellow-200 transition transform active:scale-95"
+                              >
+                                -1
+                              </button>
+                              <button
+                                onClick={() => handleRemoveItem(orderId, item.menuItemId)}
+                                className="px-3 py-1 text-sm rounded-full bg-red-100 text-red-700 hover:bg-red-200 transition transform active:scale-95"
+                              >
+                                Remove
+                              </button>
+                            </div>
+                          )}
                         </div>
                       </div>
                     ))}
