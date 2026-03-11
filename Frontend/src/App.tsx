@@ -8,6 +8,7 @@ import OrderConfirmation from './pages/OrderConfirmation'
 import { useAuth } from './context/AuthContext'
 import StripeSuccess from './pages/StripeSuccess'
 import StripeCancel from './pages/StripeCancel'
+import Management from './pages/Management'
 
 const App: React.FC = () => {
   const { isWaiter } = useAuth();
@@ -23,7 +24,7 @@ const App: React.FC = () => {
         <Route path="/dashboard" element={<CustomerDashboard />} />
         <Route path="/success" element={<StripeSuccess />} />
         <Route path ="/cancel" element = {<StripeCancel/>} />
-
+        <Route path ="/management" element = {<Management/>} />
       </Routes>
     </Router>
   )
