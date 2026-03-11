@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from "react";
 import Footer from "../components/Footer";
-import { CustomerOrderDTO } from '../types';
-import { ItemDTOHelper } from '../types';
+import { CustomerOrderDTO, ItemDTOHelper, MenuItem } from '../types';
 import CustomerDashboardHeader from "../components/CustomerDashboardHeader";
+import { menuService } from "../services/menuService";
 
 const CustomerDashboard: React.FC = () => {
   const [orders, setOrders] = useState<CustomerOrderDTO[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [payingTable, setPayingTable] = useState<number | null>(null);
+  const [isAddItemOpen, setIsAddItemOpen] = useState(false);
+  const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
+  const [targetOrderId, setTargetOrderId] = useState<number | null>(null);
 
-  useEffect(() => {
+  const fetchDashboard = () => {
+    setLoading(true);
+    setError(null);
+
     fetch("http://localhost:8080/dashboard", {
       credentials: "include",
     })
@@ -26,7 +32,104 @@ const CustomerDashboard: React.FC = () => {
         setError("Could not load dashboard. Please try again later.");
       })
       .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    fetchDashboard();
   }, []);
+
+  const handleAddItem = async (orderId: number, menuItemId: number) => {
+    try {
+      const res = await fetch(`http://localhost:8080/api/v1/orders/${orderId}/items`, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: menuItemId, quantity: 1 }),
+      });
+
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(text || `Failed to add item: ${res.status}`);
+      }
+
+      const updatedOrder: CustomerOrderDTO = await res.json();
+      setOrders(prev =>
+        prev.map(order => (order.id === updatedOrder.id ? updatedOrder : order)),
+      );
+    } catch (err) {
+      console.error("Add item error:", err);
+      setError("Could not add item. The kitchen may already be preparing your order.");
+    }
+  };
+
+  const handleDecreaseItem = async (orderId: number, menuItemId: number) => {
+    try {
+      const res = await fetch(`http://localhost:8080/api/v1/orders/${orderId}/items`, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: menuItemId, quantity: -1 }),
+      });
+
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(text || `Failed to decrease item: ${res.status}`);
+      }
+
+      const updatedOrder: CustomerOrderDTO = await res.json();
+      setOrders(prev =>
+        prev.map(order => (order.id === updatedOrder.id ? updatedOrder : order)),
+      );
+    } catch (err) {
+      console.error("Decrease item error:", err);
+      setError("Could not change item. The kitchen may already be preparing your order.");
+    }
+  };
+
+  const handleRemoveItem = async (orderId: number, menuItemId: number) => {
+    try {
+      const res = await fetch(
+        `http://localhost:8080/api/v1/orders/${orderId}/items/${menuItemId}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        },
+      );
+
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(text || `Failed to remove item: ${res.status}`);
+      }
+
+      const updatedOrder: CustomerOrderDTO = await res.json();
+      setOrders(prev =>
+        prev.map(order => (order.id === updatedOrder.id ? updatedOrder : order)),
+      );
+    } catch (err) {
+      console.error("Remove item error:", err);
+      setError("Could not remove item. The kitchen may already be preparing your order.");
+    }
+  };
+
+  const openAddItemDialog = async (orderId: number) => {
+    try {
+      setError(null);
+      const items = await menuService.fetchMenuItems();
+      setMenuItems(items);
+      setTargetOrderId(orderId);
+      setIsAddItemOpen(true);
+    } catch (err) {
+      console.error("Failed to load menu items", err);
+      setError("Could not load menu to add items.");
+    }
+  };
+
+  const handleAddNewMenuItemToOrder = async (menuItemId: number) => {
+    if (targetOrderId == null) return;
+    await handleAddItem(targetOrderId, menuItemId);
+    setIsAddItemOpen(false);
+    setTargetOrderId(null);
+  };
 
   const handlePayOrder = async (tableOrders: CustomerOrderDTO[], tableNumber: string) => {
   setPayingTable(Number(tableNumber));
