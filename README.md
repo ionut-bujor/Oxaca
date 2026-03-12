@@ -1,4 +1,4 @@
-Simulation of a restarant system.
+Simulation of a restaurant system.
 
 to run: 
 
